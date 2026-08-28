@@ -74,6 +74,23 @@ select:focus,.search:focus{border-color:var(--teal)}
 .chip.teal{border-color:var(--teal);color:var(--teal)}
 .chip.dark{background:var(--dark);border-color:var(--dark);color:var(--cream)}
 .chip.warn{background:var(--teal);border-color:var(--teal);color:var(--cream)}
+/* ---------- etiquetas de propietario ---------- */
+.chip.resp{border-color:transparent;color:var(--cream);text-transform:none;letter-spacing:.02em}
+.chip.r-jr{background:var(--teal)}
+.chip.r-javi{background:var(--dark)}
+.chip.r-antonio{background:var(--slate)}
+.chip.r-ext{background:var(--white);border-color:var(--light);color:var(--slate)}
+.chip.r-nadie{background:var(--white);border:1px dashed var(--dark);color:var(--dark)}
+.chip.pick{cursor:pointer}
+.chip.pick:hover{outline:1px solid var(--slate);outline-offset:1px}
+.chip .c{opacity:.65;font-weight:500;margin-left:3px}
+.ownbar{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+.ownbar .chip{cursor:pointer;opacity:.34;transition:.12s}
+.ownbar .chip.on{opacity:1}
+.ownbar .todos{font-size:10px;color:var(--slate);text-decoration:underline;cursor:pointer;
+ background:none;border:0;font-family:inherit;padding:0 2px}
+.calendar-task .chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px}
+.cal-vacio{grid-column:1/-1;padding:26px 4px;color:var(--slate);font-size:13px}
 .t .nt{font-size:10px;color:var(--teal);font-weight:600;margin-top:5px}
 /* ---------- panel ---------- */
 .ov{position:fixed;inset:0;background:rgba(27,39,49,.42);display:none;z-index:40}
@@ -183,7 +200,7 @@ section[id^="sec-"].active {display: flex;}
  <span class="sep"></span>
  <button class="btn" id="b_nueva">+ Añadir tarjeta</button>
  <span class="sep"></span>
- <span class="f">Responsable <input class="search" id="f_resp" placeholder="JR, Javi, Antonio…" style="width:150px"></span>
+ <span class="f">Propietario <span class="ownbar" id="f_resp"></span></span>
  <span class="f">Bloque <select id="f_bloque"><option value="">Todos</option><option value="rescate">Rescate</option><option value="noesis">NOESIS</option><option value="empresa">Empresa</option></select></span>
  <span class="f">Horizonte <select id="f_hor"><option value="">Todos</option><option value="semana">Esta semana</option><option value="pre14">Antes del 14 sep</option><option value="ventana">Durante la ventana</option><option value="despues">Después</option><option value="sinfecha">Sin fecha</option></select></span>
  <input class="search" id="f_q" placeholder="Buscar…">
@@ -215,6 +232,8 @@ section[id^="sec-"].active {display: flex;}
 </ol>
 <h3>Antes de tocar nada</h3>
 <p>El tablero <b>no tiene bloqueo de edición simultánea</b>. Si dos guardamos a la vez, el último pisa al anterior. Avisemos por el grupo antes de una tanda de cambios, o usa <b>Copia de seguridad</b> para llevarte el estado en JSON.</p>
+<h3>Las etiquetas de propietario</h3>
+<p>Cada tarjeta lleva el nombre de quien la lleva: <b>JR</b> en verde, <b>Javi</b> en azul oscuro, <b>Antonio</b> en gris, los externos en blanco y las que no tiene nadie con borde discontinuo. Si una tarea es de dos, salen las dos etiquetas. <b>Pincha una etiqueta</b> —en la tarjeta o en la barra de arriba— para ver solo lo de esa persona; pincha otra vez para quitar el filtro. Se pueden marcar varias a la vez, y el filtro vale igual para el Kanban y para el Calendario.</p>
 <h3>Qué significan los bordes</h3>
 <ul>
 <li><b>Borde oscuro y grueso:</b> ruta crítica. Si se cae, se cae la fecha del 14.</li>
@@ -1504,8 +1523,51 @@ section[id^="sec-"].active {display: flex;}
 const EST=[["validar","Por validar · propuestas mías","val"],["pendiente","Pendiente",""],["curso","En curso",""],["hecha","Hecha",""],["aparcada","Aparcada",""]];
 const HOR={semana:"Esta semana",pre14:"Antes del 14 sep",ventana:"Durante la ventana",despues:"Después · dic-ene",sinfecha:"Sin fecha"};
 const BLO={rescate:"Rescate",noesis:"NOESIS",empresa:"Empresa"};
+
+// Un responsable puede ser varios: "JR + Javi", "Los tres". Se normaliza a lista de
+// personas para poder etiquetar y filtrar una a una. Solo se parte por "+":
+// "José · Codimatic" es un unico propietario externo, no dos.
+const EQUIPO=['JR','Javi','Antonio'];
+const NADIE='SIN DUEÑO';
+const RESPCLS={'JR':'r-jr','Javi':'r-javi','Antonio':'r-antonio'};
+RESPCLS[NADIE]='r-nadie';
+function owners(r){
+ r=(r||'').trim();
+ if(!r)return [NADIE];
+ if(/^los tres$/i.test(r))return EQUIPO.slice();
+ return r.split('+').map(x=>x.trim()).filter(Boolean);
+}
+function respChips(resp,pick){
+ return owners(resp).map(o=>'<span class="chip resp '+(RESPCLS[o]||'r-ext')+(pick?' pick':'')
+  +'" data-resp="'+esc(o)+'">'+esc(o)+'</span>').join('');
+}
+function listaOwners(){
+ const s=new Set(); D.tareas.forEach(t=>owners(t.resp).forEach(o=>s.add(o)));
+ const otros=[...s].filter(o=>EQUIPO.indexOf(o)<0&&o!==NADIE).sort((a,b)=>a.localeCompare(b,'es'));
+ return EQUIPO.filter(o=>s.has(o)).concat(otros).concat(s.has(NADIE)?[NADIE]:[]);
+}
+function cuentaOwner(o){return D.tareas.filter(t=>owners(t.resp).indexOf(o)>=0).length}
+function pintaOwners(){
+ const c=document.getElementById('f_resp'); if(!c)return;
+ const act=filtro.resp.length;
+ c.innerHTML=listaOwners().map(o=>'<span class="chip resp '+(RESPCLS[o]||'r-ext')
+  +(!act||filtro.resp.indexOf(o)>=0?' on':'')+'" data-resp="'+esc(o)+'">'+esc(o)
+  +'<span class="c">'+cuentaOwner(o)+'</span></span>').join('')
+  +(act?'<button class="todos" id="f_resp_todos">quitar filtro</button>':'');
+}
+function toggleResp(o){
+ const i=filtro.resp.indexOf(o);
+ if(i>=0)filtro.resp.splice(i,1); else filtro.resp.push(o);
+ repinta();
+}
+// Repinta la vista activa. El calendario tambien obedece a los filtros.
+function repinta(){
+ render();
+ const s=document.getElementById('sec-calendario');
+ if(s&&s.classList.contains('active')&&typeof renderCal==='function')renderCal();
+}
 let D=JSON.parse(document.getElementById('datos').textContent);
-let sel=null, dirty=false, filtro={resp:"",bloque:"",hor:"",q:""};
+let sel=null, dirty=false, filtro={resp:[],bloque:"",hor:"",q:""};
 
 const LS='dg_tablero_v1';
 try{const s=localStorage.getItem(LS);
@@ -1517,7 +1579,7 @@ function marcar(){ dirty=true; document.getElementById('dirty').classList.add('o
 function toast(t){const e=document.getElementById('toast');e.textContent=t;e.classList.add('on');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('on'),3200);}
 
 function pasa(t){
- if(filtro.resp && !t.resp.toLowerCase().includes(filtro.resp.toLowerCase())) return false;
+ if(filtro.resp.length && !owners(t.resp).some(o=>filtro.resp.indexOf(o)>=0)) return false;
  if(filtro.bloque && t.bloque!==filtro.bloque) return false;
  if(filtro.hor && t.hor!==filtro.hor) return false;
  if(filtro.q){const q=filtro.q.toLowerCase();
@@ -1543,6 +1605,7 @@ function render(){
    if(t&&t.est!==k){t.est=k; marcar(); render(); toast(id+' → '+lbl.split(' · ')[0]);}});
   b.appendChild(col);
  });
+ pintaOwners();
  document.getElementById('kpi').textContent =
   D.tareas.length+' tarjetas · '+D.tareas.filter(t=>t.origen==='propuesta'&&t.est==='validar').length+' por validar · '
   +D.tareas.filter(t=>t.resp==='SIN DUEÑO').length+' sin dueño';
@@ -1552,18 +1615,20 @@ function tarjeta(t){
  const d=document.createElement('div');
  d.className='t'+(t.crit?' crit':'')+(t.origen==='propuesta'?' prop':'');
  d.draggable=true; d.dataset.id=t.id;
- let chips='<span class="chip">'+(BLO[t.bloque]||'')+'</span><span class="chip">'+(HOR[t.hor]||'')+'</span>';
+ let chips=respChips(t.resp,true)+'<span class="chip">'+(BLO[t.bloque]||'')+'</span><span class="chip">'+(HOR[t.hor]||'')+'</span>';
  if(t.crit) chips+='<span class="chip dark">Crítica</span>';
- if(t.resp==='SIN DUEÑO') chips+='<span class="chip warn">Sin dueño</span>';
  if(t.origen==='propuesta') chips+='<span class="chip teal">Propuesta mía</span>';
  d.innerHTML='<div class="top"><span class="id">'+t.id+'</span></div>'
   +'<div class="n">'+esc(t.t)+'</div>'
-  +'<div class="m"><b>'+esc(t.resp)+'</b> · '+esc(t.fecha)+(t.dep?'<br>'+esc(t.dep):'')+'</div>'
+  +'<div class="m">'+esc(t.fecha)+(t.dep?'<br>'+esc(t.dep):'')+'</div>'
   +'<div class="chips">'+chips+'</div>'
   +(t.notas&&t.notas.length?'<div class="nt">'+t.notas.length+' nota'+(t.notas.length>1?'s':'')+'</div>':'');
  d.addEventListener('dragstart',e=>{e.dataTransfer.setData('text/plain',t.id);d.classList.add('drag')});
  d.addEventListener('dragend',()=>d.classList.remove('drag'));
- d.addEventListener('click',()=>abrir(t.id));
+ d.addEventListener('click',e=>{
+  const ch=e.target.closest('.chip.pick');
+  if(ch){e.stopPropagation();toggleResp(ch.dataset.resp);return}
+  abrir(t.id)});
  return d;
 }
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
@@ -1681,10 +1746,13 @@ function importar(ev){
 }
 
 /* ---------- arranque ---------- */
-document.getElementById('f_resp').addEventListener('input',e=>{filtro.resp=e.target.value;render()});
-document.getElementById('f_bloque').addEventListener('change',e=>{filtro.bloque=e.target.value;render()});
-document.getElementById('f_hor').addEventListener('change',e=>{filtro.hor=e.target.value;render()});
-document.getElementById('f_q').addEventListener('input',e=>{filtro.q=e.target.value;render()});
+document.getElementById('f_resp').addEventListener('click',e=>{
+ if(e.target.id==='f_resp_todos'){filtro.resp=[];pintaOwners();repinta();return}
+ const ch=e.target.closest('[data-resp]'); if(ch)toggleResp(ch.dataset.resp);
+});
+document.getElementById('f_bloque').addEventListener('change',e=>{filtro.bloque=e.target.value;repinta()});
+document.getElementById('f_hor').addEventListener('change',e=>{filtro.hor=e.target.value;repinta()});
+document.getElementById('f_q').addEventListener('input',e=>{filtro.q=e.target.value;repinta()});
 document.getElementById('b_nueva').onclick=nueva;
 document.getElementById('b_guardar').onclick=guardar;
 document.getElementById('b_export').onclick=exportar;
@@ -1696,6 +1764,7 @@ document.getElementById('pcerrarh').onclick=cerrar;
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){cerrar();document.getElementById('ayuda').classList.remove('on')}});
 window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue=''}});
 render();
+pintaOwners();
 </script>
 <script>
 function convertFecha(f){
@@ -1718,6 +1787,15 @@ function renderCal(){
   // D es el estado vivo del tablero (incluye ediciones y lo recuperado de localStorage).
   // Solo se cae al JSON estatico si el script principal no ha llegado a cargar.
   let tareas=(typeof D!=='undefined'&&D&&D.tareas)?D.tareas:JSON.parse(document.getElementById('datos').textContent).tareas;
+  // El calendario obedece a los mismos filtros que el Kanban
+  if(typeof pasa==='function'&&typeof filtro!=='undefined')tareas=tareas.filter(t=>pasa(t));
+  if(!tareas.length){
+    let v=document.createElement('div');
+    v.className='cal-vacio';
+    v.textContent='Ninguna tarea cumple los filtros activos.';
+    c.appendChild(v);
+    return;
+  }
   let m={1:"ene",2:"feb",3:"mar",4:"abr",5:"may",6:"jun",7:"jul",8:"ago",9:"sep",10:"oct",11:"nov",12:"dic"};
   let w=["dom","lun","mar","mié","jue","vie","sáb"];
   // Se reutilizan las etiquetas de horizonte del tablero para no mantener dos vocabularios
@@ -1753,12 +1831,18 @@ function renderCal(){
       let tx=document.createElement('div');
       tx.className='calendar-task-t';
       tx.textContent=t.t;
-      let rp=document.createElement('div');
-      rp.className='calendar-task-resp';
+      let ch=document.createElement('div');
+      ch.className='chips';
+      ch.innerHTML=respChips(t.resp,true);
+      te.appendChild(id);te.appendChild(tx);te.appendChild(ch);
       // El texto literal de fecha solo se repite si matiza el titulo de la tarjeta
       // ("Antes del 14 sep" no es lo mismo que "14 sep")
-      rp.textContent=(t.fecha&&t.fecha!==titulo)?(t.resp+' · '+t.fecha):t.resp;
-      te.appendChild(id);te.appendChild(tx);te.appendChild(rp);
+      if(t.fecha&&t.fecha!==titulo){
+        let rp=document.createElement('div');
+        rp.className='calendar-task-resp';
+        rp.textContent=t.fecha;
+        te.appendChild(rp);
+      }
       tl.appendChild(te);
     });
     card.appendChild(tl);
@@ -1794,4 +1878,8 @@ function cambiarSeccion(sec,btn){
   if(t)t.classList.add('active');
   if(sec==='calendario')renderCal();
 }
+document.getElementById('calendario-container').addEventListener('click',e=>{
+  const ch=e.target.closest('.chip.pick');
+  if(ch)toggleResp(ch.dataset.resp);
+});
 </script></body></html>
