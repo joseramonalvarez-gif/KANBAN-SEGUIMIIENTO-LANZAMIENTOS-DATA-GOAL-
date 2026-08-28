@@ -216,8 +216,8 @@ section[id^="sec-"].active {display: flex;}
 </header><div class="tab-wrapper"><button class="tab-btn active" onclick="cambiarSeccion('kanban',this)">Kanban</button><button class="tab-btn" onclick="cambiarSeccion('calendario',this)">Calendario</button></div>
 
 <div class="bar">
- <button class="btn solid" id="b_guardar">Guardar en el fichero</button>
- <span class="dirty" id="dirty"><span class="dot"></span>Cambios sin guardar</span>
+ <button class="btn solid" id="b_enviar">Enviar mis cambios a JR</button>
+ <span class="dirty" id="dirty"><span class="dot"></span>Cambios sin enviar</span>
  <span class="sep"></span>
  <button class="btn" id="b_nueva">+ Añadir tarjeta</button>
  <span class="sep"></span>
@@ -227,8 +227,9 @@ section[id^="sec-"].active {display: flex;}
  <span class="f">Horizonte <select id="f_hor"><option value="">Todos</option><option value="semana">Esta semana</option><option value="pre14">Antes del 14 sep</option><option value="ventana">Durante la ventana</option><option value="despues">Después</option><option value="sinfecha">Sin fecha</option></select></span>
  <input class="search" id="f_q" placeholder="Buscar…">
  <span class="sep"></span>
- <button class="btn ghost" id="b_export">Copia de seguridad</button>
- <label class="btn ghost" style="display:inline-block">Cargar copia<input type="file" id="b_import" accept="application/json" hidden></label>
+ <button class="btn ghost" id="b_export">Descargar JSON</button>
+ <label class="btn ghost" style="display:inline-block">Cargar JSON<input type="file" id="b_import" accept="application/json" hidden></label>
+ <button class="btn ghost" id="b_guardar" title="Solo JR: genera el index.html para subir al repositorio">Generar HTML para publicar</button>
  <button class="btn ghost" id="b_ayuda">Cómo funciona</button>
 </div>
 
@@ -244,16 +245,27 @@ section[id^="sec-"].active {display: flex;}
  <div class="mh"><h2>Cómo funciona el tablero</h2><p style="font-size:12px;color:var(--slate)">Léelo una vez y no hace falta más.</p></div>
  <div class="mc">
 <h3>Qué es esto</h3>
-<p>Javi, Antonio: he pasado la transcripción entera de la reunión del 27 y he sacado todas las acciones que salieron. Este es nuestro tablero de trabajo hasta diciembre. Vive en la unidad compartida y lo movemos los tres. Cada tarjeta lleva dentro la cita literal de quién lo dijo en la reunión, para que podáis comprobarla sin volver a la transcripción.</p>
+<p>Javi, Antonio: he pasado la transcripción entera de la reunión del 27 y he sacado todas las acciones que salieron. Este es nuestro tablero de trabajo hasta diciembre. Cada tarjeta lleva dentro la cita literal de quién lo dijo en la reunión, para que podáis comprobarla sin volver a la transcripción.</p>
+<h3>Dónde se guarda lo que tocas — léelo, importa</h3>
+<p>El tablero no tiene servidor. Cuando mueves una tarjeta, cambias un propietario o escribes una nota, <b>eso se guarda solo en tu navegador, en tu ordenador</b>. No viaja a ningún sitio: los otros dos no lo ven.</p>
+<p>Tus cambios <b>no se pierden</b> aunque cierres la pestaña o apagues el equipo: al volver a abrir el tablero te pregunta si los recupera. Pero siguen siendo tuyos y solo tuyos hasta que los envíes.</p>
 <h3>Cómo se actualiza</h3>
 <ol>
 <li><b>Mueve las tarjetas</b> arrastrándolas de una columna a otra. El estado cambia solo.</li>
 <li><b>Pincha una tarjeta</b> para editarla: tarea, responsable, fecha, bloque, dependencia y notas. También se elimina desde ahí.</li>
 <li><b>Añadir</b> crea una tarjeta nueva en Pendiente. Si me he dejado algo, mételo tú.</li>
-<li>Cuando acabes, pulsa <b>Guardar en el fichero</b>. En Chrome te deja elegir el propio fichero del tablero en la unidad compartida y lo sobrescribe: a partir de ahí, el que lo abra ve tus cambios. Si el navegador no lo permite, lo descarga y solo hay que moverlo a la carpeta sustituyendo el anterior.</li>
+<li>Cuando acabes una tanda, pulsa <b>Enviar mis cambios a JR</b>. Te descarga un fichero <code>.json</code> y te abre el correo ya escrito. <b>Tienes que adjuntar el fichero tú antes de enviarlo</b>: el correo no lo lleva solo, y sin él no llega nada.</li>
+<li>JR los revisa, los junta y publica la versión nueva. A partir de ahí, quien abra el enlace ve tus cambios.</li>
 </ol>
-<h3>Antes de tocar nada</h3>
-<p>El tablero <b>no tiene bloqueo de edición simultánea</b>. Si dos guardamos a la vez, el último pisa al anterior. Avisemos por el grupo antes de una tanda de cambios, o usa <b>Copia de seguridad</b> para llevarte el estado en JSON.</p>
+<h3>Por qué no se guarda solo</h3>
+<p>Porque es una página suelta, sin base de datos detrás. Que se guardara solo para los tres exigiría un servidor, y eso es otro proyecto. A cambio, esto funciona sin instalar nada y sin depender de nadie.</p>
+<p>Consecuencia práctica: <b>no editéis los tres a la vez una tanda larga</b>. Si Javi y Antonio envían cambios sobre la misma tarjeta, JR tendrá que elegir uno. Avisad por el grupo antes de meter mano en serio.</p>
+<h3>Los botones de abajo</h3>
+<ul>
+<li><b>Descargar JSON:</b> te llevas el estado tal cual, por si quieres guardarlo aparte.</li>
+<li><b>Cargar JSON:</b> mete en el tablero un fichero que te hayan pasado. <b>Sustituye todo lo que tengas</b>: úsalo solo si sabes lo que haces.</li>
+<li><b>Generar HTML para publicar:</b> es de JR. Crea el <code>index.html</code> nuevo para subir al repositorio.</li>
+</ul>
 <h3>El semáforo de plazos</h3>
 <p>Cada tarjeta lleva arriba a la derecha un punto de color con cómo va de fecha, y el mismo código vale en el Kanban y en el Calendario: <b>rojo</b>, la fecha ya ha pasado y la tarea no está hecha; <b>naranja</b>, vence dentro de los próximos siete días; <b>verde</b>, está en la columna Hecha. Las que van en plazo no llevan punto: se quedan como estaban, para que solo destaque lo que pide atención.</p>
 <p>Las tarjetas <b>aparcadas</b> no salen nunca en rojo aunque se les pase la fecha: están paradas a propósito, no con retraso. Y las que no tienen día concreto —«Septiembre», «Durante la ventana»— tampoco pueden vencer, así que quedan sin punto.</p>
@@ -1647,9 +1659,19 @@ let sel=null, dirty=false, filtro={resp:[],plazo:[],bloque:"",hor:"",q:""};
 
 const LS='dg_tablero_v1';
 try{const s=localStorage.getItem(LS);
- if(s){const o=JSON.parse(s); if(o&&o.tareas&&o.sello!==D.actualizado+'|'+D.tareas.length||o&&o.tareas&&o.local){ if(confirm('Hay cambios guardados en este navegador que no están en el fichero. ¿Los recuperamos?')){D=o;} } }
+ if(s){const o=JSON.parse(s); if(o&&o.tareas&&o.sello!==D.actualizado+'|'+D.tareas.length||o&&o.tareas&&o.local){ if(confirm('Tienes cambios guardados en este navegador que aún no están en la versión publicada. ¿Los recuperamos?')){D=o;} } }
 }catch(e){}
 
+const LSQ='dg_tablero_quien';
+function quienSoy(pedir){
+ let q='';
+ try{q=localStorage.getItem(LSQ)||''}catch(e){}
+ if(!q&&pedir){
+  q=(prompt('¿Quién eres? (JR, Javi o Antonio)')||'').trim();
+  if(q){try{localStorage.setItem(LSQ,q)}catch(e){}}
+ }
+ return q;
+}
 function guardaLocal(){ try{ D.local=true; localStorage.setItem(LS,JSON.stringify(D)); }catch(e){} }
 function marcar(){ dirty=true; document.getElementById('dirty').classList.add('on'); guardaLocal(); }
 function toast(t){const e=document.getElementById('toast');e.textContent=t;e.classList.add('on');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('on'),3200);}
@@ -1794,26 +1816,48 @@ async function guardar(){
    const h=await window.showSaveFilePicker({suggestedName:'TABLERO_DATA_GOAL.html',
     types:[{description:'Página HTML',accept:{'text/html':['.html']}}]});
    const w=await h.createWritable(); await w.write(html); await w.close();
-   limpio(); toast('Guardado en el fichero. Ya está actualizado para los tres.'); return;
+   limpio(); toast('Fichero generado. Falta subirlo a GitHub para que lo vean los demás.'); return;
   }catch(e){ if(e&&e.name==='AbortError') return; }
  }
  descargar(html,'TABLERO_DATA_GOAL.html');
- toast('Descargado. Muévelo a la carpeta de la unidad compartida sustituyendo el anterior.');
+ toast('Descargado. Sustituye con él el index.html del repositorio y haz commit.');
  limpio();
 }
-function limpio(){dirty=false;document.getElementById('dirty').classList.remove('on');try{localStorage.removeItem(LS)}catch(e){}}
+function limpio(){dirty=false;document.getElementById('dirty').classList.remove('on');}
 function descargar(txt,nom){
  const a=document.createElement('a');
  a.href=URL.createObjectURL(new Blob([txt],{type:'text/html;charset=utf-8'}));
  a.download=nom; document.body.appendChild(a); a.click();
  setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},600);
 }
+function nombreJSON(){
+ const q=quienSoy(false);
+ return 'tablero-datagoal'+(q?'-'+q.toLowerCase().replace(/[^a-z0-9]+/g,''):'')+'-'+hoyISO()+'.json';
+}
 function exportar(){
  const c=JSON.parse(JSON.stringify(D)); delete c.local;
  const a=document.createElement('a');
  a.href=URL.createObjectURL(new Blob([JSON.stringify(c,null,1)],{type:'application/json'}));
- a.download='tablero-datagoal-'+hoy().replace(/\//g,'-')+'.json'; a.click();
+ a.download=nombreJSON(); a.click();
  setTimeout(()=>URL.revokeObjectURL(a.href),600);
+ return a.download;
+}
+// El JSON pesa unos 38 KB: no cabe en un mailto, asi que se descarga y el correo
+// se abre ya escrito para adjuntarlo. Es el unico camino sin servidor propio.
+function enviarCambios(){
+ const q=quienSoy(true);
+ const fich=exportar();
+ const salto='\n';
+ const asunto='Tablero Data Goal \u2013 cambios de '+(q||'?')+' \u2013 '+hoy();
+ const cuerpo='Adjunto el fichero '+fich+' que se acaba de descargar.'+salto+salto
+  +'Resumen: '+D.tareas.length+' tarjetas, '
+  +D.tareas.filter(t=>t.est==='hecha').length+' hechas, '
+  +D.tareas.filter(t=>estadoPlazo(t)==='vencida').length+' vencidas.'+salto+salto
+  +'IMPORTANTE: adjunta el fichero antes de enviar. El correo no lo lleva solo.';
+ window.location.href='mailto:soporte@datagoal.es?subject='+encodeURIComponent(asunto)
+  +'&body='+encodeURIComponent(cuerpo);
+ limpio();
+ toast('JSON descargado y correo abierto. Adjunta el fichero antes de enviarlo.');
 }
 function importar(ev){
  const f=ev.target.files[0]; if(!f)return;
@@ -1836,6 +1880,7 @@ document.getElementById('f_bloque').addEventListener('change',e=>{filtro.bloque=
 document.getElementById('f_hor').addEventListener('change',e=>{filtro.hor=e.target.value;repinta()});
 document.getElementById('f_q').addEventListener('input',e=>{filtro.q=e.target.value;repinta()});
 document.getElementById('b_nueva').onclick=nueva;
+document.getElementById('b_enviar').onclick=enviarCambios;
 document.getElementById('b_guardar').onclick=guardar;
 document.getElementById('b_export').onclick=exportar;
 document.getElementById('b_import').onchange=importar;
