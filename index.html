@@ -113,6 +113,14 @@ select:focus,.search:focus{border-color:var(--teal)}
 .fld input:focus,.fld select:focus,.fld textarea:focus{border-color:var(--teal)}
 .fld textarea{resize:vertical;min-height:62px;line-height:1.5}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.respsel{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}
+.respsel label{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;
+ text-transform:none;letter-spacing:0;color:var(--dark);border:1px solid var(--light);
+ background:var(--white);border-radius:14px;padding:4px 10px 4px 8px;cursor:pointer;margin:0}
+.respsel label:hover{border-color:var(--teal)}
+.respsel input{width:auto;margin:0;accent-color:var(--teal)}
+.respsel label.on{background:var(--dark);border-color:var(--dark);color:var(--cream)}
+.fld .pista{font-size:10.5px;font-weight:500;letter-spacing:0;text-transform:none;color:var(--slate);margin-top:5px}
 .src{background:var(--white);border-left:3px solid var(--teal);border-radius:0 5px 5px 0;padding:10px 12px;margin-bottom:12px}
 .src .lb{font-size:9.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--teal);margin-bottom:4px}
 .src .q{font-size:12px;line-height:1.55;color:var(--dark)}
@@ -271,6 +279,7 @@ section[id^="sec-"].active {display: flex;}
 <p>Las tarjetas <b>aparcadas</b> no salen nunca en rojo aunque se les pase la fecha: están paradas a propósito, no con retraso. Y las que no tienen día concreto —«Septiembre», «Durante la ventana»— tampoco pueden vencer, así que quedan sin punto.</p>
 <p>En la barra de arriba, junto a <b>Plazo</b>, está el recuento de cada estado. Se pincha para ver solo eso: pinchando <b>Vencida</b> te quedan a la vista, en las dos pestañas a la vez, las tareas en las que lleváis retraso.</p>
 <h3>Las etiquetas de propietario</h3>
+<p><b>Para asignar propietarios</b>, abre la tarjeta y marca las casillas de quién la lleva. Puedes marcar varias: una tarea de dos sale con dos etiquetas. Si es de alguien de fuera, escríbelo en el campo de al lado. Si no marcas a nadie, la tarjeta queda <b>sin dueño</b> y se ve en el contador de arriba.</p>
 <p>Cada tarjeta lleva el nombre de quien la lleva: <b>JR</b> en verde, <b>Javi</b> en azul oscuro, <b>Antonio</b> en gris, los externos en blanco y las que no tiene nadie con borde discontinuo. Si una tarea es de dos, salen las dos etiquetas. <b>Pincha una etiqueta</b> —en la tarjeta o en la barra de arriba— para ver solo lo de esa persona; pincha otra vez para quitar el filtro. Se pueden marcar varias a la vez, y el filtro vale igual para el Kanban y para el Calendario.</p>
 <h3>Qué significan los bordes</h3>
 <ul>
@@ -1739,8 +1748,15 @@ function abrir(id){
  const f=document.getElementById('pb');
  f.innerHTML=
   '<div class="fld"><label>Tarea</label><textarea id="e_t">'+esc(t.t)+'</textarea></div>'
- +'<div class="two"><div class="fld"><label>Responsable</label><input id="e_resp" value="'+esc(t.resp)+'"></div>'
- +'<div class="fld"><label>Fecha objetivo</label><input id="e_fecha" value="'+esc(t.fecha)+'"></div></div>'
+ +'<div class="fld"><label>Propietarios</label>'
+ +'<div class="respsel" id="e_resp_sel">'+EQUIPO.map(q=>{
+    const marcado=owners(t.resp).indexOf(q)>=0;
+    return '<label'+(marcado?' class="on"':'')+'><input type="checkbox" value="'+esc(q)+'"'+(marcado?' checked':'')+'>'+esc(q)+'</label>';
+   }).join('')+'</div>'
+ +'<input id="e_resp_otros" placeholder="Externo, si lo hay (ej. José · Codimatic)" value="'
+   +esc(owners(t.resp).filter(q=>EQUIPO.indexOf(q)<0&&q!==NADIE).join(' + '))+'">'
+ +'<div class="pista">Marca a todos los que la lleven. Si no marcas a nadie ni escribes un externo, la tarjeta queda <b>sin dueño</b>.</div></div>'
+ +'<div class="fld"><label>Fecha objetivo</label><input id="e_fecha" value="'+esc(t.fecha)+'"></div>'
  +'<div class="two"><div class="fld"><label>Bloque</label><select id="e_bloque">'+opts(BLO,t.bloque)+'</select></div>'
  +'<div class="fld"><label>Horizonte</label><select id="e_hor">'+opts(HOR,t.hor)+'</select></div></div>'
  +'<div class="two"><div class="fld"><label>Estado</label><select id="e_est">'+EST.map(([k,l])=>'<option value="'+k+'"'+(t.est===k?' selected':'')+'>'+l.split(' · ')[0]+'</option>').join('')+'</select></div>'
@@ -1753,6 +1769,10 @@ function abrir(id){
  +'<button class="btn ghost" id="pcerrar">Cerrar</button>'
  +'<button class="btn danger" id="pborrar">Eliminar tarjeta</button></div>';
  pintaNotas(t);
+ // la casilla marcada se resalta, para que se vea de un vistazo quien la lleva
+ document.getElementById('e_resp_sel').addEventListener('change',e=>{
+  if(e.target.tagName==='INPUT')e.target.parentElement.classList.toggle('on',e.target.checked);
+ });
  document.getElementById('addnota').onclick=()=>{
   const v=document.getElementById('e_nota').value.trim(); if(!v)return;
   t.notas=t.notas||[]; t.notas.push({txt:v,quien:'',fecha:hoy()});
@@ -1778,7 +1798,12 @@ function opts(o,v){return Object.keys(o).map(k=>'<option value="'+k+'"'+(v===k?'
 function hoy(){const d=new Date();return String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear()}
 function aplicar(){
  const t=D.tareas.find(x=>x.id===sel); if(!t)return;
- t.t=document.getElementById('e_t').value.trim(); t.resp=document.getElementById('e_resp').value.trim();
+ t.t=document.getElementById('e_t').value.trim();
+ // El campo resp se compone desde las casillas: el separador canonico es " + " (D-009)
+ const marcados=[...document.querySelectorAll('#e_resp_sel input:checked')].map(x=>x.value);
+ const otros=document.getElementById('e_resp_otros').value.trim();
+ if(otros)marcados.push(otros);
+ t.resp=marcados.length?marcados.join(' + '):NADIE;
  t.fecha=document.getElementById('e_fecha').value.trim(); t.bloque=document.getElementById('e_bloque').value;
  t.hor=document.getElementById('e_hor').value; t.est=document.getElementById('e_est').value;
  t.crit=+document.getElementById('e_crit').value; t.dep=document.getElementById('e_dep').value.trim();
