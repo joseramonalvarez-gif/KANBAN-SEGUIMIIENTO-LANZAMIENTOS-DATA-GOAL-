@@ -1692,28 +1692,29 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){cerrar();document.g
 window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue=''}});
 render();
 </script>
-<section id="sec-calendario" style="flex: 1 1 auto; display: none; flex-direction: column; overflow: hidden;"><div class="calendario-grid" id="calendario-container"></div></section></section><script>
-function cambiarSeccion(sec){
-  document.querySelectorAll('[id^="sec-"]').forEach(s=>{s.classList.remove('active');s.style.display='none'});
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  let s=document.getElementById('sec-'+sec);
-  if(s){s.classList.add('active');s.style.display='flex'}
-  if(event && event.target)event.target.classList.add('active');
-  if(sec==='calendario')renderCal();
-}
-</script></body></html>function cambiarSeccion(sec){
-  document.querySelectorAll('[id^="sec-"]').forEach(s=>{s.classList.remove('active');s.style.display='none'});
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  let s=document.getElementById('sec-'+sec);
-  if(s){s.classList.add('active');s.style.display='flex'}
-  if(event && event.target)event.target.classList.add('active');
-  if(sec==='calendario')renderCal();
+<script>
+function convertFecha(f){
+  if(!f||f.includes('Pendiente')||f.includes('Fin de'))return null;
+  let meses={ago:8,sep:9,oct:10,nov:11,dic:12,ene:1,feb:2,mar:3,abr:4,may:5,jun:6,jul:7};
+  let partes=f.trim().split(/\s+/);
+  if(partes.length<2)return null;
+  let dia=parseInt(partes[0]),mes=meses[partes[1].toLowerCase()];
+  if(!mes||!dia||dia<1||dia>31)return null;
+  let fecha=new Date(2026,mes-1,dia);
+  return fecha.toISOString().split('T')[0];
 }
 function renderCal(){
   let c=document.getElementById('calendario-container');
   if(!c||c.children.length)return;
   let jsonData=JSON.parse(document.querySelector('script[id="datos"]').textContent);
-  let d={};jsonData.tareas.forEach(t=>{let f=t.fecha;if(!d[f])d[f]=[];d[f].push({id:t.id,t:t.t,r:t.resp,cr:t.crit?1:0})});
+  let d={};
+  jsonData.tareas.forEach(t=>{
+    let fechaIso=convertFecha(t.fecha);
+    if(fechaIso){
+      if(!d[fechaIso])d[fechaIso]=[];
+      d[fechaIso].push({id:t.id,t:t.t,r:t.resp,cr:t.crit?1:0});
+    }
+  });
   let m={1:"ene",2:"feb",3:"mar",4:"abr",5:"may",6:"jun",7:"jul",8:"ago",9:"sep",10:"oct",11:"nov",12:"dic"};
   let w=["dom","lun","mar","mié","jue","vie","sáb"];
   Object.keys(d).sort().forEach(f=>{
@@ -1754,5 +1755,16 @@ function renderCal(){
     card.appendChild(tl);
     c.appendChild(card);
   });
+}
+</script>
+<section id="sec-calendario" style="flex: 1 1 auto; display: none; flex-direction: column; overflow: hidden;"><div class="calendario-grid" id="calendario-container"></div></section></section>
+<script>
+function cambiarSeccion(sec){
+  document.querySelectorAll('[id^="sec-"]').forEach(s=>{s.classList.remove('active');s.style.display='none'});
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  let s=document.getElementById('sec-'+sec);
+  if(s){s.classList.add('active');s.style.display='flex'}
+  if(event && event.target)event.target.classList.add('active');
+  if(sec==='calendario')renderCal();
 }
 </script></body></html>
