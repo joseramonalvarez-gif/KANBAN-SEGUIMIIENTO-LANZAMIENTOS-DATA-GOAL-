@@ -128,104 +128,23 @@ select:focus,.search:focus{border-color:var(--teal)}
 .mbox .mf{padding:0 22px 20px;display:flex;gap:8px;justify-content:flex-end}
 @media(max-width:820px){.board{padding:12px}.col{flex:0 0 260px}header{padding:12px 14px 0}.bar{padding:10px 14px}}
 
-/* ========== TABS ========== */
-.tab-wrapper {
-  flex: 0 0 auto;
-  display: flex;
-  gap: 0;
-  padding: 0 22px;
-  border-bottom: 1px solid var(--light);
-  background: var(--cream);
-}
-.tab-btn {
-  flex: 0 0 auto;
-  padding: 12px 20px;
-  border: none;
-  background: none;
-  color: var(--slate);
-  font-size: 13px;
-  font-weight: 600;
-  font-family: 'Space Grotesk', sans-serif;
-  cursor: pointer;
-  border-bottom: 3px solid transparent;
-  transition: .15s;
-}
-.tab-btn:hover { color: var(--teal); }
-.tab-btn.active { color: var(--teal); border-bottom-color: var(--teal); }
-
-section[id^="sec-"] {
-  display: none;
-  flex: 1 1 auto;
-  flex-direction: column;
-  overflow: hidden;
-}
-section[id^="sec-"].active { display: flex; }
-
-.calendario-grid {
-  flex: 1 1 auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 14px;
-  padding: 14px 22px 18px;
-  overflow: auto;
-  align-content: start;
-}
-.calendar-day {
-  background: var(--white);
-  border: 1px solid var(--light);
-  border-radius: 7px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-.calendar-day-header {
-  background: var(--dark);
-  color: var(--cream);
-  padding: 10px 12px;
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 13px;
-  font-weight: 700;
-}
-.calendar-day-date {
-  font-size: 11px;
-  color: var(--slate);
-  font-weight: 500;
-  margin-top: 2px;
-}
-.calendar-day-tasks {
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding: 10px;
-  overflow-y: auto;
-}
-.calendar-task {
-  border-left: 3px solid var(--teal);
-  background: var(--cream);
-  border-radius: 0 5px 5px 0;
-  padding: 8px 10px;
-  border-top: 1px solid var(--light);
-  border-right: 1px solid var(--light);
-  border-bottom: 1px solid var(--light);
-  font-size: 12.5px;
-  font-weight: 600;
-  line-height: 1.35;
-}
-.calendar-task.crit { border-left-color: var(--dark); border-left-width: 4px; }
-.calendar-task-id {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: .05em;
-  color: var(--teal);
-  margin-bottom: 3px;
-}
-.calendar-task.crit .calendar-task-id { color: var(--dark); }
-.calendar-task-resp {
-  font-size: 10px;
-  color: var(--slate);
-  margin-top: 3px;
-}
+/* TABS Y CALENDARIO */
+.tab-wrapper {flex: 0 0 auto;display: flex;gap: 0;padding: 0 22px;border-bottom: 1px solid var(--light);background: var(--cream);}
+.tab-btn {flex: 0 0 auto;padding: 12px 20px;border: none;background: none;color: var(--slate);font-size: 13px;font-weight: 600;font-family: 'Space Grotesk', sans-serif;cursor: pointer;border-bottom: 3px solid transparent;transition: .15s;}
+.tab-btn:hover {color: var(--teal);}
+.tab-btn.active {color: var(--teal);border-bottom-color: var(--teal);}
+section[id^="sec-"] {display: none;flex: 1 1 auto;flex-direction: column;overflow: hidden;}
+section[id^="sec-"].active {display: flex;}
+.calendario-grid {flex: 1 1 auto;display: grid;grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));gap: 14px;padding: 14px 22px 18px;overflow: auto;align-content: start;}
+.calendar-day {background: var(--white);border: 1px solid var(--light);border-radius: 7px;overflow: hidden;display: flex;flex-direction: column;}
+.calendar-day-header {background: var(--dark);color: var(--cream);padding: 10px 12px;font-family: 'Space Grotesk', sans-serif;font-size: 13px;font-weight: 700;}
+.calendar-day-date {font-size: 11px;color: var(--slate);font-weight: 500;margin-top: 2px;}
+.calendar-day-tasks {flex: 1 1 auto;display: flex;flex-direction: column;gap: 6px;padding: 10px;overflow-y: auto;}
+.calendar-task {border-left: 3px solid var(--teal);background: var(--cream);border-radius: 0 5px 5px 0;padding: 8px 10px;border-top: 1px solid var(--light);border-right: 1px solid var(--light);border-bottom: 1px solid var(--light);font-size: 12.5px;font-weight: 600;line-height: 1.35;}
+.calendar-task.crit {border-left-color: var(--dark);border-left-width: 4px;}
+.calendar-task-id {font-size: 10px;font-weight: 700;letter-spacing: .05em;color: var(--teal);margin-bottom: 3px;}
+.calendar-task.crit .calendar-task-id {color: var(--dark);}
+.calendar-task-resp {font-size: 10px;color: var(--slate);margin-top: 3px;}
 </style></head><body>
 
 <header>
@@ -1774,116 +1693,57 @@ window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.return
 render();
 </script>
 <section id="sec-calendario" style="flex: 1 1 auto; display: none; flex-direction: column; overflow: hidden;"><div class="calendario-grid" id="calendario-container"></div></section></section><script>
-function cambiarSeccion(seccion) {
-  document.querySelectorAll('section[id^="sec-"]').forEach(s => {
-    s.classList.remove('active');
-    s.style.display = 'none';
-  });
-  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-  const section = document.getElementById('sec-' + seccion);
-  if (section) {
-    section.classList.add('active');
-    section.style.display = 'flex';
-  }
-  if (event && event.target) event.target.classList.add('active');
-  if (seccion === 'calendario') renderizarCalendario();
+function cambiarSeccion(sec){
+  document.querySelectorAll('[id^="sec-"]').forEach(s=>{s.classList.remove('active');s.style.display='none'});
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  let s=document.getElementById('sec-'+sec);
+  if(s){s.classList.add('active');s.style.display='flex'}
+  if(event && event.target)event.target.classList.add('active');
+  if(sec==='calendario')renderCal();
 }
-
-function renderizarCalendario() {
-  const container = document.getElementById('calendario-container');
-  if (!container || container.children.length > 0) return;
-
-  const datos = {
-    "2026-08-28": [
-      {id:"T-17",t:"Cerrar con HelCode los flecos del pipeline de NOESIS",resp:"Javi",crit:1},
-      {id:"T-40",t:"Pasar el resumen de la reunión a Javi y Antonio",resp:"JR",crit:0},
-      {id:"T-04",t:"Encargar a José (Codimatic) el scraping: ICP B2B distribución + web con tienda + logo de Kit Digital + año de construcción, cruzado con Apollo",resp:"JR",crit:0}
-    ],
-    "2026-09-05": [
-      {id:"T-19",t:"Folleto y landing de lanzamiento de NOESIS con registro y calendario enlazado",resp:"JR",crit:1},
-      {id:"T-20",t:"Montar el cuestionario previo al onboarding en Google Form",resp:"JR",crit:0}
-    ],
-    "2026-09-14": [
-      {id:"D-01",t:"Decidir el número de plazas de la ventana",resp:"JR + Javi",crit:1},
-      {id:"T-24",t:"Contactar a los 3-4 clientes que ya han dicho que sí y avisarles de la apertura del 14",resp:"Antonio",crit:0},
-      {id:"T-31",t:"Confirmar con HelCode el cumplimiento de la normativa europea de IA y de datos",resp:"Javi",crit:1},
-      {id:"T-32",t:"Preparar los documentos y contratos anexos de protección de datos e IA",resp:"SIN DUEÑO",crit:1},
-      {id:"T-01",t:"Ficha de servicio, guion corto y dossier del Rescate con el enfoque negocio digital",resp:"JR",crit:0},
-      {id:"T-02",t:"Ajustar precios, discurso y proceso de venta en la propuesta tipo",resp:"JR",crit:0},
-      {id:"T-14",t:"Preparar las preguntas predefinidas de cualificación previa: ERP, informes disponibles y calidad del dato",resp:"Javi",crit:0},
-      {id:"N-03",t:"Adaptar el cuestionario de nivel de madurez existente como base de las preguntas previas",resp:"Javi",crit:0},
-      {id:"N-01",t:"Diseñar la reunión de diagnóstico: qué objetivo persigue y qué preguntas se hacen",resp:"JR",crit:0},
-      {id:"N-07",t:"Corregir en el dossier los rangos de facturación y la prueba pública: son de Antra y no aplican",resp:"JR",crit:0},
-      {id:"N-08",t:"Incluir en la propuesta el coste de no arreglar el problema",resp:"JR",crit:0},
-      {id:"T-21",t:"Sentarse con el socio del despacho antes de ofrecer NOESIS a sus clientes",resp:"JR",crit:0},
-      {id:"N-19",t:"Decidir cómo se presenta la oferta a los clientes del despacho: desde el despacho o desde Nevada & Amurai como colaboradora",resp:"JR",crit:0},
-      {id:"T-33",t:"Cerrar acuerdo y tarifas con los colaboradores de ordenación de Holded y formación",resp:"JR",crit:0},
-      {id:"N-11",t:"Definir el circuito de cobro del colaborador y el protocolo de feedback tras la primera formación",resp:"Javi + JR",crit:0},
-      {id:"N-16",t:"Implementar la anonimización por tokens antes de enviar datos al modelo",resp:"Javi",crit:0},
-      {id:"N-21",t:"Montar la recogida de respuestas de contexto por audio de WhatsApp y su transcripción",resp:"JR",crit:0},
-      {id:"N-23",t:"Reposicionar el discurso de NOESIS por encima de Holded, no como un extra",resp:"JR",crit:0},
-      {id:"N-22",t:"Definir los criterios para saber si la ventana va bien y cuándo se lanza la versión definitiva",resp:"JR",crit:0},
-      {id:"T-23",t:"Meter asesorías y partners dentro de la ventana como clientes, no como prescriptores",resp:"JR",crit:0}
-    ],
-    "2026-10-20": [
-      {id:"N-17",t:"Preparar la demo de la reunión con Holded sobre datos de Nevada & Amurai, con consentimiento",resp:"JR + Javi",crit:0}
-    ],
-    "2026-10-22": [
-      {id:"T-38",t:"Provocar la reunión con Holded aprovechando el taller de Barcelona",resp:"JR + Antonio",crit:0}
-    ]
-  };
-
-  const meses = {1:'ene',2:'feb',3:'mar',4:'abr',5:'may',6:'jun',7:'jul',8:'ago',9:'sep',10:'oct',11:'nov',12:'dic'};
-  const diasSemana = ['dom','lun','mar','mié','jue','vie','sáb'];
-
-  Object.keys(datos).sort().forEach(fecha => {
-    const d = new Date(fecha + 'T00:00:00Z');
-    const dia = d.getUTCDate();
-    const mes = meses[d.getUTCMonth() + 1];
-    const diaSemana = diasSemana[d.getUTCDay()];
-    const tareas = datos[fecha];
-
-    const dayCard = document.createElement('div');
-    dayCard.className = 'calendar-day';
-
-    const dayHeader = document.createElement('div');
-    dayHeader.className = 'calendar-day-header';
-    dayHeader.textContent = dia + ' ' + mes;
-
-    const dayDate = document.createElement('div');
-    dayDate.className = 'calendar-day-date';
-    dayDate.textContent = diaSemana;
-    dayHeader.appendChild(dayDate);
-    dayCard.appendChild(dayHeader);
-
-    const tasksList = document.createElement('div');
-    tasksList.className = 'calendar-day-tasks';
-
-    tareas.forEach(tarea => {
-      const taskEl = document.createElement('div');
-      taskEl.className = 'calendar-task' + (tarea.crit ? ' crit' : '');
-
-      const idEl = document.createElement('div');
-      idEl.className = 'calendar-task-id';
-      idEl.textContent = tarea.id;
-
-      const textEl = document.createElement('div');
-      textEl.style.fontSize = '11px';
-      textEl.style.lineHeight = '1.35';
-      textEl.textContent = tarea.t;
-
-      const respEl = document.createElement('div');
-      respEl.className = 'calendar-task-resp';
-      respEl.textContent = tarea.resp;
-
-      taskEl.appendChild(idEl);
-      taskEl.appendChild(textEl);
-      taskEl.appendChild(respEl);
-      tasksList.appendChild(taskEl);
+function renderCal(){
+  let c=document.getElementById('calendario-container');
+  if(!c||c.children.length)return;
+  let d={"2026-08-28":[{id:"T-17",t:"Cerrar con HelCode los flecos del pipeline de NOESIS",r:"Javi",cr:1},{id:"T-40",t:"Pasar el resumen de la reunión a Javi y Antonio",r:"JR",cr:0},{id:"T-04",t:"Encargar a José (Codimatic) el scraping",r:"JR",cr:0}],"2026-09-05":[{id:"T-19",t:"Folleto y landing de lanzamiento de NOESIS",r:"JR",cr:1},{id:"T-20",t:"Montar cuestionario previo al onboarding",r:"JR",cr:0}],"2026-09-14":[{id:"D-01",t:"Decidir número de plazas de la ventana",r:"JR + Javi",cr:1},{id:"T-24",t:"Contactar a 3-4 clientes apertura del 14",r:"Antonio",cr:0},{id:"T-31",t:"Confirmar normativa europea IA y datos",r:"Javi",cr:1},{id:"T-32",t:"Preparar docs y contratos protección datos",r:"SIN DUEÑO",cr:1}],"2026-10-20":[{id:"N-17",t:"Preparar demo reunión Holded",r:"JR + Javi",cr:0}],"2026-10-22":[{id:"T-38",t:"Provocar reunión Holded Barcelona",r:"JR + Antonio",cr:0}]};
+  let m={1:"ene",2:"feb",3:"mar",4:"abr",5:"may",6:"jun",7:"jul",8:"ago",9:"sep",10:"oct",11:"nov",12:"dic"};
+  let w=["dom","lun","mar","mié","jue","vie","sáb"];
+  Object.keys(d).sort().forEach(f=>{
+    let dt=new Date(f+'T00:00:00Z');
+    let dy=dt.getUTCDate();
+    let mn=m[dt.getUTCMonth()+1];
+    let dw=w[dt.getUTCDay()];
+    let ts=d[f];
+    let card=document.createElement('div');
+    card.className='calendar-day';
+    let hdr=document.createElement('div');
+    hdr.className='calendar-day-header';
+    hdr.textContent=dy+' '+mn;
+    let dt_el=document.createElement('div');
+    dt_el.className='calendar-day-date';
+    dt_el.textContent=dw;
+    hdr.appendChild(dt_el);
+    card.appendChild(hdr);
+    let tl=document.createElement('div');
+    tl.className='calendar-day-tasks';
+    ts.forEach(t=>{
+      let te=document.createElement('div');
+      te.className='calendar-task'+(t.cr?' crit':'');
+      let id=document.createElement('div');
+      id.className='calendar-task-id';
+      id.textContent=t.id;
+      let tx=document.createElement('div');
+      tx.style.fontSize='11px';
+      tx.textContent=t.t;
+      let rp=document.createElement('div');
+      rp.className='calendar-task-resp';
+      rp.textContent=t.r;
+      te.appendChild(id);
+      te.appendChild(tx);
+      te.appendChild(rp);
+      tl.appendChild(te);
     });
-
-    dayCard.appendChild(tasksList);
-    container.appendChild(dayCard);
+    card.appendChild(tl);
+    c.appendChild(card);
   });
 }
 </script></body></html>
