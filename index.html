@@ -170,7 +170,7 @@ section[id^="sec-"].active {display: flex;}
   <h1>Plan septiembre-diciembre 2026</h1>
   <p class="sub">Acciones de nuestra reunión del 27 de agosto · <span id="kpi"></span></p>
  </div>
-</header><div class="tab-wrapper"><button class="tab-btn active" onclick="cambiarSeccion('kanban')">Kanban</button><button class="tab-btn" onclick="cambiarSeccion('calendario')">Calendario</button></div>
+</header><div class="tab-wrapper"><button class="tab-btn active" onclick="cambiarSeccion('kanban',this)">Kanban</button><button class="tab-btn" onclick="cambiarSeccion('calendario',this)">Calendario</button></div>
 
 <div class="bar">
  <button class="btn solid" id="b_guardar">Guardar en el fichero</button>
@@ -188,7 +188,7 @@ section[id^="sec-"].active {display: flex;}
  <button class="btn ghost" id="b_ayuda">Cómo funciona</button>
 </div>
 
-<section id="sec-kanban" class="active" style="flex: 1 1 auto; display: flex; flex-direction: column; overflow: hidden;"><div class="board" id="board"></div>
+<section id="sec-kanban" class="active" style="flex: 1 1 auto; display: flex; flex-direction: column; overflow: hidden;"><div class="board" id="board"></div></section>
 
 <div class="ov" id="ov"></div>
 <aside class="panel" id="panel">
@@ -1694,21 +1694,27 @@ render();
 </script>
 <script>
 function convertFecha(f){
-  if(!f||f.includes('Pendiente')||f.includes('Fin de'))return null;
-  let meses={ago:8,sep:9,oct:10,nov:11,dic:12,ene:1,feb:2,mar:3,abr:4,may:5,jun:6,jul:7};
-  let partes=f.trim().split(/\s+/);
-  if(partes.length<2)return null;
-  let dia=parseInt(partes[0]),mes=meses[partes[1].toLowerCase()];
+  if(!f)return null;
+  // Las fechas del tablero son texto libre: "28 ago", "Antes del 14 sep",
+  // "Semana del 31 ago", "20-22 oct", "Propuesta: 15 oct". Se extrae el primer
+  // dia+mes que aparezca; si no hay ninguno ("Septiembre", "Sin fecha"), no entra al calendario.
+  let meses={ene:1,feb:2,mar:3,abr:4,may:5,jun:6,jul:7,ago:8,sep:9,oct:10,nov:11,dic:12};
+  let m=f.toLowerCase().match(/(\d{1,2})\s*(?:[-–\/]\s*\d{1,2}\s*)?(ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic)/);
+  if(!m)return null;
+  let dia=parseInt(m[1],10),mes=meses[m[2]];
   if(!mes||!dia||dia<1||dia>31)return null;
-  let fecha=new Date(2026,mes-1,dia);
-  return fecha.toISOString().split('T')[0];
+  // Cadena ISO construida a mano: new Date(...).toISOString() restaria un dia en zonas UTC+X
+  return '2026-'+String(mes).padStart(2,'0')+'-'+String(dia).padStart(2,'0');
 }
 function renderCal(){
   let c=document.getElementById('calendario-container');
-  if(!c||c.children.length)return;
-  let jsonData=JSON.parse(document.querySelector('script[id="datos"]').textContent);
+  if(!c)return;
+  c.innerHTML='';
+  // D es el estado vivo del tablero (incluye ediciones y lo recuperado de localStorage).
+  // Solo se cae al JSON estatico si el script principal no ha llegado a cargar.
+  let tareas=(typeof D!=='undefined'&&D&&D.tareas)?D.tareas:JSON.parse(document.getElementById('datos').textContent).tareas;
   let d={};
-  jsonData.tareas.forEach(t=>{
+  tareas.forEach(t=>{
     let fechaIso=convertFecha(t.fecha);
     if(fechaIso){
       if(!d[fechaIso])d[fechaIso]=[];
@@ -1757,14 +1763,15 @@ function renderCal(){
   });
 }
 </script>
-<section id="sec-calendario" style="flex: 1 1 auto; display: none; flex-direction: column; overflow: hidden;"><div class="calendario-grid" id="calendario-container"></div></section></section>
+<section id="sec-calendario" style="flex: 1 1 auto; display: none; flex-direction: column; overflow: hidden;"><div class="calendario-grid" id="calendario-container"></div></section>
 <script>
-function cambiarSeccion(sec){
+function cambiarSeccion(sec,btn){
   document.querySelectorAll('[id^="sec-"]').forEach(s=>{s.classList.remove('active');s.style.display='none'});
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   let s=document.getElementById('sec-'+sec);
   if(s){s.classList.add('active');s.style.display='flex'}
-  if(event && event.target)event.target.classList.add('active');
+  let t=btn||(typeof event!=='undefined'&&event?event.target:null);
+  if(t)t.classList.add('active');
   if(sec==='calendario')renderCal();
 }
 </script></body></html>
