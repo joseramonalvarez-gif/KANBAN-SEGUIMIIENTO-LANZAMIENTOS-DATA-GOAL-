@@ -135,11 +135,16 @@ select:focus,.search:focus{border-color:var(--teal)}
 .tab-btn.active {color: var(--teal);border-bottom-color: var(--teal);}
 section[id^="sec-"] {display: none;flex: 1 1 auto;flex-direction: column;overflow: hidden;}
 section[id^="sec-"].active {display: flex;}
-.calendario-grid {flex: 1 1 auto;display: grid;grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));gap: 14px;padding: 14px 22px 18px;overflow: auto;align-content: start;}
+.calendario-grid {flex: 1 1 auto;display: grid;grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));gap: 14px;padding: 14px 22px 18px;overflow: auto;align-content: start;align-items: start;}
 .calendar-day {background: var(--white);border: 1px solid var(--light);border-radius: 7px;overflow: hidden;display: flex;flex-direction: column;}
-.calendar-day-header {background: var(--dark);color: var(--cream);padding: 10px 12px;font-family: 'Space Grotesk', sans-serif;font-size: 13px;font-weight: 700;}
-.calendar-day-date {font-size: 11px;color: var(--slate);font-weight: 500;margin-top: 2px;}
-.calendar-day-tasks {flex: 1 1 auto;display: flex;flex-direction: column;gap: 6px;padding: 10px;overflow-y: auto;}
+.calendar-day-header {background: var(--dark);color: var(--cream);padding: 10px 12px;font-family: 'Space Grotesk', sans-serif;font-size: 13px;font-weight: 700;position: sticky;top: 0;z-index: 1;}
+.calendar-day-date {font-size: 11px;color: var(--light);font-weight: 500;margin-top: 2px;}
+.calendar-day-top {display: flex;justify-content: space-between;align-items: baseline;gap: 10px;}
+.calendar-day-n {font-family: 'IBM Plex Sans', sans-serif;font-size: 11px;font-weight: 600;color: var(--light);}
+.calendar-day.sin-dia {border-style: dashed;}
+.calendar-day.sin-dia .calendar-day-header {background: var(--slate);}
+.calendar-task-t {font-size: 11px;}
+.calendar-day-tasks {flex: 1 1 auto;display: flex;flex-direction: column;gap: 6px;padding: 10px;}
 .calendar-task {border-left: 3px solid var(--teal);background: var(--cream);border-radius: 0 5px 5px 0;padding: 8px 10px;border-top: 1px solid var(--light);border-right: 1px solid var(--light);border-bottom: 1px solid var(--light);font-size: 12.5px;font-weight: 600;line-height: 1.35;}
 .calendar-task.crit {border-left-color: var(--dark);border-left-width: 4px;}
 .calendar-task-id {font-size: 10px;font-weight: 700;letter-spacing: .05em;color: var(--teal);margin-bottom: 3px;}
@@ -1713,54 +1718,69 @@ function renderCal(){
   // D es el estado vivo del tablero (incluye ediciones y lo recuperado de localStorage).
   // Solo se cae al JSON estatico si el script principal no ha llegado a cargar.
   let tareas=(typeof D!=='undefined'&&D&&D.tareas)?D.tareas:JSON.parse(document.getElementById('datos').textContent).tareas;
-  let d={};
-  tareas.forEach(t=>{
-    let fechaIso=convertFecha(t.fecha);
-    if(fechaIso){
-      if(!d[fechaIso])d[fechaIso]=[];
-      d[fechaIso].push({id:t.id,t:t.t,r:t.resp,cr:t.crit?1:0});
-    }
-  });
   let m={1:"ene",2:"feb",3:"mar",4:"abr",5:"may",6:"jun",7:"jul",8:"ago",9:"sep",10:"oct",11:"nov",12:"dic"};
   let w=["dom","lun","mar","mié","jue","vie","sáb"];
-  Object.keys(d).sort().forEach(f=>{
-    let dt=new Date(f+'T00:00:00Z');
-    let dy=dt.getUTCDate();
-    let mn=m[dt.getUTCMonth()+1];
-    let dw=w[dt.getUTCDay()];
-    let ts=d[f];
+  // Se reutilizan las etiquetas de horizonte del tablero para no mantener dos vocabularios
+  let H=(typeof HOR!=='undefined')?HOR:{semana:"Esta semana",pre14:"Antes del 14 sep",ventana:"Durante la ventana",despues:"Después · dic-ene",sinfecha:"Sin fecha"};
+
+  function tarjeta(titulo,sub,ts,extra){
     let card=document.createElement('div');
-    card.className='calendar-day';
+    card.className='calendar-day'+(extra?' '+extra:'');
     let hdr=document.createElement('div');
     hdr.className='calendar-day-header';
-    hdr.textContent=dy+' '+mn;
-    let dt_el=document.createElement('div');
-    dt_el.className='calendar-day-date';
-    dt_el.textContent=dw;
-    hdr.appendChild(dt_el);
+    let top=document.createElement('div');
+    top.className='calendar-day-top';
+    let ti=document.createElement('span');
+    ti.textContent=titulo;
+    let n=document.createElement('span');
+    n.className='calendar-day-n';
+    n.textContent=ts.length;
+    top.appendChild(ti);top.appendChild(n);
+    hdr.appendChild(top);
+    let sb=document.createElement('div');
+    sb.className='calendar-day-date';
+    sb.textContent=sub;
+    hdr.appendChild(sb);
     card.appendChild(hdr);
     let tl=document.createElement('div');
     tl.className='calendar-day-tasks';
     ts.forEach(t=>{
       let te=document.createElement('div');
-      te.className='calendar-task'+(t.cr?' crit':'');
+      te.className='calendar-task'+(t.crit?' crit':'');
       let id=document.createElement('div');
       id.className='calendar-task-id';
       id.textContent=t.id;
       let tx=document.createElement('div');
-      tx.style.fontSize='11px';
+      tx.className='calendar-task-t';
       tx.textContent=t.t;
       let rp=document.createElement('div');
       rp.className='calendar-task-resp';
-      rp.textContent=t.r;
-      te.appendChild(id);
-      te.appendChild(tx);
-      te.appendChild(rp);
+      // El texto literal de fecha solo se repite si matiza el titulo de la tarjeta
+      // ("Antes del 14 sep" no es lo mismo que "14 sep")
+      rp.textContent=(t.fecha&&t.fecha!==titulo)?(t.resp+' · '+t.fecha):t.resp;
+      te.appendChild(id);te.appendChild(tx);te.appendChild(rp);
       tl.appendChild(te);
     });
     card.appendChild(tl);
     c.appendChild(card);
+  }
+
+  // 1) Tareas con dia concreto derivable, agrupadas por fecha
+  let d={},sin=[];
+  tareas.forEach(t=>{
+    let f=convertFecha(t.fecha);
+    if(f){(d[f]=d[f]||[]).push(t)}else{sin.push(t)}
   });
+  Object.keys(d).sort().forEach(f=>{
+    let dt=new Date(f+'T00:00:00Z');
+    tarjeta(dt.getUTCDate()+' '+m[dt.getUTCMonth()+1],w[dt.getUTCDay()],d[f]);
+  });
+
+  // 2) Tareas sin dia concreto ("Septiembre", "Durante la ventana", "Sin fecha"):
+  //    se agrupan por horizonte para que ninguna quede fuera del calendario
+  let orden=['semana','pre14','ventana','despues','sinfecha'],g={};
+  sin.forEach(t=>{let k=orden.indexOf(t.hor)>=0?t.hor:'sinfecha';(g[k]=g[k]||[]).push(t)});
+  orden.forEach(k=>{if(g[k])tarjeta(H[k]||k,'sin dia concreto',g[k],'sin-dia')});
 }
 </script>
 <section id="sec-calendario" style="flex: 1 1 auto; display: none; flex-direction: column; overflow: hidden;"><div class="calendario-grid" id="calendario-container"></div></section>
