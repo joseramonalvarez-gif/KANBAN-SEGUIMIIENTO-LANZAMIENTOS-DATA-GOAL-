@@ -6,7 +6,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--dark:#1B2731;--slate:#3E4C59;--teal:#33A19A;--light:#B7CAC9;--cream:#FFFAF3;--white:#FFFFFF}
+:root{--dark:#1B2731;--slate:#3E4C59;--teal:#33A19A;--light:#B7CAC9;--cream:#FFFAF3;--white:#FFFFFF;
+ --rojo:#B4443C;--ambar:#BE7A16;--verde:#2E7D53}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
 body{font-family:'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;background:var(--cream);color:var(--dark);
@@ -161,6 +162,21 @@ section[id^="sec-"].active {display: flex;}
 .calendar-day.sin-dia {border-style: dashed;}
 .calendar-day.sin-dia .calendar-day-header {background: var(--slate);}
 .calendar-task-t {font-size: 11px;}
+/* ---------- semaforo de plazo ---------- */
+.dot {width: 9px;height: 9px;border-radius: 50%;flex: 0 0 auto;}
+.dot.s-vencida {background: var(--rojo);}
+.dot.s-proxima {background: var(--ambar);}
+.dot.s-hecha {background: var(--verde);}
+.calendar-task-top {display: flex;justify-content: space-between;align-items: center;gap: 6px;}
+.t.s-vencida, .calendar-task.s-vencida {background: rgba(180,68,60,.10);}
+.t.s-proxima, .calendar-task.s-proxima {background: rgba(190,122,22,.12);}
+.t.s-hecha, .calendar-task.s-hecha {background: rgba(46,125,83,.10);}
+.chip[class*="e-"] {text-transform: none;letter-spacing: .02em;}
+.chip.e-vencida {background: var(--rojo);border-color: var(--rojo);color: var(--cream);}
+.chip.e-proxima {background: var(--ambar);border-color: var(--ambar);color: var(--cream);}
+.chip.e-hecha {background: var(--verde);border-color: var(--verde);color: var(--cream);}
+.chip.e-plazo {border-color: var(--light);color: var(--slate);}
+.chip.e-sinplazo {border-style: dashed;border-color: var(--light);color: var(--slate);}
 .calendar-day-tasks {flex: 1 1 auto;display: flex;flex-direction: column;gap: 6px;padding: 10px;overflow-y: auto;
  scrollbar-width: thin;scrollbar-color: var(--light) transparent;}
 .calendar-day-tasks::-webkit-scrollbar {width: 9px;}
@@ -206,6 +222,7 @@ section[id^="sec-"].active {display: flex;}
  <button class="btn" id="b_nueva">+ Añadir tarjeta</button>
  <span class="sep"></span>
  <span class="f">Propietario <span class="ownbar" id="f_resp"></span></span>
+ <span class="f">Plazo <span class="ownbar" id="f_plazo"></span></span>
  <span class="f">Bloque <select id="f_bloque"><option value="">Todos</option><option value="rescate">Rescate</option><option value="noesis">NOESIS</option><option value="empresa">Empresa</option></select></span>
  <span class="f">Horizonte <select id="f_hor"><option value="">Todos</option><option value="semana">Esta semana</option><option value="pre14">Antes del 14 sep</option><option value="ventana">Durante la ventana</option><option value="despues">Después</option><option value="sinfecha">Sin fecha</option></select></span>
  <input class="search" id="f_q" placeholder="Buscar…">
@@ -237,6 +254,10 @@ section[id^="sec-"].active {display: flex;}
 </ol>
 <h3>Antes de tocar nada</h3>
 <p>El tablero <b>no tiene bloqueo de edición simultánea</b>. Si dos guardamos a la vez, el último pisa al anterior. Avisemos por el grupo antes de una tanda de cambios, o usa <b>Copia de seguridad</b> para llevarte el estado en JSON.</p>
+<h3>El semáforo de plazos</h3>
+<p>Cada tarjeta lleva arriba a la derecha un punto de color con cómo va de fecha, y el mismo código vale en el Kanban y en el Calendario: <b>rojo</b>, la fecha ya ha pasado y la tarea no está hecha; <b>naranja</b>, vence dentro de los próximos siete días; <b>verde</b>, está en la columna Hecha. Las que van en plazo no llevan punto: se quedan como estaban, para que solo destaque lo que pide atención.</p>
+<p>Las tarjetas <b>aparcadas</b> no salen nunca en rojo aunque se les pase la fecha: están paradas a propósito, no con retraso. Y las que no tienen día concreto —«Septiembre», «Durante la ventana»— tampoco pueden vencer, así que quedan sin punto.</p>
+<p>En la barra de arriba, junto a <b>Plazo</b>, está el recuento de cada estado. Se pincha para ver solo eso: pinchando <b>Vencida</b> te quedan a la vista, en las dos pestañas a la vez, las tareas en las que lleváis retraso.</p>
 <h3>Las etiquetas de propietario</h3>
 <p>Cada tarjeta lleva el nombre de quien la lleva: <b>JR</b> en verde, <b>Javi</b> en azul oscuro, <b>Antonio</b> en gris, los externos en blanco y las que no tiene nadie con borde discontinuo. Si una tarea es de dos, salen las dos etiquetas. <b>Pincha una etiqueta</b> —en la tarjeta o en la barra de arriba— para ver solo lo de esa persona; pincha otra vez para quitar el filtro. Se pueden marcar varias a la vez, y el filtro vale igual para el Kanban y para el Calendario.</p>
 <h3>Qué significan los bordes</h3>
@@ -1542,6 +1563,41 @@ function owners(r){
  if(/^los tres$/i.test(r))return EQUIPO.slice();
  return r.split('+').map(x=>x.trim()).filter(Boolean);
 }
+function convertFecha(f){
+  if(!f)return null;
+  // Las fechas del tablero son texto libre: "28 ago", "Antes del 14 sep",
+  // "Semana del 31 ago", "20-22 oct", "Propuesta: 15 oct". Se extrae el primer
+  // dia+mes que aparezca; si no hay ninguno ("Septiembre", "Sin fecha"), no entra al calendario.
+  let meses={ene:1,feb:2,mar:3,abr:4,may:5,jun:6,jul:7,ago:8,sep:9,oct:10,nov:11,dic:12};
+  let m=f.toLowerCase().match(/(\d{1,2})\s*(?:[-–\/]\s*\d{1,2}\s*)?(ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic)/);
+  if(!m)return null;
+  let dia=parseInt(m[1],10),mes=meses[m[2]];
+  if(!mes||!dia||dia<1||dia>31)return null;
+  // Cadena ISO construida a mano: new Date(...).toISOString() restaria un dia en zonas UTC+X
+  return '2026-'+String(mes).padStart(2,'0')+'-'+String(dia).padStart(2,'0');
+}
+
+// Semaforo de plazo. Referencia: el dia de hoy, en local. Se comparan cadenas ISO
+// para no volver a meter un objeto Date en medio (ver D-004).
+const AVISO_DIAS=7;
+function hoyISO(){const d=new Date();
+ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function estadoPlazo(t){
+ if(t.est==='hecha')return 'hecha';
+ // Una tarjeta aparcada esta parada a proposito: no cuenta como retraso
+ if(t.est==='aparcada')return 'sinplazo';
+ const f=convertFecha(t.fecha);
+ if(!f)return 'sinplazo';
+ const dias=Math.round((Date.parse(f+'T00:00:00Z')-Date.parse(hoyISO()+'T00:00:00Z'))/86400000);
+ if(dias<0)return 'vencida';
+ if(dias<=AVISO_DIAS)return 'proxima';
+ return 'plazo';
+}
+const PLAZOS=[['vencida','Vencida'],['proxima','Vence en '+AVISO_DIAS+' días'],
+              ['plazo','En plazo'],['hecha','Hecha'],['sinplazo','Sin plazo']];
+function punto(t){const e=estadoPlazo(t);
+ return e==='plazo'||e==='sinplazo'?'':'<span class="dot s-'+e+'"></span>'}
+
 function respChips(resp,pick){
  return owners(resp).map(o=>'<span class="chip resp '+(RESPCLS[o]||'r-ext')+(pick?' pick':'')
   +'" data-resp="'+esc(o)+'">'+esc(o)+'</span>').join('');
@@ -1560,6 +1616,21 @@ function pintaOwners(){
   +'<span class="c">'+cuentaOwner(o)+'</span></span>').join('')
   +(act?'<button class="todos" id="f_resp_todos">quitar filtro</button>':'');
 }
+function pintaPlazos(){
+ const c=document.getElementById('f_plazo'); if(!c)return;
+ const act=filtro.plazo.length;
+ c.innerHTML=PLAZOS.map(([k,lbl])=>{
+   const n=D.tareas.filter(t=>estadoPlazo(t)===k).length;
+   if(!n)return '';
+   return '<span class="chip e-'+k+(!act||filtro.plazo.indexOf(k)>=0?' on':'')+'" data-plazo="'+k+'">'
+    +lbl+'<span class="c">'+n+'</span></span>';
+ }).join('')+(act?'<button class="todos" id="f_plazo_todos">quitar filtro</button>':'');
+}
+function togglePlazo(k){
+ const i=filtro.plazo.indexOf(k);
+ if(i>=0)filtro.plazo.splice(i,1); else filtro.plazo.push(k);
+ repinta();
+}
 function toggleResp(o){
  const i=filtro.resp.indexOf(o);
  if(i>=0)filtro.resp.splice(i,1); else filtro.resp.push(o);
@@ -1572,7 +1643,7 @@ function repinta(){
  if(s&&s.classList.contains('active')&&typeof renderCal==='function')renderCal();
 }
 let D=JSON.parse(document.getElementById('datos').textContent);
-let sel=null, dirty=false, filtro={resp:[],bloque:"",hor:"",q:""};
+let sel=null, dirty=false, filtro={resp:[],plazo:[],bloque:"",hor:"",q:""};
 
 const LS='dg_tablero_v1';
 try{const s=localStorage.getItem(LS);
@@ -1585,6 +1656,7 @@ function toast(t){const e=document.getElementById('toast');e.textContent=t;e.cla
 
 function pasa(t){
  if(filtro.resp.length && !owners(t.resp).some(o=>filtro.resp.indexOf(o)>=0)) return false;
+ if(filtro.plazo.length && filtro.plazo.indexOf(estadoPlazo(t))<0) return false;
  if(filtro.bloque && t.bloque!==filtro.bloque) return false;
  if(filtro.hor && t.hor!==filtro.hor) return false;
  if(filtro.q){const q=filtro.q.toLowerCase();
@@ -1610,20 +1682,21 @@ function render(){
    if(t&&t.est!==k){t.est=k; marcar(); render(); toast(id+' → '+lbl.split(' · ')[0]);}});
   b.appendChild(col);
  });
- pintaOwners();
+ pintaOwners(); pintaPlazos();
+ const venc=D.tareas.filter(t=>estadoPlazo(t)==='vencida').length;
  document.getElementById('kpi').textContent =
   D.tareas.length+' tarjetas · '+D.tareas.filter(t=>t.origen==='propuesta'&&t.est==='validar').length+' por validar · '
-  +D.tareas.filter(t=>t.resp==='SIN DUEÑO').length+' sin dueño';
+  +D.tareas.filter(t=>t.resp==='SIN DUEÑO').length+' sin dueño'+(venc?' · '+venc+' vencida'+(venc>1?'s':''):'');
 }
 
 function tarjeta(t){
  const d=document.createElement('div');
- d.className='t'+(t.crit?' crit':'')+(t.origen==='propuesta'?' prop':'');
+ d.className='t'+(t.crit?' crit':'')+(t.origen==='propuesta'?' prop':'')+' s-'+estadoPlazo(t);
  d.draggable=true; d.dataset.id=t.id;
  let chips=respChips(t.resp,true)+'<span class="chip">'+(BLO[t.bloque]||'')+'</span><span class="chip">'+(HOR[t.hor]||'')+'</span>';
  if(t.crit) chips+='<span class="chip dark">Crítica</span>';
  if(t.origen==='propuesta') chips+='<span class="chip teal">Propuesta mía</span>';
- d.innerHTML='<div class="top"><span class="id">'+t.id+'</span></div>'
+ d.innerHTML='<div class="top"><span class="id">'+t.id+'</span>'+punto(t)+'</div>'
   +'<div class="n">'+esc(t.t)+'</div>'
   +'<div class="m">'+esc(t.fecha)+(t.dep?'<br>'+esc(t.dep):'')+'</div>'
   +'<div class="chips">'+chips+'</div>'
@@ -1751,6 +1824,10 @@ function importar(ev){
 }
 
 /* ---------- arranque ---------- */
+document.getElementById('f_plazo').addEventListener('click',e=>{
+ if(e.target.id==='f_plazo_todos'){filtro.plazo=[];repinta();return}
+ const ch=e.target.closest('[data-plazo]'); if(ch)togglePlazo(ch.dataset.plazo);
+});
 document.getElementById('f_resp').addEventListener('click',e=>{
  if(e.target.id==='f_resp_todos'){filtro.resp=[];pintaOwners();repinta();return}
  const ch=e.target.closest('[data-resp]'); if(ch)toggleResp(ch.dataset.resp);
@@ -1770,21 +1847,9 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){cerrar();document.g
 window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue=''}});
 render();
 pintaOwners();
+pintaPlazos();
 </script>
 <script>
-function convertFecha(f){
-  if(!f)return null;
-  // Las fechas del tablero son texto libre: "28 ago", "Antes del 14 sep",
-  // "Semana del 31 ago", "20-22 oct", "Propuesta: 15 oct". Se extrae el primer
-  // dia+mes que aparezca; si no hay ninguno ("Septiembre", "Sin fecha"), no entra al calendario.
-  let meses={ene:1,feb:2,mar:3,abr:4,may:5,jun:6,jul:7,ago:8,sep:9,oct:10,nov:11,dic:12};
-  let m=f.toLowerCase().match(/(\d{1,2})\s*(?:[-–\/]\s*\d{1,2}\s*)?(ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic)/);
-  if(!m)return null;
-  let dia=parseInt(m[1],10),mes=meses[m[2]];
-  if(!mes||!dia||dia<1||dia>31)return null;
-  // Cadena ISO construida a mano: new Date(...).toISOString() restaria un dia en zonas UTC+X
-  return '2026-'+String(mes).padStart(2,'0')+'-'+String(dia).padStart(2,'0');
-}
 function renderCal(){
   let c=document.getElementById('calendario-container');
   if(!c)return;
@@ -1829,10 +1894,14 @@ function renderCal(){
     tl.className='calendar-day-tasks';
     ts.forEach(t=>{
       let te=document.createElement('div');
-      te.className='calendar-task'+(t.crit?' crit':'');
+      te.className='calendar-task'+(t.crit?' crit':'')+' s-'+estadoPlazo(t);
       let id=document.createElement('div');
-      id.className='calendar-task-id';
-      id.textContent=t.id;
+      id.className='calendar-task-top';
+      let idt=document.createElement('span');
+      idt.className='calendar-task-id';
+      idt.textContent=t.id;
+      id.appendChild(idt);
+      id.innerHTML+=punto(t);
       let tx=document.createElement('div');
       tx.className='calendar-task-t';
       tx.textContent=t.t;
