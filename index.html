@@ -1701,10 +1701,19 @@ function cambiarSeccion(sec){
   if(event && event.target)event.target.classList.add('active');
   if(sec==='calendario')renderCal();
 }
+</script></body></html>function cambiarSeccion(sec){
+  document.querySelectorAll('[id^="sec-"]').forEach(s=>{s.classList.remove('active');s.style.display='none'});
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  let s=document.getElementById('sec-'+sec);
+  if(s){s.classList.add('active');s.style.display='flex'}
+  if(event && event.target)event.target.classList.add('active');
+  if(sec==='calendario')renderCal();
+}
 function renderCal(){
   let c=document.getElementById('calendario-container');
   if(!c||c.children.length)return;
-  let d={"2026-08-28":[{id:"T-17",t:"Cerrar con HelCode los flecos del pipeline de NOESIS",r:"Javi",cr:1},{id:"T-40",t:"Pasar el resumen de la reunión a Javi y Antonio",r:"JR",cr:0},{id:"T-04",t:"Encargar a José (Codimatic) el scraping",r:"JR",cr:0}],"2026-09-05":[{id:"T-19",t:"Folleto y landing de lanzamiento de NOESIS",r:"JR",cr:1},{id:"T-20",t:"Montar cuestionario previo al onboarding",r:"JR",cr:0}],"2026-09-14":[{id:"D-01",t:"Decidir número de plazas de la ventana",r:"JR + Javi",cr:1},{id:"T-24",t:"Contactar a 3-4 clientes apertura del 14",r:"Antonio",cr:0},{id:"T-31",t:"Confirmar normativa europea IA y datos",r:"Javi",cr:1},{id:"T-32",t:"Preparar docs y contratos protección datos",r:"SIN DUEÑO",cr:1}],"2026-10-20":[{id:"N-17",t:"Preparar demo reunión Holded",r:"JR + Javi",cr:0}],"2026-10-22":[{id:"T-38",t:"Provocar reunión Holded Barcelona",r:"JR + Antonio",cr:0}]};
+  let jsonData=JSON.parse(document.querySelector('script[id="datos"]').textContent);
+  let d={};jsonData.tareas.forEach(t=>{let f=t.fecha;if(!d[f])d[f]=[];d[f].push({id:t.id,t:t.t,r:t.resp,cr:t.crit?1:0})});
   let m={1:"ene",2:"feb",3:"mar",4:"abr",5:"may",6:"jun",7:"jul",8:"ago",9:"sep",10:"oct",11:"nov",12:"dic"};
   let w=["dom","lun","mar","mié","jue","vie","sáb"];
   Object.keys(d).sort().forEach(f=>{
