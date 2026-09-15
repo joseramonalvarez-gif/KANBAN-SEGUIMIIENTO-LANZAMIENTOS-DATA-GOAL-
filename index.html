@@ -152,6 +152,22 @@ select:focus,.search:focus{border-color:var(--teal)}
 .mbox .mc li{margin-bottom:5px}
 .mbox .mc code{background:var(--white);border:1px solid var(--light);border-radius:3px;padding:1px 5px;font-size:12px}
 .mbox .mf{padding:0 22px 20px;display:flex;gap:8px;justify-content:flex-end}
+/* ---------- fusion de cambios recibidos ---------- */
+.fu-aviso{background:var(--white);border-left:3px solid var(--ambar);padding:9px 12px;
+ border-radius:0 5px 5px 0;font-size:12.5px;margin-bottom:13px}
+.fu-lista{list-style:none;padding:0;margin:6px 0}
+.fu-lista li{padding:4px 0;border-bottom:1px solid var(--light);font-size:12.5px}
+.fu-lista li:last-child{border-bottom:none}
+.fu-id{font-weight:700;font-family:'Space Grotesk',sans-serif;margin-right:6px}
+.fu-choque{background:var(--white);border:1px solid var(--light);border-radius:6px;padding:10px 12px;margin-bottom:9px}
+.fu-choque .cab{font-size:12.5px;font-weight:600}
+.fu-campo{margin-top:8px}
+.fu-campo .et{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--slate);font-weight:600}
+.fu-op{display:flex;gap:7px;align-items:flex-start;font-size:12.5px;padding:3px 0;cursor:pointer}
+.fu-op input{margin-top:4px;flex:0 0 auto}
+.fu-vacio{font-size:12.5px;color:var(--slate);font-style:italic}
+.fu-rapido{display:flex;gap:7px;margin:2px 0 12px;flex-wrap:wrap}
+.fu-rapido .btn{padding:4px 9px;font-size:11px}
 @media(max-width:820px){.board{padding:12px}.col{flex:0 0 260px}header{padding:12px 14px 0}.bar{padding:10px 14px}}
 
 /* TABS Y CALENDARIO */
@@ -267,11 +283,11 @@ section[id^="sec-"].active {display: flex;}
 </ol>
 <h3>Por qué no se guarda solo</h3>
 <p>Porque es una página suelta, sin base de datos detrás. Que se guardara solo para los tres exigiría un servidor, y eso es otro proyecto. A cambio, esto funciona sin instalar nada y sin depender de nadie.</p>
-<p>Consecuencia práctica: <b>no editéis los tres a la vez una tanda larga</b>. Si Javi y Antonio envían cambios sobre la misma tarjeta, JR tendrá que elegir uno. Avisad por el grupo antes de meter mano en serio.</p>
+<p>Consecuencia práctica: <b>los cambios de cada uno viajan por correo, no solos</b>. Ahora bien, si Javi y Antonio envían el mismo día, ya no se pisa nada sin querer: al cargar un fichero, el tablero compara tarjeta a tarjeta contra la versión publicada, mete solo lo que ha tocado quien lo envía y se para en lo que hayáis tocado los dos para que JR elija. Aun así, avisad por el grupo antes de meter mano en serio: es más fácil no chocar que resolver el choque.</p>
 <h3>Los botones de abajo</h3>
 <ul>
 <li><b>Descargar JSON:</b> te llevas el estado tal cual, por si quieres guardarlo aparte.</li>
-<li><b>Cargar JSON:</b> mete en el tablero un fichero que te hayan pasado. <b>Sustituye todo lo que tengas</b>: úsalo solo si sabes lo que haces.</li>
+<li><b>Cargar JSON:</b> mete en el tablero un fichero que te hayan pasado. <b>No sustituye nada de golpe</b>: te enseña antes qué entra solo y qué choca con lo tuyo, y los choques los decides uno a uno. Dentro de esa pantalla sigue habiendo un botón para sustituir el tablero entero, pero hay que pedirlo y confirmarlo.</li>
 <li><b>Generar HTML para publicar:</b> es de JR. Crea el <code>index.html</code> nuevo para subir al repositorio.</li>
 </ul>
 <h3>El semáforo de plazos</h3>
@@ -290,6 +306,16 @@ section[id^="sec-"].active {display: flex;}
 <p>Son ocho fichas que <b>no dijo nadie en la reunión</b>: las propongo yo. Dentro de cada una está escrito qué se dijo realmente y por qué la propongo, para que no se cuelen como acuerdos. Las decidimos una a una: la que compremos, a Pendiente con responsable y fecha; la que no, se borra.</p>
 </div>
  <div class="mf"><button class="btn solid" id="cerrar_ayuda">Entendido</button></div>
+</div></div>
+
+<div class="modal" id="fusion"><div class="mbox" style="max-width:760px">
+ <div class="mh"><h2 id="fu_tit">Cambios recibidos</h2><p style="font-size:12px;color:var(--slate)" id="fu_sub"></p></div>
+ <div class="mc" id="fu_cuerpo"></div>
+ <div class="mf">
+  <button class="btn ghost" id="fu_todo" title="Descarta tu tablero y se queda con el fichero tal cual">Sustituir el tablero entero</button>
+  <button class="btn ghost" id="fu_cancelar">Cancelar</button>
+  <button class="btn solid" id="fu_aplicar">Aplicar</button>
+ </div>
 </div></div>
 
 <div class="toast" id="toast"></div>
@@ -1594,6 +1620,10 @@ function repinta(){
  if(s&&s.classList.contains('active')&&typeof renderCal==='function')renderCal();
 }
 let D=JSON.parse(document.getElementById('datos').textContent);
+/* La version publicada, guardada aparte y antes de que nadie la toque. Es la base
+   comun contra la que se comparan los cambios que envia otra persona: sin ella la
+   fusion no puede distinguir "esto lo ha cambiado el" de "esto lo he cambiado yo". */
+const BASE=JSON.parse(document.getElementById('datos').textContent);
 let sel=null, dirty=false, filtro={resp:[],plazo:[],bloque:"",hor:"",q:""};
 let avisoRespaldo='';
 
@@ -1772,7 +1802,11 @@ function serializar(){
  document.getElementById('panel').classList.remove('on');
  document.getElementById('dirty').classList.remove('on');
  document.getElementById('ayuda').classList.remove('on');
- const copia=JSON.parse(JSON.stringify(D)); delete copia.local; copia.actualizado=hoy();
+ /* El sello de publicacion se estampa aqui y en ningun otro sitio: es lo que
+    permite al navegador de otro saber que hay una version posterior a su copia (D-017).
+    Si no se estampara, el aviso de version nueva no volveria a dispararse jamas. */
+ const copia=JSON.parse(JSON.stringify(D)); delete copia.local;
+ copia.actualizado=hoy(); copia.pub=hoyISO();
  document.getElementById('datos').textContent=JSON.stringify(copia,null,1);
  const out='<!DOCTYPE html>\n'+document.documentElement.outerHTML;
  b.innerHTML=bak; pb.innerHTML=pbak;
@@ -1829,11 +1863,194 @@ function enviarCambios(){
  limpio();
  toast('JSON descargado y correo abierto. Adjunta el fichero antes de enviarlo.');
 }
+/* ---------- fusion de cambios recibidos (D-018) ----------
+   Cargar un JSON ya no sustituye el tablero. Se compara a tres bandas:
+   la version publicada (BASE), lo que tienes ahora (D) y lo que trae el fichero.
+   Lo que solo ha tocado quien lo envia entra solo; lo que habeis tocado los dos
+   se para y lo decides tu; lo que solo has tocado tu ni se menciona. */
+const CAMPOS=[['t','Texto'],['resp','Propietario'],['fecha','Fecha'],['hor','Horizonte'],
+ ['bloque','Bloque'],['dep','Dependencia'],['est','Estado'],['crit','Ruta crítica'],
+ ['origen','Origen'],['cita','Cita'],['quien','Quién lo dijo']];
+let fusionPlan=null;
+
+function recorta(x,n){const s=String(x==null?'':x);n=n||70;return s.length>n?s.slice(0,n)+'…':s}
+function igualJ(a,b){return JSON.stringify(a===undefined?null:a)===JSON.stringify(b===undefined?null:b)}
+function esc(x){return String(x==null?'':x).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function valorLegible(c,v){
+ if(v===undefined||v===null||v==='')return '(vacío)';
+ if(c==='est'){const e=EST.find(x=>x[0]===v);return e?e[1].split(' · ')[0]:v}
+ if(c==='hor')return HOR[v]||v;
+ if(c==='bloque')return BLO[v]||v;
+ if(c==='crit')return v?'Sí':'No';
+ return recorta(v,90);
+}
+function claveNota(n){return ((n&&n.fecha)||'')+'|'+((n&&n.quien)||'')+'|'+((n&&n.txt)||'')}
+/* Las notas se suman, no se pisan: si el ha escrito una y tu otra, quedan las dos.
+   Borrar una nota no viaja en la fusion, y es a proposito: es mas facil volver a
+   borrarla que recuperar la que alguien tiro sin querer. */
+function unionNotas(a,t){
+ const out=[],vistas={};
+ [].concat(a||[],t||[]).forEach(function(n){const k=claveNota(n);if(!vistas[k]){vistas[k]=1;out.push(n)}});
+ return out;
+}
+
+function calculaFusion(suyo){
+ const B={},A={},T={},ids=[];
+ (BASE.tareas||[]).forEach(function(x){B[x.id]=x});
+ (D.tareas||[]).forEach(function(x){A[x.id]=x});
+ (suyo.tareas||[]).forEach(function(x){T[x.id]=x});
+ [].concat(Object.keys(B),Object.keys(A),Object.keys(T)).forEach(function(i){if(ids.indexOf(i)<0)ids.push(i)});
+ const mismaBase=(suyo.pub||'')===(BASE.pub||'');
+ const plan={altas:[],cambios:[],mismaBase:mismaBase};
+ const autos=[],choques=[];
+ ids.forEach(function(id){
+  const b=B[id],a=A[id],t=T[id];
+  if(!b&&!a&&t){plan.altas.push(t);autos.push({id:id,txt:'Tarjeta nueva · '+recorta(t.t,60)});return}
+  if(!b&&a&&!t)return;                       // la creaste tu despues: no la tienen, no es baja
+  if(b&&!a&&!t)return;                       // borrada por los dos
+  if(b&&!a&&t){choques.push({id:id,tipo:'volver',titulo:recorta(b.t,60),tarea:t});return}
+  if(b&&a&&!t){choques.push({id:id,tipo:'baja',titulo:recorta(a.t,60),tocada:!igualJ(a,b)});return}
+  const base=b||{},camb=[],conf=[];
+  CAMPOS.forEach(function(par){
+   const c=par[0],et=par[1],va=a[c],vt=t[c],vb=base[c];
+   if(igualJ(va,vt))return;                  // coincidis
+   if(igualJ(vt,vb))return;                  // no lo han tocado ellos
+   if(igualJ(va,vb)){camb.push({c:c,et:et,de:va,a:vt});return}   // solo lo han tocado ellos
+   conf.push({c:c,et:et,mio:va,suyo:vt});    // lo habeis tocado los dos
+  });
+  const nn=unionNotas(a.notas,t.notas),nuevas=nn.length-((a.notas||[]).length);
+  if(camb.length||nuevas>0){
+   plan.cambios.push({id:id,camb:camb,notas:nuevas>0?nn:null});
+   const det=camb.map(function(x){return x.et+': '+valorLegible(x.c,x.de)+' → '+valorLegible(x.c,x.a)});
+   if(nuevas>0)det.push(nuevas===1?'1 nota nueva':nuevas+' notas nuevas');
+   autos.push({id:id,txt:recorta(a.t,52),det:det.join(' · ')});
+  }
+  if(conf.length)choques.push({id:id,tipo:'campos',titulo:recorta(a.t,60),campos:conf});
+ });
+ plan.autos=autos;plan.choques=choques;
+ return plan;
+}
+
+function opFu(i,k,v,txt,marcado){
+ const nom='fu_'+i+'_'+k;
+ return '<label class="fu-op"><input type="radio" name="'+nom+'" value="'+v+'"'+(marcado?' checked':'')+'>'
+  +'<span>'+esc(txt)+'</span></label>';
+}
+function leeOpFu(i,k){
+ const e=document.querySelector('input[name="fu_'+i+'_'+k+'"]:checked');
+ return e?e.value:null;
+}
+
+function pintaFusion(plan,quien){
+ const n=plan.autos.length,m=plan.choques.length;
+ document.getElementById('fu_tit').textContent='Cambios de '+(quien||'otra persona');
+ document.getElementById('fu_sub').textContent=
+  (n?n+(n===1?' cambio entra solo':' cambios entran solos'):'Ningún cambio automático')
+  +' · '+(m?m+(m===1?' lo decides tú':' los decides tú'):'ningún choque');
+ let h='';
+ if(!plan.mismaBase)h+='<div class="fu-aviso"><b>Este fichero parte de una versión anterior a la publicada.</b> '
+  +'Las tarjetas que le faltan pueden ser simplemente de antes, no borrados. Por eso vienen marcadas '
+  +'como <b>conservar</b>: cámbialo solo si sabes que las quitó a propósito.</div>';
+ h+='<h3>Entra solo</h3>';
+ if(!n)h+='<p class="fu-vacio">Nada. O no ha tocado nada, o todo lo que ha tocado choca con lo tuyo.</p>';
+ else{
+  h+='<ul class="fu-lista">';
+  plan.autos.forEach(function(x){
+   h+='<li><span class="fu-id">'+esc(x.id)+'</span>'+esc(x.txt)
+    +(x.det?'<br><span style="color:var(--slate)">'+esc(x.det)+'</span>':'')+'</li>';
+  });
+  h+='</ul>';
+ }
+ h+='<h3>Lo decides tú</h3>';
+ if(!m)h+='<p class="fu-vacio">Ningún choque: no habéis tocado lo mismo.</p>';
+ else{
+  h+='<div class="fu-rapido"><button class="btn ghost" id="fu_mio">Todo lo mío</button>'
+   +'<button class="btn ghost" id="fu_suyo">Todo lo suyo</button></div>';
+  plan.choques.forEach(function(ch,i){
+   h+='<div class="fu-choque"><div class="cab"><span class="fu-id">'+esc(ch.id)+'</span>'+esc(ch.titulo)+'</div>';
+   if(ch.tipo==='baja'){
+    const cons=!plan.mismaBase||ch.tocada;
+    h+='<div class="fu-campo"><div class="et">La ha borrado'+(ch.tocada?' y tú la has cambiado':'')+'</div>'
+     +opFu(i,'d','conservar','Conservarla en el tablero',cons)
+     +opFu(i,'d','borrar','Borrarla también',!cons)+'</div>';
+   }else if(ch.tipo==='volver'){
+    h+='<div class="fu-campo"><div class="et">Tú la borraste y él la conserva</div>'
+     +opFu(i,'d','fuera','Que siga fuera',true)
+     +opFu(i,'d','volver','Recuperarla',false)+'</div>';
+   }else{
+    ch.campos.forEach(function(cp,j){
+     h+='<div class="fu-campo"><div class="et">'+esc(cp.et)+'</div>'
+      +opFu(i,'c'+j,'mio','Lo tuyo: '+valorLegible(cp.c,cp.mio),true)
+      +opFu(i,'c'+j,'suyo','Lo suyo: '+valorLegible(cp.c,cp.suyo),false)+'</div>';
+    });
+   }
+   h+='</div>';
+  });
+ }
+ document.getElementById('fu_cuerpo').innerHTML=h;
+ const todos=function(v){
+  document.querySelectorAll('#fu_cuerpo input[type=radio][value="'+v+'"]').forEach(function(r){r.checked=true});
+ };
+ const bm=document.getElementById('fu_mio'),bs=document.getElementById('fu_suyo');
+ if(bm)bm.onclick=function(){todos('mio');todos('conservar');todos('fuera')};
+ if(bs)bs.onclick=function(){todos('suyo');todos('borrar');todos('volver')};
+ document.getElementById('fusion').classList.add('on');
+}
+
+function aplicaFusion(){
+ const plan=fusionPlan; if(!plan)return;
+ const idx={}; D.tareas.forEach(function(t){idx[t.id]=t});
+ let tocadas=0;
+ plan.cambios.forEach(function(cb){
+  const t=idx[cb.id]; if(!t)return;
+  cb.camb.forEach(function(x){t[x.c]=x.a});
+  if(cb.notas)t.notas=cb.notas;
+  tocadas++;
+ });
+ const fuera={},entran=[].concat(plan.altas);
+ plan.choques.forEach(function(ch,i){
+  if(ch.tipo==='baja'){ if(leeOpFu(i,'d')==='borrar'){fuera[ch.id]=1;tocadas++} }
+  else if(ch.tipo==='volver'){ if(leeOpFu(i,'d')==='volver'){entran.push(ch.tarea);tocadas++} }
+  else{
+   const t=idx[ch.id]; if(!t)return;
+   ch.campos.forEach(function(cp,j){ if(leeOpFu(i,'c'+j)==='suyo'){t[cp.c]=cp.suyo;tocadas++} });
+  }
+ });
+ if(Object.keys(fuera).length)D.tareas=D.tareas.filter(function(t){return !fuera[t.id]});
+ if(entran.length)D.tareas=entran.concat(D.tareas);
+ cierraFusion();
+ marcar(); render(); pintaOwners(); pintaPlazos();
+ const nc=tocadas===1?'1 cambio aplicado':tocadas+' cambios aplicados';
+ const na=entran.length===1?'1 tarjeta nueva arriba del todo'
+                          :entran.length+' tarjetas nuevas arriba del todo';
+ toast(entran.length? nc+' · '+na : nc);
+}
+function cierraFusion(){document.getElementById('fusion').classList.remove('on');fusionPlan=null}
+/* La sustitucion completa sigue existiendo, pero deja de ser lo que pasa por defecto:
+   ahora hay que pedirla y confirmarla. Es la que borraba el trabajo del otro sin avisar. */
+function sustituyeTodo(){
+ const plan=fusionPlan; if(!plan||!plan.fichero)return;
+ if(!confirm('Esto descarta tu tablero entero y se queda con el fichero tal cual. Lo que tengas sin enviar se pierde. ¿Seguro?'))return;
+ D=plan.fichero; cierraFusion();
+ marcar(); render(); pintaOwners(); pintaPlazos();
+ toast('Tablero sustituido por el fichero');
+}
+
 function importar(ev){
  const f=ev.target.files[0]; if(!f)return;
+ const m=/tablero-datagoal-([a-z0-9]+)-\d{4}/i.exec(f.name||'');
+ const quien=m?m[1].charAt(0).toUpperCase()+m[1].slice(1):'';
  const r=new FileReader();
- r.onload=()=>{try{const o=JSON.parse(r.result); if(!o.tareas)throw 0; D=o; marcar(); render(); toast('Copia cargada');}
- catch(e){toast('Ese fichero no es una copia válida del tablero')} ev.target.value='';};
+ r.onload=function(){
+  try{
+   const o=JSON.parse(r.result); if(!o.tareas)throw 0;
+   const plan=calculaFusion(o); plan.fichero=o; fusionPlan=plan;
+   if(!plan.autos.length&&!plan.choques.length){
+    fusionPlan=null; toast('Ese fichero no trae nada que no tengas ya');
+   }else pintaFusion(plan,quien);
+  }catch(e){toast('Ese fichero no es una copia válida del tablero')}
+  ev.target.value='';
+ };
  r.readAsText(f);
 }
 
@@ -1856,9 +2073,12 @@ document.getElementById('b_export').onclick=exportar;
 document.getElementById('b_import').onchange=importar;
 document.getElementById('b_ayuda').onclick=()=>document.getElementById('ayuda').classList.add('on');
 document.getElementById('cerrar_ayuda').onclick=()=>document.getElementById('ayuda').classList.remove('on');
+document.getElementById('fu_aplicar').onclick=aplicaFusion;
+document.getElementById('fu_cancelar').onclick=cierraFusion;
+document.getElementById('fu_todo').onclick=sustituyeTodo;
 document.getElementById('ov').onclick=cerrar;
 document.getElementById('pcerrarh').onclick=cerrar;
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){cerrar();document.getElementById('ayuda').classList.remove('on')}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){cerrar();document.getElementById('ayuda').classList.remove('on');cierraFusion()}});
 window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue=''}});
 render();
 pintaOwners();
