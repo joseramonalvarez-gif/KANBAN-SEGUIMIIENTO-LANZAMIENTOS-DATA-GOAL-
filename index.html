@@ -322,9 +322,216 @@ section[id^="sec-"].active {display: flex;}
 
 <script id="datos" type="application/json">{
  "version": 1,
- "actualizado": "16/09/2026",
- "pub": "2026-09-16",
+ "actualizado": "24/09/2026",
+ "pub": "2026-09-24",
  "tareas": [
+  {
+   "id": "R-01",
+   "t": "Leer el informe del eje B2B/B2C y el manual de producto de NOESIS, y contestar a Javi qué métricas entran en la plantilla B2C",
+   "resp": "JR + Antonio",
+   "fecha": "Pendiente de fecha",
+   "hor": "semana",
+   "bloque": "noesis",
+   "dep": "Bloquea R-02",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Reunión del 18/09 · «me gustaría que me dierais algo de luz también por qué métrica meter […] para no ser yo el que decida solo»",
+   "quien": "Javi",
+   "notas": []
+  },
+  {
+   "id": "R-02",
+   "t": "Desarrollar la plantilla de métricas B2C de NOESIS, en paralelo al lanzamiento con clientes B2B",
+   "resp": "Javi",
+   "fecha": "Una semana desde R-01 (estimación de Javi)",
+   "hor": "semana",
+   "bloque": "noesis",
+   "dep": "Depende de R-01. Sin esto no entra en la beta ningún cliente B2C. No interviene HelCode",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Reunión del 18/09 · «esto se puede ir una semana más, depende de lo que decidamos» · JR: «saldría con el lanzamiento de NOESIS en beta con lo que hay de clientes B2B»",
+   "quien": "Javi y JR",
+   "notas": []
+  },
+  {
+   "id": "R-03",
+   "t": "Construir el módulo core de calidad del dato de NOESIS: auditoría en continuo que avisa de qué falta en Holded, qué se pierde por no tenerlo y cómo arreglarlo",
+   "resp": "Javi",
+   "fecha": "Una semana (estimación de Javi)",
+   "hor": "semana",
+   "bloque": "noesis",
+   "dep": "Especificación hecha y arquitectura lista. Sale de N-14. No incluye hacer conectores para el cliente",
+   "est": "curso",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Reunión del 18/09 · «es igual, es como otra semana o así, porque la especificación está hecha del módulo» · JR: «no estamos discutiendo que el módulo tenga que existir, sino cómo lo vamos a vender»",
+   "quien": "Javi y JR",
+   "notas": [
+    {
+     "txt": "El tercer eje y la calidad del dato se unifican en una sola pieza, la cobertura del dato, y es lo que se ha medido esta semana sobre el cliente piloto. Lo aprobado el 22/09 está construido y probado: las tres condiciones de cada venta (qué se vende, cómo se cobra, cliente identificado o anónimo), el «no aplica» que distingue tres ausencias (no puede existir, podría existir y no está escrito cómo, falta un dato del cliente) y las respuestas del cliente viven en su base de conocimiento, no en configuración nuestra. Mientras una respuesta no está confirmada, el sistema toma el valor cuyo error se ve: venta a plazo y cliente identificado. Ver R-13.",
+     "quien": "Informe de Javi del 24/09",
+     "fecha": "24/09/2026"
+    }
+   ]
+  },
+  {
+   "id": "R-04",
+   "t": "Averiguar qué exige Holded para figurar en sus integraciones con el módulo de calidad del dato como pieza gratuita, y montar el embudo que lleva de ahí a NOESIS",
+   "resp": "SIN DUEÑO",
+   "fecha": "Sin fecha",
+   "hor": "ventana",
+   "bloque": "empresa",
+   "dep": "Nadie lo asumió. Va con T-38: es el guion de la reunión con Holded. La tienda de Holded solo tiene aplicaciones nativas; los terceros están en integraciones",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Reunión del 18/09 · «tú puedes tener una primera versión gratis, que sería el módulo de calidad del dato y recomendaciones de uso de Holded» · Javi: «lo que yo no sé es si esta gente va a querer»",
+   "quien": "JR y Javi",
+   "notas": []
+  },
+  {
+   "id": "R-05",
+   "t": "Reunión con El Flamenco: presentar NOESIS más un módulo de compras, con la demo y una horquilla de plazo y coste",
+   "resp": "JR + Javi",
+   "fecha": "21 sep",
+   "hor": "semana",
+   "bloque": "noesis",
+   "dep": "Hora pendiente de confirmar. Javi entra por videollamada. No se entrega presupuesto. El cliente es B2C: depende de R-02 para entrar en la beta",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Reunión del 18/09 · «no le vamos a pasar presupuesto el lunes, que le vamos a ver la horquilla» · Antonio: «es más fácil entrar con algo sencillo, entendible»",
+   "quien": "JR y Antonio",
+   "notas": [
+    {
+     "txt": "El informe mide el tablao contra el producto (ene 2025 - sep 2026): 172 contactos con factura de 864, 0 facturas con comercial asignado, 8 líneas con referencia de producto de 125.795. Cuatro contactos de mostrador concentran el 98,5 % de los documentos y el 81,2 % de la venta: sin separarlos, su mayor cliente sería «Clientes Varios». Las cifras de facturación y de pendiente de cobro están en el informe, no aquí. El piloto se queda sin coste hasta R-09 y R-10, y sin cartera real hasta R-11. Uno de los cuatro contactos de mostrador no registra ventas desde finales de mayo (R-12).",
+     "quien": "Informe de Javi del 24/09",
+     "fecha": "24/09/2026"
+    }
+   ]
+  },
+  {
+   "id": "R-06",
+   "t": "Revisar el catálogo de 11 jornadas para la Cámara de Comercio y devolverlo a JR: qué sobra, qué falta y qué enfoque cambiar",
+   "resp": "Javi + Antonio",
+   "fecha": "Antes del 25 sep",
+   "hor": "semana",
+   "bloque": "empresa",
+   "dep": "Bloquea R-07",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Reunión del 18/09 · «que me digáis, antes de pasárselo a la Cámara, que el primer filtro lo hagamos nosotros» · Antonio: «lo reviso la semana que viene»",
+   "quien": "JR y Antonio",
+   "notas": []
+  },
+  {
+   "id": "R-07",
+   "t": "Enviar a la Cámara de Comercio el catálogo de jornadas para dejar medio cerrado el primer semestre de 2027",
+   "resp": "JR",
+   "fecha": "Antes del 25 sep",
+   "hor": "semana",
+   "bloque": "empresa",
+   "dep": "Depende de R-06. Lo muy técnico puede derivarse a Acelera Pyme, que difunde con su marca",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Reunión del 18/09 · «mi idea es pasarle a lo largo de la semana que viene un documento similar a este […] y que podamos tener por lo menos los seis primeros meses del año que viene medio cerrados»",
+   "quien": "JR",
+   "notas": []
+  },
+  {
+   "id": "R-08",
+   "t": "Trabajar la relación con el contacto de Seidor para provocar una reunión",
+   "resp": "Antonio",
+   "fecha": "Sin fecha",
+   "hor": "sinfecha",
+   "bloque": "empresa",
+   "dep": "Contacto indirecto, sin vía de entrada definida",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Reunión del 18/09 · «engancharnos a un bicho de esos nos puede abrir puertas» · «no sé por dónde le meteré mano»",
+   "quien": "Antonio",
+   "notas": []
+  },
+  {
+   "id": "R-09",
+   "t": "Razonar juntos el mapeo de partidas a escalones de coste: cómo se clasifican las cinco subcuentas ambiguas (623, 626, 627, 628, 629) y de qué fuente sale la clasificación, antes de repartir el trabajo",
+   "resp": "JR + Javi",
+   "fecha": "Pendiente de fecha",
+   "hor": "semana",
+   "bloque": "noesis",
+   "dep": "Fecha pendiente de acordar en la operativa. Bloquea R-10 y el coste del piloto. Independiente de R-11: van en paralelo. Propuesta de Javi, no acuerdo: cuatro fuentes por orden (documento, contabilidad, proveedor, pregunta al cliente); la unidad del mapeo es la subcuenta, no la factura, y las ambiguas se cuentan antes de la primera llamada",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Informe de Javi del 24/09 — «Quedasteis José Ramón y Javi en razonarlo juntos antes de repartirlo» · «El ejemplo del agua que puso José Ramón —variable si entra en producción, fijo si es suministro— es el caso exacto: no se deduce del dato, tiene que decirlo alguien»",
+   "quien": "Javi",
+   "notas": []
+  },
+  {
+   "id": "R-10",
+   "t": "Cambiar cómo se calcula el coste en NOESIS: abrir la entrada por cuenta contable además de por referencia, proyecto y etiqueta, y construir las cinco fuentes de coste de la especificación que faltan",
+   "resp": "Javi",
+   "fecha": "Sin fecha",
+   "hor": "ventana",
+   "bloque": "noesis",
+   "dep": "Depende de R-09. De las seis fuentes de coste de la especificación solo existe el coste manual. Las tres vías de entrada de hoy piden referencia de producto, proyecto o etiqueta, y el piloto no tiene ninguna: 8 referencias en 125.795 líneas, sin proyectos, gasto por cuenta contable. No lo arregla ninguna de las cuatro preguntas al cliente",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Informe de Javi del 24/09 — «Tenemos el sustituto y nos faltan las fuentes principales» · «No es que le falte un dato: es que el camino de entrada no es el suyo»",
+   "quien": "Javi",
+   "notas": []
+  },
+  {
+   "id": "R-11",
+   "t": "Hacer al cliente piloto las cuatro preguntas (qué métodos de pago cobran en el acto, qué contactos agrupan venta sin cliente, a cuántos días cobra a cada cliente y cuál es el plazo de la casa, a cuántos días paga a proveedores), y decidir quién las lleva y por qué canal",
+   "resp": "SIN DUEÑO",
+   "fecha": "Pendiente de fecha",
+   "hor": "semana",
+   "bloque": "noesis",
+   "dep": "Responsable y fecha pendientes de asignar en la operativa. Falta decidir si van en una llamada, por escrito o en la próxima revisión con el cliente. Desbloquea: qué parte del pendiente de cobro declarado es deuda real (P1), separar mostrador de clientes reales (P2), vencimientos y morosidad (P3) y la otra mitad de la previsión de caja (P4). Llevar P3 con el plazo histórico calculado desde contabilidad como propuesta a confirmar, nunca como dato puesto por nosotros. Independiente de R-09",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Informe de Javi del 24/09 — «Están listas. Falta decidir si van en una llamada, por escrito, o dentro de la próxima revisión con el cliente, y quién las lleva» · «Son las cuatro, no más»",
+   "quien": "Javi",
+   "notas": []
+  },
+  {
+   "id": "R-12",
+   "t": "Preguntar al cliente piloto por qué uno de sus cuatro contactos de mostrador no registra ventas desde finales de mayo: integración caída o decisión suya",
+   "resp": "SIN DUEÑO",
+   "fecha": "Pendiente de fecha",
+   "hor": "semana",
+   "bloque": "noesis",
+   "dep": "Va con R-11, mismo responsable y mismo canal. Ese contacto es por sí solo una parte sustancial de la facturación. Hasta tener la respuesta, no sacar conclusiones sobre su evolución de ventas",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Informe de Javi del 24/09 — «Puede ser una integración caída o una decisión del cliente, y son cosas muy distintas. Conviene preguntarlo antes de sacar cualquier conclusión sobre su evolución de ventas»",
+   "quien": "Javi",
+   "notas": []
+  },
+  {
+   "id": "R-13",
+   "t": "Catálogo de métricas de NOESIS construido según lo aprobado el 22/09: tres condiciones de cada venta, «no aplica» con tres ausencias distintas, y respuestas del cliente en su base de conocimiento",
+   "resp": "Javi",
+   "fecha": "23 sep",
+   "hor": "semana",
+   "bloque": "noesis",
+   "dep": "Hecho y probado sobre los cinco casos posibles del «no aplica». Canal y tipo de cliente (B2B/B2C) son dimensiones, no condiciones: filtran y desglosan pero no cambian ningún cálculo. Base sobre la que se mide R-03",
+   "est": "hecha",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Informe de Javi del 24/09 — «Lo que el equipo aprobó está construido y funcionando, incluidas las dos mejoras que trajo» · «Un negocio que sólo cobra al contado pierde las nueve métricas de cartera y tesorería que no le corresponden en lugar de verlas a cero»",
+   "quien": "Javi",
+   "notas": []
+  },
   {
    "id": "X-01",
    "t": "CREAR RECURSOS AUDIOVISUALES PARA CAPTACION BETA (REUTILIZABLES PARA FASE LANZAMIENTO)",
@@ -511,7 +718,13 @@ section[id^="sec-"].active {display: flex;}
    "origen": "acuerdo",
    "cita": "«hasta el 14 puede ir Antonio gestionando con los tres o cuatro que ya te dicen que sí. Le dices: oye, que vamos a abrir el 14»",
    "quien": "Javi",
-   "notas": []
+   "notas": [
+    {
+     "txt": "Javi: esta semana ya se puede empezar a contactar a los primeros clientes para que entren en el embudo. El desarrollo del B2C y del módulo de calidad del dato no lo frena. Solo clientes B2B.",
+     "quien": "Reunión de equipo",
+     "fecha": "18/09/2026"
+    }
+   ]
   },
   {
    "id": "T-22",
@@ -998,7 +1211,13 @@ section[id^="sec-"].active {display: flex;}
    "origen": "acuerdo",
    "cita": "«sentarnos, enseñar el caso de éxito en sitios como la cámara y demás, y luego ir y enseñar el proceso y el caso de éxito a este tipo de gente»",
    "quien": "JR",
-   "notas": []
+   "notas": [
+    {
+     "txt": "La relación con la Cámara de Comercio se trabaja ahora con un catálogo de jornadas para 2027 (R-06 y R-07). Lo muy técnico puede derivarse a Acelera Pyme, que difunde con su marca.",
+     "quien": "Reunión de equipo",
+     "fecha": "18/09/2026"
+    }
+   ]
   },
   {
    "id": "N-05",
@@ -1114,7 +1333,13 @@ section[id^="sec-"].active {display: flex;}
    "origen": "acuerdo",
    "cita": "«tenemos un taller en Barcelona el día 20-22 de octubre... la idea que planteó Antonio fue que para esa fecha poder provocar allí una reunión y sentarnos con esta gente»",
    "quien": "JR",
-   "notas": []
+   "notas": [
+    {
+     "txt": "Guion de apertura acordado: el módulo de calidad del dato como integración gratuita de Holded, con marca NOESIS · Data Goal. Argumento para Holded: cuanto más usa el cliente la herramienta, más le cuesta irse, y con el módulo tiene un itinerario de formación propio en vez de correos genéricos. JR: «si bajamos en octubre y conseguimos quedar con ellos». La reunión sigue sin cerrar. Ver R-04.",
+     "quien": "Reunión de equipo",
+     "fecha": "18/09/2026"
+    }
+   ]
   },
   {
    "id": "N-17",
@@ -1129,7 +1354,13 @@ section[id^="sec-"].active {display: flex;}
    "origen": "acuerdo",
    "cita": "JR: «si le puedo enseñar el de Nevada y Amurai» — Javi: «pues con el consentimiento vuestro, con vuestros datos, se le enseña»",
    "quien": "JR y Javi",
-   "notas": []
+   "notas": [
+    {
+     "txt": "La demo tiene que enseñar el módulo de calidad del dato y la medición del uso de Holded: es con lo que se abre la reunión (T-38, R-03).",
+     "quien": "Reunión de equipo",
+     "fecha": "18/09/2026"
+    }
+   ]
   },
   {
    "id": "T-27",
@@ -1300,7 +1531,13 @@ section[id^="sec-"].active {display: flex;}
    "origen": "acuerdo",
    "cita": "«sería como una vertical más que habría que meter: anomalías de negocio, captación de contexto y evolución del uso de la herramienta» · «y los objetivos: cuatro verticales»",
    "quien": "JR y Javi",
-   "notas": []
+   "notas": [
+    {
+     "txt": "El módulo de calidad del dato (R-03) cubre parte de esta vertical: mide qué uso hace el cliente de Holded y cuál debería hacer según su negocio.",
+     "quien": "Reunión de equipo",
+     "fecha": "18/09/2026"
+    }
+   ]
   },
   {
    "id": "N-14",
@@ -1320,6 +1557,11 @@ section[id^="sec-"].active {display: flex;}
      "txt": "Javi ya trabaja en que el auditor de análisis de calidad de dato  trabaje de manera continua y genere informes el AÑADIDO es que ADEMÁS le proponga PILDORAS DE FORMACION. Cada INSUFICIENCIA debe ir ligada un plan FORMATIVO y a una comunicacion/recomendacion al cliente y un seguimiento para que lo haga e implemente",
      "quien": "",
      "fecha": "15/09/2026"
+    },
+    {
+     "txt": "Deja de ser una valoración. Se acuerda que la auditoría del dato sea módulo core de NOESIS y funcione durante toda la vida del cliente, no solo en la entrada. Se construye en R-03.",
+     "quien": "Reunión de equipo",
+     "fecha": "18/09/2026"
     }
    ]
   },
@@ -1482,6 +1724,11 @@ section[id^="sec-"].active {display: flex;}
      "txt": "Si os parece mejor el número de Javi, la cambiamos a 10 y esta ficha se borra.",
      "quien": "JR",
      "fecha": "27/08/2026"
+    },
+    {
+     "txt": "La beta arranca solo con clientes B2B. NOESIS se diseñó para B2B y sus métricas no cuadran en un negocio B2C: salió al comprobarlas contra la API de pruebas. La plantilla B2C se desarrolla en paralelo (R-02) y no retrasa el lanzamiento.",
+     "quien": "Reunión de equipo",
+     "fecha": "18/09/2026"
     }
    ]
   },
@@ -1529,6 +1776,16 @@ section[id^="sec-"].active {display: flex;}
      "txt": "se acuerda recuperar las reuniones de los viernes a las 13h",
      "quien": "",
      "fecha": "15/09/2026"
+    },
+    {
+     "txt": "Operativa celebrada el viernes 18/09 con los tres. Duró 1 h 26 min y se dedicó a bloqueos de NOESIS y a preparar una reunión comercial. No se repasó el tablero.",
+     "quien": "Reunión de equipo",
+     "fecha": "18/09/2026"
+    },
+    {
+     "txt": "El informe DG-INT-INF-2026-09-24 lleva dos puntos a la operativa del viernes: acordar fecha para el mapeo de partidas a escalones de coste (R-09) y decidir quién hace las cuatro preguntas al cliente piloto y por qué canal (R-11).",
+     "quien": "Informe de Javi del 24/09",
+     "fecha": "24/09/2026"
     }
    ]
   }
