@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tablero Data Goal · acciones sep-dic 2026</title>
+<title>Tablero Data Goal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -234,26 +234,26 @@ section[id^="sec-"].active {display: flex;}
  </div>
  <div class="tline"></div>
  <div style="padding:12px 0 0">
-  <h1>Plan septiembre-diciembre 2026</h1>
-  <p class="sub">Acciones de nuestra reunión del 27 de agosto · <span id="kpi"></span></p>
+  <h1>Tablero Data Goal</h1>
+  <p class="sub">S03 · clientes · NOESIS · captación · <span id="kpi"></span></p>
  </div>
 </header><div class="tab-wrapper"><button class="tab-btn active" onclick="cambiarSeccion('kanban',this)">Kanban</button><button class="tab-btn" onclick="cambiarSeccion('calendario',this)">Calendario</button></div>
 
 <div class="bar">
- <button class="btn solid" id="b_enviar">Enviar mis cambios a JR</button>
- <span class="dirty" id="dirty"><span class="dot"></span>Cambios sin enviar</span>
+ <button class="btn solid" id="b_guardar" title="Sobrescribe el TABLERO_DATA_GOAL.html de la unidad compartida. Sube solo a GitHub en 15 minutos">Guardar en la unidad compartida</button>
+ <span class="dirty" id="dirty"><span class="dot"></span>Cambios sin guardar</span>
  <span class="sep"></span>
  <button class="btn" id="b_nueva">+ Añadir tarjeta</button>
  <span class="sep"></span>
  <span class="f">Propietario <span class="ownbar" id="f_resp"></span></span>
  <span class="f">Plazo <span class="ownbar" id="f_plazo"></span></span>
- <span class="f">Bloque <select id="f_bloque"><option value="">Todos</option><option value="rescate">Rescate</option><option value="noesis">NOESIS</option><option value="empresa">Empresa</option></select></span>
- <span class="f">Horizonte <select id="f_hor"><option value="">Todos</option><option value="semana">Esta semana</option><option value="pre14">Antes del 14 sep</option><option value="ventana">Durante la ventana</option><option value="despues">Después</option><option value="sinfecha">Sin fecha</option></select></span>
+ <span class="f">Bloque <select id="f_bloque"><option value="">Todos</option><option value="s03">S03 · Director financiero</option><option value="flamenco">Flamenco</option><option value="proeduco">Proeduco</option><option value="noesis">NOESIS</option><option value="captacion">Captación y canal</option><option value="empresa">Empresa y otros</option><option value="rescate">Rescate (S01)</option></select></span>
+ <span class="f">Horizonte <select id="f_hor"><option value="">Todos</option><option value="semana">Esta semana</option><option value="nov16">Antes del 16 nov</option><option value="nov30">Hasta el 30 nov</option><option value="dic">Hasta el 31 dic</option><option value="y2027">2027</option><option value="sinfecha">Sin fecha</option></select></span>
  <input class="search" id="f_q" placeholder="Buscar…">
  <span class="sep"></span>
  <button class="btn ghost" id="b_export">Descargar JSON</button>
  <label class="btn ghost" style="display:inline-block">Cargar JSON<input type="file" id="b_import" accept="application/json" hidden></label>
- <button class="btn ghost" id="b_guardar" title="Solo JR: genera el index.html para subir al repositorio">Generar HTML para publicar</button>
+ <button class="btn ghost" id="b_enviar" title="Solo si no puedes guardar en la unidad compartida (navegador que no es Chrome ni Edge)">Enviar por correo a JR</button>
  <button class="btn ghost" id="b_ayuda">Cómo funciona</button>
 </div>
 
@@ -269,26 +269,33 @@ section[id^="sec-"].active {display: flex;}
  <div class="mh"><h2>Cómo funciona el tablero</h2><p style="font-size:12px;color:var(--slate)">Léelo una vez y no hace falta más.</p></div>
  <div class="mc">
 <h3>Qué es esto</h3>
-<p>Javi, Antonio: he pasado la transcripción entera de la reunión del 27 y he sacado todas las acciones que salieron. Este es nuestro tablero de trabajo hasta diciembre. Cada tarjeta lleva dentro la cita literal de quién lo dijo en la reunión, para que podáis comprobarla sin volver a la transcripción.</p>
-<h3>Dónde se guarda lo que tocas — léelo, importa</h3>
-<p>El tablero no tiene servidor. Cuando mueves una tarjeta, cambias un propietario o escribes una nota, <b>eso se guarda solo en tu navegador, en tu ordenador</b>. No viaja a ningún sitio: los otros dos no lo ven.</p>
-<p>Tus cambios <b>no se pierden</b> aunque cierres la pestaña o apagues el equipo: al volver a abrir el tablero te pregunta si los recupera. Pero siguen siendo tuyos y solo tuyos hasta que los envíes.</p>
-<h3>Cómo se actualiza</h3>
-<ol>
-<li><b>Mueve las tarjetas</b> arrastrándolas de una columna a otra. El estado cambia solo.</li>
-<li><b>Pincha una tarjeta</b> para editarla: tarea, responsable, fecha, bloque, dependencia y notas. También se elimina desde ahí.</li>
-<li><b>Añadir</b> crea una tarjeta nueva en Pendiente. Si me he dejado algo, mételo tú.</li>
-<li>Cuando acabes una tanda, pulsa <b>Enviar mis cambios a JR</b>. Te descarga un fichero <code>.json</code> y te abre el correo ya escrito. <b>Tienes que adjuntar el fichero tú antes de enviarlo</b>: el correo no lo lleva solo, y sin él no llega nada.</li>
-<li>JR los revisa, los junta y publica la versión nueva. A partir de ahí, quien abra el enlace ve tus cambios.</li>
-</ol>
-<h3>Por qué no se guarda solo</h3>
-<p>Porque es una página suelta, sin base de datos detrás. Que se guardara solo para los tres exigiría un servidor, y eso es otro proyecto. A cambio, esto funciona sin instalar nada y sin depender de nadie.</p>
-<p>Consecuencia práctica: <b>los cambios de cada uno viajan por correo, no solos</b>. Ahora bien, si Javi y Antonio envían el mismo día, ya no se pisa nada sin querer: al cargar un fichero, el tablero compara tarjeta a tarjeta contra la versión publicada, mete solo lo que ha tocado quien lo envía y se para en lo que hayáis tocado los dos para que JR elija. Aun así, avisad por el grupo antes de meter mano en serio: es más fácil no chocar que resolver el choque.</p>
-<h3>Los botones de abajo</h3>
+<p>El tablero de trabajo de Data Goal. Desde el 29 de octubre recoge el giro de octubre: el servicio <b>«Tu propio director financiero y estratégico con Holded»</b> (S03, soporte con NOESIS dentro), sus clientes de la beta (Flamenco y Proeduco), el producto, la captación y lo demás de la casa. Cada tarjeta lleva dentro la cita de dónde sale: reunión, informe, correo o proyecto.</p>
+<h3>Los bloques</h3>
 <ul>
-<li><b>Descargar JSON:</b> te llevas el estado tal cual, por si quieres guardarlo aparte.</li>
-<li><b>Cargar JSON:</b> mete en el tablero un fichero que te hayan pasado. <b>No sustituye nada de golpe</b>: te enseña antes qué entra solo y qué choca con lo tuyo, y los choques los decides uno a uno. Dentro de esa pantalla sigue habiendo un botón para sustituir el tablero entero, pero hay que pedirlo y confirmarlo.</li>
-<li><b>Generar HTML para publicar:</b> es de JR. Crea el <code>index.html</code> nuevo para subir al repositorio.</li>
+<li><b>S03 · Director financiero:</b> la línea que es el foco. Beta, precio, producto de soporte, medición.</li>
+<li><b>Flamenco</b> y <b>Proeduco:</b> los clientes que están dentro.</li>
+<li><b>NOESIS:</b> lo que construye Javi y lo que piden los clientes.</li>
+<li><b>Captación y canal:</b> landing, diagnóstico gratuito, LinkedIn, Holded, Accountex, Cámara, NodiaFlow y OPERIS, Verifactu.</li>
+<li><b>Empresa y otros:</b> web y GEO, contabilidad propia, Antra, Escuela de Precios.</li>
+<li><b>Rescate (S01):</b> se deja todo listo para poder arrancar, pero el lanzamiento está pendiente de decidir según cómo vaya S03. Lo que es venta activa está aparcado con esa nota.</li>
+</ul>
+<p>Las tarjetas aparcadas cuya nota empieza por <b>SUPERADA</b> ya no aplican tras el cambio de octubre; se dejan para que se vea qué pasó con ellas.</p>
+<h3>Dónde se trabaja y dónde se guarda — léelo, importa</h3>
+<p><b>El tablero se abre y se guarda en la unidad compartida de Data Goal</b>: <code>01_EMPRESA/Estrategia/TABLERO_DATA_GOAL.html</code>, con doble clic, en <b>Chrome o Edge</b>.</p>
+<ol>
+<li>Mueve tarjetas, edita, añade notas. Mientras no guardes, tus cambios viven solo en tu navegador: no se pierden si cierras, pero nadie más los ve.</li>
+<li>Pulsa <b>Guardar en la unidad compartida</b> y elige ese mismo fichero, <code>TABLERO_DATA_GOAL.html</code>. Acepta sobrescribirlo. Drive lo sincroniza al resto en uno o dos minutos.</li>
+<li>Cada 15 minutos, si el fichero ha cambiado, se sube solo a GitHub. El enlace web es para consultar: lo que se edita allí no vuelve a la unidad compartida.</li>
+</ol>
+<p><b>Antes de editar, recarga</b> (F5) para partir de lo último. Si dos personas guardan casi a la vez, gana la última; Drive suele dejar la otra versión al lado con «(1)» en el nombre. En ese caso, avisa a JR: con <b>Cargar JSON</b> se recupera lo que se pisó sin perder lo demás.</p>
+<p>Si al abrir te avisa de que <b>hay una versión nueva</b>, es que otro guardó mientras tú tenías cambios sin guardar: tu copia queda como respaldo en tu navegador y JR puede recuperarla.</p>
+<h3>Cuándo se toca</h3>
+<p>Toda reunión interna tiene un tramo para trabajar y decidir sobre el tablero: <b>lunes y jueves</b>, operativa JR-Javi; <b>viernes</b>, reunión de equipo. Lo que se decide se edita ahí mismo y se guarda. Las actas e informes nuevos entran como tarjetas el mismo día.</p>
+<h3>Los botones</h3>
+<ul>
+<li><b>Guardar en la unidad compartida:</b> el de siempre. Solo funciona en Chrome o Edge; en otro navegador descarga el fichero.</li>
+<li><b>Enviar por correo a JR:</b> solo si no puedes guardar. Descarga un <code>.json</code> y abre el correo; adjúntalo tú.</li>
+<li><b>Descargar JSON / Cargar JSON:</b> llevarse el estado tal cual o meter el de otro. Cargar <b>no sustituye nada de golpe</b>: enseña qué entra y qué choca, y los choques se deciden uno a uno.</li>
 </ul>
 <h3>El semáforo de plazos</h3>
 <p>Cada tarjeta lleva arriba a la derecha un punto de color con cómo va de fecha, y el mismo código vale en el Kanban y en el Calendario: <b>rojo</b>, la fecha ya ha pasado y la tarea no está hecha; <b>naranja</b>, vence dentro de los próximos siete días; <b>verde</b>, está en la columna Hecha. Las que van en plazo no llevan punto: se quedan como estaban, para que solo destaque lo que pide atención.</p>
@@ -299,11 +306,11 @@ section[id^="sec-"].active {display: flex;}
 <p>Cada tarjeta lleva el nombre de quien la lleva: <b>JR</b> en verde, <b>Javi</b> en azul oscuro, <b>Antonio</b> en gris, los externos en blanco y las que no tiene nadie con borde discontinuo. Si una tarea es de dos, salen las dos etiquetas. <b>Pincha una etiqueta</b> —en la tarjeta o en la barra de arriba— para ver solo lo de esa persona; pincha otra vez para quitar el filtro. Se pueden marcar varias a la vez, y el filtro vale igual para el Kanban y para el Calendario.</p>
 <h3>Qué significan los bordes</h3>
 <ul>
-<li><b>Borde oscuro y grueso:</b> ruta crítica. Si se cae, se cae la fecha del 14.</li>
+<li><b>Borde oscuro y grueso:</b> crítica. Si se cae, se cae una fecha de cliente o la beta.</li>
 <li><b>Borde discontinuo:</b> propuesta mía, no salió en la reunión. Están todas en la primera columna.</li>
 </ul>
 <h3>La columna «Por validar»</h3>
-<p>Son ocho fichas que <b>no dijo nadie en la reunión</b>: las propongo yo. Dentro de cada una está escrito qué se dijo realmente y por qué la propongo, para que no se cuelen como acuerdos. Las decidimos una a una: la que compremos, a Pendiente con responsable y fecha; la que no, se borra.</p>
+<p>Para tarjetas propuestas que nadie ha acordado todavía. Se deciden en la reunión: a Pendiente con dueño y fecha, o se borran.</p>
 </div>
  <div class="mf"><button class="btn solid" id="cerrar_ayuda">Entendido</button></div>
 </div></div>
@@ -322,45 +329,57 @@ section[id^="sec-"].active {display: flex;}
 
 <script id="datos" type="application/json">{
  "version": 1,
- "actualizado": "24/09/2026",
- "pub": "2026-09-24",
+ "actualizado": "29/10/2026",
+ "pub": "2026-10-29T12:00:00Z",
  "tareas": [
   {
    "id": "R-01",
    "t": "Leer el informe del eje B2B/B2C y el manual de producto de NOESIS, y contestar a Javi qué métricas entran en la plantilla B2C",
    "resp": "JR + Antonio",
    "fecha": "Pendiente de fecha",
-   "hor": "semana",
+   "hor": "sinfecha",
    "bloque": "noesis",
    "dep": "Bloquea R-02",
-   "est": "pendiente",
+   "est": "aparcada",
    "crit": 0,
    "origen": "acuerdo",
    "cita": "Reunión del 18/09 · «me gustaría que me dierais algo de luz también por qué métrica meter […] para no ser yo el que decida solo»",
    "quien": "Javi",
-   "notas": []
+   "notas": [
+    {
+     "txt": "SUPERADA · R-13: canal y B2B/B2C son dimensiones, no condiciones; no hay plantilla B2C aparte. Confirmar con Javi.",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "R-02",
    "t": "Desarrollar la plantilla de métricas B2C de NOESIS, en paralelo al lanzamiento con clientes B2B",
    "resp": "Javi",
    "fecha": "Una semana desde R-01 (estimación de Javi)",
-   "hor": "semana",
+   "hor": "sinfecha",
    "bloque": "noesis",
    "dep": "Depende de R-01. Sin esto no entra en la beta ningún cliente B2C. No interviene HelCode",
-   "est": "pendiente",
+   "est": "aparcada",
    "crit": 0,
    "origen": "acuerdo",
    "cita": "Reunión del 18/09 · «esto se puede ir una semana más, depende de lo que decidamos» · JR: «saldría con el lanzamiento de NOESIS en beta con lo que hay de clientes B2B»",
    "quien": "Javi y JR",
-   "notas": []
+   "notas": [
+    {
+     "txt": "SUPERADA · mismo motivo que R-01. Confirmar con Javi.",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "R-03",
    "t": "Construir el módulo core de calidad del dato de NOESIS: auditoría en continuo que avisa de qué falta en Holded, qué se pierde por no tenerlo y cómo arreglarlo",
    "resp": "Javi",
-   "fecha": "Una semana (estimación de Javi)",
-   "hor": "semana",
+   "fecha": "Pendiente de fecha",
+   "hor": "nov30",
    "bloque": "noesis",
    "dep": "Especificación hecha y arquitectura lista. Sale de N-14. No incluye hacer conectores para el cliente",
    "est": "curso",
@@ -373,6 +392,11 @@ section[id^="sec-"].active {display: flex;}
      "txt": "El tercer eje y la calidad del dato se unifican en una sola pieza, la cobertura del dato, y es lo que se ha medido esta semana sobre el cliente piloto. Lo aprobado el 22/09 está construido y probado: las tres condiciones de cada venta (qué se vende, cómo se cobra, cliente identificado o anónimo), el «no aplica» que distingue tres ausencias (no puede existir, podría existir y no está escrito cómo, falta un dato del cliente) y las respuestas del cliente viven en su base de conocimiento, no en configuración nuestra. Mientras una respuesta no está confirmada, el sistema toma el valor cuyo error se ve: venta a plazo y cliente identificado. Ver R-13.",
      "quien": "Informe de Javi del 24/09",
      "fecha": "24/09/2026"
+    },
+    {
+     "txt": "Absorbe N-14 y T-27. Desde el 15/10 es la primera herramienta de venta (auditoría gratuita del Holded); el 16/10 se decide hacer los primeros informes a mano, no en directo. Alcance sin escribir: R-27.",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
     }
    ]
   },
@@ -381,25 +405,31 @@ section[id^="sec-"].active {display: flex;}
    "t": "Averiguar qué exige Holded para figurar en sus integraciones con el módulo de calidad del dato como pieza gratuita, y montar el embudo que lleva de ahí a NOESIS",
    "resp": "SIN DUEÑO",
    "fecha": "Sin fecha",
-   "hor": "ventana",
+   "hor": "sinfecha",
    "bloque": "empresa",
    "dep": "Nadie lo asumió. Va con T-38: es el guion de la reunión con Holded. La tienda de Holded solo tiene aplicaciones nativas; los terceros están en integraciones",
-   "est": "pendiente",
+   "est": "aparcada",
    "crit": 0,
    "origen": "acuerdo",
    "cita": "Reunión del 18/09 · «tú puedes tener una primera versión gratis, que sería el módulo de calidad del dato y recomendaciones de uso de Holded» · Javi: «lo que yo no sé es si esta gente va a querer»",
    "quien": "JR y Javi",
-   "notas": []
+   "notas": [
+    {
+     "txt": "SUPERADA · tratado en Barcelona el 21/10. Lo que queda va en R-74 (permiso de Holded) y en N-17 (demo).",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "R-05",
    "t": "Reunión con El Flamenco: presentar NOESIS más un módulo de compras, con la demo y una horquilla de plazo y coste",
    "resp": "JR + Javi",
    "fecha": "21 sep",
-   "hor": "semana",
-   "bloque": "noesis",
+   "hor": "sinfecha",
+   "bloque": "flamenco",
    "dep": "Hora pendiente de confirmar. Javi entra por videollamada. No se entrega presupuesto. El cliente es B2C: depende de R-02 para entrar en la beta",
-   "est": "pendiente",
+   "est": "hecha",
    "crit": 0,
    "origen": "acuerdo",
    "cita": "Reunión del 18/09 · «no le vamos a pasar presupuesto el lunes, que le vamos a ver la horquilla» · Antonio: «es más fácil entrar con algo sencillo, entendible»",
@@ -409,38 +439,55 @@ section[id^="sec-"].active {display: flex;}
      "txt": "El informe mide el tablao contra el producto (ene 2025 - sep 2026): 172 contactos con factura de 864, 0 facturas con comercial asignado, 8 líneas con referencia de producto de 125.795. Cuatro contactos de mostrador concentran el 98,5 % de los documentos y el 81,2 % de la venta: sin separarlos, su mayor cliente sería «Clientes Varios». Las cifras de facturación y de pendiente de cobro están en el informe, no aquí. El piloto se queda sin coste hasta R-09 y R-10, y sin cartera real hasta R-11. Uno de los cuatro contactos de mostrador no registra ventas desde finales de mayo (R-12).",
      "quien": "Informe de Javi del 24/09",
      "fecha": "24/09/2026"
+    },
+    {
+     "txt": "Celebrada el 01/10 con Bea y Michel (acta DG-FLAMENCO-ACTA-2026-10-01).",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
     }
    ]
   },
   {
    "id": "R-06",
    "t": "Revisar el catálogo de 11 jornadas para la Cámara de Comercio y devolverlo a JR: qué sobra, qué falta y qué enfoque cambiar",
-   "resp": "Javi + Antonio",
-   "fecha": "Antes del 25 sep",
-   "hor": "semana",
-   "bloque": "empresa",
+   "resp": "Javi",
+   "fecha": "Pendiente de fecha",
+   "hor": "sinfecha",
+   "bloque": "captacion",
    "dep": "Bloquea R-07",
    "est": "pendiente",
    "crit": 0,
    "origen": "acuerdo",
    "cita": "Reunión del 18/09 · «que me digáis, antes de pasárselo a la Cámara, que el primer filtro lo hagamos nosotros» · Antonio: «lo reviso la semana que viene»",
    "quien": "JR y Antonio",
-   "notas": []
+   "notas": [
+    {
+     "txt": "JR (29/10): sigue. La relación con la Cámara es desde Nevada & Amurai, pero las jornadas están pensadas para hablar de Data Goal y de S03: reorientar el catálogo a eso.",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "R-07",
    "t": "Enviar a la Cámara de Comercio el catálogo de jornadas para dejar medio cerrado el primer semestre de 2027",
    "resp": "JR",
-   "fecha": "Antes del 25 sep",
-   "hor": "semana",
-   "bloque": "empresa",
+   "fecha": "Pendiente de fecha",
+   "hor": "sinfecha",
+   "bloque": "captacion",
    "dep": "Depende de R-06. Lo muy técnico puede derivarse a Acelera Pyme, que difunde con su marca",
    "est": "pendiente",
    "crit": 0,
    "origen": "acuerdo",
    "cita": "Reunión del 18/09 · «mi idea es pasarle a lo largo de la semana que viene un documento similar a este […] y que podamos tener por lo menos los seis primeros meses del año que viene medio cerrados»",
    "quien": "JR",
-   "notas": []
+   "notas": [
+    {
+     "txt": "Sigue (JR, 29/10). Depende de R-06.",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "R-08",
@@ -450,34 +497,46 @@ section[id^="sec-"].active {display: flex;}
    "hor": "sinfecha",
    "bloque": "empresa",
    "dep": "Contacto indirecto, sin vía de entrada definida",
-   "est": "pendiente",
+   "est": "aparcada",
    "crit": 0,
    "origen": "acuerdo",
    "cita": "Reunión del 18/09 · «engancharnos a un bicho de esos nos puede abrir puertas» · «no sé por dónde le meteré mano»",
    "quien": "Antonio",
-   "notas": []
+   "notas": [
+    {
+     "txt": "Sin vía de entrada definida.",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "R-09",
    "t": "Razonar juntos el mapeo de partidas a escalones de coste: cómo se clasifican las cinco subcuentas ambiguas (623, 626, 627, 628, 629) y de qué fuente sale la clasificación, antes de repartir el trabajo",
    "resp": "JR + Javi",
    "fecha": "Pendiente de fecha",
-   "hor": "semana",
+   "hor": "sinfecha",
    "bloque": "noesis",
    "dep": "Fecha pendiente de acordar en la operativa. Bloquea R-10 y el coste del piloto. Independiente de R-11: van en paralelo. Propuesta de Javi, no acuerdo: cuatro fuentes por orden (documento, contabilidad, proveedor, pregunta al cliente); la unidad del mapeo es la subcuenta, no la factura, y las ambiguas se cuentan antes de la primera llamada",
-   "est": "pendiente",
+   "est": "hecha",
    "crit": 0,
    "origen": "acuerdo",
    "cita": "Informe de Javi del 24/09 — «Quedasteis José Ramón y Javi en razonarlo juntos antes de repartirlo» · «El ejemplo del agua que puso José Ramón —variable si entra en producción, fijo si es suministro— es el caso exacto: no se deduce del dato, tiene que decirlo alguien»",
    "quien": "Javi",
-   "notas": []
+   "notas": [
+    {
+     "txt": "Método de escalones de coste v2.1 cerrado e integrado en el repo el 07/10 (DG-2026-03, H4). Manda docs/METODO_ESCALONES_COSTE.md.",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "R-10",
    "t": "Cambiar cómo se calcula el coste en NOESIS: abrir la entrada por cuenta contable además de por referencia, proyecto y etiqueta, y construir las cinco fuentes de coste de la especificación que faltan",
    "resp": "Javi",
-   "fecha": "Sin fecha",
-   "hor": "ventana",
+   "fecha": "Pendiente de fecha",
+   "hor": "nov30",
    "bloque": "noesis",
    "dep": "Depende de R-09. De las seis fuentes de coste de la especificación solo existe el coste manual. Las tres vías de entrada de hoy piden referencia de producto, proyecto o etiqueta, y el piloto no tiene ninguna: 8 referencias en 125.795 líneas, sin proyectos, gasto por cuenta contable. No lo arregla ninguna de las cuatro preguntas al cliente",
    "est": "pendiente",
@@ -485,44 +544,62 @@ section[id^="sec-"].active {display: flex;}
    "origen": "acuerdo",
    "cita": "Informe de Javi del 24/09 — «Tenemos el sustituto y nos faltan las fuentes principales» · «No es que le falte un dato: es que el camino de entrada no es el suyo»",
    "quien": "Javi",
-   "notas": []
+   "notas": [
+    {
+     "txt": "Preguntar a Javi si está hecho tras el método v2.1. Queda R32 de DG-2026-03: detectar anomalías sin el coste desplazado.",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "R-11",
-   "t": "Hacer al cliente piloto las cuatro preguntas (qué métodos de pago cobran en el acto, qué contactos agrupan venta sin cliente, a cuántos días cobra a cada cliente y cuál es el plazo de la casa, a cuántos días paga a proveedores), y decidir quién las lleva y por qué canal",
-   "resp": "SIN DUEÑO",
+   "t": "Pasar al Flamenco las once preguntas de alta de NOESIS (cuatro en llamada, siete asíncronas): quién las hace y cuándo",
+   "resp": "JR",
    "fecha": "Pendiente de fecha",
-   "hor": "semana",
-   "bloque": "noesis",
-   "dep": "Responsable y fecha pendientes de asignar en la operativa. Falta decidir si van en una llamada, por escrito o en la próxima revisión con el cliente. Desbloquea: qué parte del pendiente de cobro declarado es deuda real (P1), separar mostrador de clientes reales (P2), vencimientos y morosidad (P3) y la otra mitad de la previsión de caja (P4). Llevar P3 con el plazo histórico calculado desde contabilidad como propuesta a confirmar, nunca como dato puesto por nosotros. Independiente de R-09",
+   "hor": "sinfecha",
+   "bloque": "flamenco",
+   "dep": "P13 de DG-2026-03, pendiente desde el 16/10. Con el desarrollo parado hasta la reunión de noviembre",
    "est": "pendiente",
    "crit": 0,
    "origen": "acuerdo",
    "cita": "Informe de Javi del 24/09 — «Están listas. Falta decidir si van en una llamada, por escrito, o dentro de la próxima revisión con el cliente, y quién las lleva» · «Son las cuatro, no más»",
    "quien": "Javi",
-   "notas": []
+   "notas": [
+    {
+     "txt": "Reescrita: las cuatro preguntas de septiembre quedan dentro de las once de alta. Absorbe R-12.",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "R-12",
    "t": "Preguntar al cliente piloto por qué uno de sus cuatro contactos de mostrador no registra ventas desde finales de mayo: integración caída o decisión suya",
    "resp": "SIN DUEÑO",
    "fecha": "Pendiente de fecha",
-   "hor": "semana",
+   "hor": "sinfecha",
    "bloque": "noesis",
    "dep": "Va con R-11, mismo responsable y mismo canal. Ese contacto es por sí solo una parte sustancial de la facturación. Hasta tener la respuesta, no sacar conclusiones sobre su evolución de ventas",
-   "est": "pendiente",
+   "est": "aparcada",
    "crit": 0,
    "origen": "acuerdo",
    "cita": "Informe de Javi del 24/09 — «Puede ser una integración caída o una decisión del cliente, y son cosas muy distintas. Conviene preguntarlo antes de sacar cualquier conclusión sobre su evolución de ventas»",
    "quien": "Javi",
-   "notas": []
+   "notas": [
+    {
+     "txt": "SUPERADA · va dentro de R-11.",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "R-13",
    "t": "Catálogo de métricas de NOESIS construido según lo aprobado el 22/09: tres condiciones de cada venta, «no aplica» con tres ausencias distintas, y respuestas del cliente en su base de conocimiento",
    "resp": "Javi",
    "fecha": "23 sep",
-   "hor": "semana",
+   "hor": "sinfecha",
    "bloque": "noesis",
    "dep": "Hecho y probado sobre los cinco casos posibles del «no aplica». Canal y tipo de cliente (B2B/B2C) son dimensiones, no condiciones: filtran y desglosan pero no cambian ningún cálculo. Base sobre la que se mide R-03",
    "est": "hecha",
@@ -537,22 +614,28 @@ section[id^="sec-"].active {display: flex;}
    "t": "CREAR RECURSOS AUDIOVISUALES PARA CAPTACION BETA (REUTILIZABLES PARA FASE LANZAMIENTO)",
    "resp": "JR + Javi",
    "fecha": "Antes de 25 Septiembre",
-   "hor": "semana",
+   "hor": "sinfecha",
    "bloque": "noesis",
    "dep": "",
-   "est": "pendiente",
+   "est": "aparcada",
    "crit": 0,
    "origen": "manual",
    "cita": "",
    "quien": "",
-   "notas": []
+   "notas": [
+    {
+     "txt": "Se retoma con la landing de S03 ya publicada.",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "T-17",
    "t": "Cerrar con HelCode los flecos del pipeline de NOESIS",
    "resp": "Javi",
    "fecha": "28 ago",
-   "hor": "semana",
+   "hor": "sinfecha",
    "bloque": "noesis",
    "dep": "Bloquea T-18 y el lanzamiento",
    "est": "hecha",
@@ -567,22 +650,28 @@ section[id^="sec-"].active {display: flex;}
    "t": "Revisar el dossier de onboarding y contestar las dudas técnicas",
    "resp": "Javi",
    "fecha": "Pendiente de fecha",
-   "hor": "despues",
+   "hor": "sinfecha",
    "bloque": "noesis",
    "dep": "Dos incidencias abiertas bloquean las entrevistas",
-   "est": "curso",
+   "est": "hecha",
    "crit": 1,
    "origen": "acuerdo",
    "cita": "«Lo del dossier, eso me lo han mandado ayer... Lo tengo que mirar» · «Si el módulo comercial admite objetivo agregado por equipo. Eso lo tengo que ver»",
    "quien": "Javi",
-   "notas": []
+   "notas": [
+    {
+     "txt": "Once preguntas de alta confirmadas el 07/10 (cuatro en llamada, siete asíncronas). Biblioteca v2.5.",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "T-41",
    "t": "Webs de Nevada y Amurai actualizadas y pasadas a código",
    "resp": "José · Codimatic",
    "fecha": "Fin de semana",
-   "hor": "semana",
+   "hor": "sinfecha",
    "bloque": "empresa",
    "dep": "Riesgo de tercero",
    "est": "hecha",
@@ -594,13 +683,13 @@ section[id^="sec-"].active {display: flex;}
   },
   {
    "id": "T-04b",
-   "t": "Primera propuesta del sistema de scraping",
-   "resp": "José · Codimatic",
-   "fecha": "Semana del 1 sep",
-   "hor": "semana",
+   "t": "Validar el sistema de scraping: revisar y contestar a Codimatic las 20 fichas del piloto (entregadas el 19/10) y enviar el briefing de ajustes del 06/10, con los dos Excel de Javi del 30/09 en el proyecto",
+   "resp": "JR + Javi",
+   "fecha": "Pendiente de fecha",
+   "hor": "nov16",
    "bloque": "rescate",
-   "dep": "No lo había mirado. Plan B: manual (T-07)",
-   "est": "curso",
+   "dep": "Ajustes pedidos: 29 señales con estado, puntuación en tres números, razón de contacto verificable, enriquecimiento de contacto. Una de las dos fichas válidas abría con una afirmación falsa (DG-2026-10 R14)",
+   "est": "pendiente",
    "crit": 0,
    "origen": "acuerdo",
    "cita": "«me dijo que la semana que viene podría tener la primera propuesta» · «cuando se lo recordé el lunes, me dijo que se le había pasado por completo»",
@@ -610,6 +699,11 @@ section[id^="sec-"].active {display: flex;}
      "txt": "Sigue en curso, no entregada. José (Codimatic) propone montarlo en n8n en vez de entregar código. Se le pide el código instalable como plugin en nuestro sistema: el conocimiento de ICP y estrategia lo hemos puesto nosotros, y dentro de su herramienta acabaría facturándose por consumo de token. Se prueba lo que haya y, ya probado, se decide si se lleva a n8n. Se le pide empezar por la vertical de Rescate.",
      "quien": "",
      "fecha": "15/09/2026"
+    },
+    {
+     "txt": "JR (29/10): se sigue con la validación del scraping aunque el lanzamiento de S01 esté pendiente de decisión.",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
     }
    ]
   },
@@ -618,7 +712,7 @@ section[id^="sec-"].active {display: flex;}
    "t": "Pasar el resumen de la reunión a Javi y Antonio",
    "resp": "JR",
    "fecha": "28 ago",
-   "hor": "semana",
+   "hor": "sinfecha",
    "bloque": "empresa",
    "dep": "",
    "est": "hecha",
@@ -633,7 +727,7 @@ section[id^="sec-"].active {display: flex;}
    "t": "Encargar a José (Codimatic) el scraping: ICP B2B distribución + web con tienda + logo de Kit Digital + año de construcción, cruzado con Apollo",
    "resp": "JR",
    "fecha": "28 ago",
-   "hor": "semana",
+   "hor": "sinfecha",
    "bloque": "rescate",
    "dep": "",
    "est": "hecha",
@@ -648,7 +742,7 @@ section[id^="sec-"].active {display: flex;}
    "t": "Medir las horas reales dedicadas a Antra y comprobar si fue rentable",
    "resp": "Javi",
    "fecha": "Semana del 31 ago",
-   "hor": "semana",
+   "hor": "sinfecha",
    "bloque": "rescate",
    "dep": "Sostiene el precio de 25-30.000 €",
    "est": "hecha",
@@ -669,7 +763,7 @@ section[id^="sec-"].active {display: flex;}
    "t": "Ejecutar las pruebas de validación del pipeline con HelCode",
    "resp": "Javi",
    "fecha": "Semana del 31 ago",
-   "hor": "semana",
+   "hor": "sinfecha",
    "bloque": "noesis",
    "dep": "Depende de T-17",
    "est": "hecha",
@@ -684,7 +778,7 @@ section[id^="sec-"].active {display: flex;}
    "t": "Decidir el número de plazas de la ventana",
    "resp": "JR + Javi",
    "fecha": "Antes del 14 sep",
-   "hor": "semana",
+   "hor": "sinfecha",
    "bloque": "noesis",
    "dep": "DECISIÓN ABIERTA · no se cerró en la reunión",
    "est": "hecha",
@@ -702,17 +796,22 @@ section[id^="sec-"].active {display: flex;}
      "txt": "Se decide hacerlo con 10",
      "quien": "",
      "fecha": "15/09/2026"
+    },
+    {
+     "txt": "La ventana de plazas a tarifa queda superada: NOESIS no se vende solo (D-114, 17/10).",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
     }
    ]
   },
   {
    "id": "T-24",
-   "t": "Contactar a los 3-4 clientes que ya han dicho que sí y avisarles de la apertura del 14",
-   "resp": "Antonio",
-   "fecha": "Hasta el 14 sep",
+   "t": "Con Cristina: clientes del despacho que se pueden llamar ya para soporte y cuentas que pueden pasar a plan de pago de Holded",
+   "resp": "JR",
+   "fecha": "30 oct",
    "hor": "semana",
-   "bloque": "noesis",
-   "dep": "Depende de T-19 (landing)",
+   "bloque": "s03",
+   "dep": "Candidatos del despacho que constan: Soulgarden, Granada Enjoy, Tu Vida Tus Normas (Granaloha es Proeduco)",
    "est": "pendiente",
    "crit": 0,
    "origen": "acuerdo",
@@ -723,6 +822,11 @@ section[id^="sec-"].active {display: flex;}
      "txt": "Javi: esta semana ya se puede empezar a contactar a los primeros clientes para que entren en el embudo. El desarrollo del B2C y del módulo de calidad del dato no lo frena. Solo clientes B2B.",
      "quien": "Reunión de equipo",
      "fecha": "18/09/2026"
+    },
+    {
+     "txt": "Reescrita el 29/10 a partir del correo del 28/10.",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
     }
    ]
   },
@@ -731,67 +835,91 @@ section[id^="sec-"].active {display: flex;}
    "t": "Mirar cuántos clientes del despacho tienen Holded y cumplen los criterios",
    "resp": "JR",
    "fecha": "Semana del 31 ago",
-   "hor": "semana",
-   "bloque": "noesis",
+   "hor": "sinfecha",
+   "bloque": "s03",
    "dep": "Bloquea T-21",
-   "est": "curso",
+   "est": "hecha",
    "crit": 0,
    "origen": "acuerdo",
    "cita": "«¿cuánta gente hay en el despacho que tenga Holded y que esté dentro de los criterios que has establecido? Eso es lo primero que tienes que mirar»",
    "quien": "JR",
-   "notas": []
+   "notas": [
+    {
+     "txt": "Listado de candidatos de JR y Antonio del 09/10.",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "T-06",
-   "t": "Sacar el primer listado de clientes conocidos y partners a contactar",
-   "resp": "JR + Javi + Antonio",
-   "fecha": "Semana del 31 ago",
+   "t": "Lista de candidatos de S03 de más fácil a más difícil (Q39 del hub; la pidió Antonio el 09/10)",
+   "resp": "JR",
+   "fecha": "30 oct",
    "hor": "semana",
-   "bloque": "noesis",
-   "dep": "",
+   "bloque": "captacion",
+   "dep": "Sin ella la captación de la vía 2 arranca sin orden. Se cierra en la reunión del viernes 30",
    "est": "pendiente",
-   "crit": 0,
+   "crit": 1,
    "origen": "acuerdo",
    "cita": "«clientes que ya conozca Antonio, que podamos pensar tú y yo también, Javi, para contactarlos de manera directa» · «los partners de Bilbao, Menorca y Madrid»",
    "quien": "JR",
-   "notas": []
+   "notas": [
+    {
+     "txt": "Reescrita el 29/10.",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "T-19",
-   "t": "Folleto y landing de lanzamiento de NOESIS con registro y calendario enlazado",
+   "t": "Cerrar el copy de la landing de ventas y de la página de servicio de «Tu propio director financiero y estratégico con Holded» con la revisión de Javi y Antonio",
    "resp": "JR",
-   "fecha": "Antes del 5 sep",
-   "hor": "pre14",
-   "bloque": "noesis",
-   "dep": "Bloquea T-24",
+   "fecha": "Pendiente de fecha",
+   "hor": "nov16",
+   "bloque": "captacion",
+   "dep": "Borradores enviados el 29/10. Publicar depende de R-74 (permiso de Holded) y R-73 (destino de los botones)",
    "est": "curso",
    "crit": 1,
    "origen": "acuerdo",
    "cita": "«eso tengo que preparar yo el folleto... yo prepararía un folleto, una landing» · «la landing con las propuestas de beta se inscribe ahí, deberíamos tener enlazado el calendario»",
    "quien": "JR",
-   "notas": []
+   "notas": [
+    {
+     "txt": "JR (29/10): copy de las dos páginas hecho y enviado a Javi y Antonio para revisar; landing creada con el plugin de marketing en el taller DG-2026-07. Puede cambiar tras la revisión.",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "T-20",
    "t": "Montar el cuestionario previo al onboarding en Google Form",
    "resp": "Javi",
    "fecha": "Antes del 5 sep",
-   "hor": "pre14",
+   "hor": "sinfecha",
    "bloque": "noesis",
    "dep": "Depende de T-19",
-   "est": "pendiente",
+   "est": "hecha",
    "crit": 0,
    "origen": "acuerdo",
    "cita": "Javi: «yo haría un formulario estándar en Google Form o en alguno de esos normales y ya está» — JR: «Sí, vale»",
    "quien": "Javi y JR",
-   "notas": []
+   "notas": [
+    {
+     "txt": "Encuesta v1.4 y biblioteca de onboarding v2.5 actualizadas el 15/10.",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "T-31",
    "t": "Confirmar con HelCode el cumplimiento de la normativa europea de IA y de datos",
    "resp": "Javi",
    "fecha": "Antes del 14 sep",
-   "hor": "pre14",
+   "hor": "sinfecha",
    "bloque": "noesis",
    "dep": "Bloquea T-32",
    "est": "hecha",
@@ -805,23 +933,29 @@ section[id^="sec-"].active {display: flex;}
    "id": "T-32",
    "t": "Preparar los documentos y contratos anexos de protección de datos e IA",
    "resp": "JR",
-   "fecha": "Antes del 14 sep",
-   "hor": "pre14",
-   "bloque": "noesis",
+   "fecha": "Antes de publicar la landing",
+   "hor": "nov16",
+   "bloque": "empresa",
    "dep": "Depende de T-31 · nadie lo asumió en la reunión",
    "est": "curso",
    "crit": 1,
    "origen": "acuerdo",
    "cita": "«primero cumplir con la normativa y segundo que tengamos los documentos y los contratos necesarios para que vayan anexados a los contratos»",
    "quien": "JR",
-   "notas": []
+   "notas": [
+    {
+     "txt": "Bloquea el formulario de la web y pedir la clave de API para la auditoría gratuita.",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "T-13",
    "t": "Plasmar el pricing del Rescate: 20.000 € por auditoría + 3 meses de coordinación, con pago a la firma y resto mensualizado",
    "resp": "JR",
    "fecha": "Antes de la 1.ª propuesta",
-   "hor": "pre14",
+   "hor": "sinfecha",
    "bloque": "rescate",
    "dep": "Conviene tener T-10",
    "est": "hecha",
@@ -841,8 +975,8 @@ section[id^="sec-"].active {display: flex;}
    "id": "T-01",
    "t": "Ficha de servicio, guion corto y dossier del Rescate con el enfoque «negocio digital»",
    "resp": "JR",
-   "fecha": "Antes del 14 sep",
-   "hor": "pre14",
+   "fecha": "Pendiente de fecha",
+   "hor": "sinfecha",
    "bloque": "rescate",
    "dep": "Depende de T-13",
    "est": "curso",
@@ -850,14 +984,20 @@ section[id^="sec-"].active {display: flex;}
    "origen": "acuerdo",
    "cita": "«preparo resumen y guion y ficha de servicio enfocado de esta manera y hacemos las tres cosas» · «conseguimos que en lugar de tener una tienda o una web, tengas un negocio digital»",
    "quien": "JR",
-   "notas": []
+   "notas": [
+    {
+     "txt": "La capa 1 de S01 quedó validada en el hub el 20/10 (D-149). Falta dejar dossier y guion listos para arrancar si se decide. PENDIENTE DE DECISIÓN DE LANZAMIENTO · S01 no se lanza en noviembre: se prepara todo para poder arrancar, y el lanzamiento se decide según cómo vaya S03, que es el foco (JR, 29/10).",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "T-02",
    "t": "Ajustar precios, discurso y proceso de venta en la propuesta tipo",
    "resp": "JR",
    "fecha": "Antes del 14 sep",
-   "hor": "pre14",
+   "hor": "sinfecha",
    "bloque": "rescate",
    "dep": "",
    "est": "hecha",
@@ -871,8 +1011,8 @@ section[id^="sec-"].active {display: flex;}
    "id": "T-14",
    "t": "Preparar las preguntas predefinidas de cualificación previa: ERP, informes disponibles y calidad del dato",
    "resp": "Javi",
-   "fecha": "Antes del 14 sep",
-   "hor": "pre14",
+   "fecha": "Antes de lanzar S01",
+   "hor": "sinfecha",
    "bloque": "rescate",
    "dep": "",
    "est": "pendiente",
@@ -880,14 +1020,20 @@ section[id^="sec-"].active {display: flex;}
    "origen": "acuerdo",
    "cita": "Javi: «deberíamos tener unas preguntas predefinidas y con esas preguntas hacerle al final el speech de venta» — JR: «¿hay ERP, sí o no? ¿De este ERP podemos sacar los informes que necesitamos, sí o no?»",
    "quien": "Javi y JR",
-   "notas": []
+   "notas": [
+    {
+     "txt": "Preparación. PENDIENTE DE DECISIÓN DE LANZAMIENTO · S01 no se lanza en noviembre: se prepara todo para poder arrancar, y el lanzamiento se decide según cómo vaya S03, que es el foco (JR, 29/10).",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "N-01",
    "t": "Diseñar la reunión de diagnóstico: qué objetivo persigue y qué preguntas se hacen",
    "resp": "JR + Javi",
-   "fecha": "Antes del 14 sep",
-   "hor": "pre14",
+   "fecha": "Pendiente de fecha",
+   "hor": "sinfecha",
    "bloque": "rescate",
    "dep": "",
    "est": "curso",
@@ -895,14 +1041,20 @@ section[id^="sec-"].active {display: flex;}
    "origen": "acuerdo",
    "cita": "«esa reunión de diagnóstico la tendríamos que diseñar también. Es decir, ¿cuál es el objetivo que nosotros perseguimos?»",
    "quien": "JR",
-   "notas": []
+   "notas": [
+    {
+     "txt": "Sigue: es preparación. Es el guion del escalón 0 de S01 (encargo E-005 del taller DG-2026-07). PENDIENTE DE DECISIÓN DE LANZAMIENTO · S01 no se lanza en noviembre: se prepara todo para poder arrancar, y el lanzamiento se decide según cómo vaya S03, que es el foco (JR, 29/10).",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "N-07",
    "t": "Corregir en el dossier los rangos de facturación y la prueba pública: son de Antra y no aplican",
    "resp": "JR",
    "fecha": "Antes del 14 sep",
-   "hor": "pre14",
+   "hor": "sinfecha",
    "bloque": "rescate",
    "dep": "",
    "est": "hecha",
@@ -917,7 +1069,7 @@ section[id^="sec-"].active {display: flex;}
    "t": "Incluir en la propuesta el coste de no arreglar el problema",
    "resp": "JR",
    "fecha": "Antes del 14 sep",
-   "hor": "pre14",
+   "hor": "sinfecha",
    "bloque": "rescate",
    "dep": "Va dentro de T-02",
    "est": "hecha",
@@ -931,46 +1083,64 @@ section[id^="sec-"].active {display: flex;}
    "id": "T-21",
    "t": "Sentarse con el socio del despacho antes de ofrecer NOESIS a sus clientes",
    "resp": "JR",
-   "fecha": "Antes del 14 sep",
-   "hor": "pre14",
-   "bloque": "noesis",
+   "fecha": "Pendiente de fecha",
+   "hor": "sinfecha",
+   "bloque": "s03",
    "dep": "Depende de T-22",
    "est": "pendiente",
    "crit": 0,
    "origen": "acuerdo",
    "cita": "«al resto de los del despacho que tienen Holded, igual no pasa nada, se les pasa una oferta y ya está, pero tienes que verlo con tu socio» · «me tengo que sentar con ellos y explicárselo»",
    "quien": "JR",
-   "notas": []
+   "notas": [
+    {
+     "txt": "La conversación con Rubén del 19/10 acabó en tarea, no en acuerdo. El traspaso conjunto de cada cliente (propuesta del 07/10) no consta hecho.",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "N-19",
    "t": "Decidir cómo se presenta la oferta a los clientes del despacho: desde el despacho o desde Nevada & Amurai como colaboradora",
    "resp": "JR",
    "fecha": "Antes del 14 sep",
-   "hor": "pre14",
-   "bloque": "noesis",
+   "hor": "sinfecha",
+   "bloque": "s03",
    "dep": "Va con T-21",
-   "est": "pendiente",
+   "est": "hecha",
    "crit": 0,
    "origen": "acuerdo",
    "cita": "«se lo pasamos desde el despacho... sin que ellos sepan quién es Data Goal, o se lo pasamos desde Nevada y Amurai conforme que está colaborando»",
    "quien": "JR",
-   "notas": []
+   "notas": [
+    {
+     "txt": "Decidido: vía 1, dos facturas (el despacho el soporte, Data Goal NOESIS; D-079, D-090). A los socios del despacho les llegó una versión sin NOESIS (07/10).",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "T-33",
    "t": "Cerrar acuerdo y tarifas con los colaboradores de ordenación de Holded y formación",
    "resp": "Antonio",
    "fecha": "Antes del 14 sep",
-   "hor": "pre14",
+   "hor": "sinfecha",
    "bloque": "noesis",
    "dep": "Sin esto no hay circuito de derivación",
-   "est": "pendiente",
+   "est": "aparcada",
    "crit": 0,
    "origen": "acuerdo",
    "cita": "«primero tenemos que tener un acuerdo cerrado con esta gente, que a día de hoy no tenemos ningún acuerdo cerrado. Las tarifas de cliente»",
    "quien": "JR",
-   "notas": []
+   "notas": [
+    {
+     "txt": "SUPERADA · el arranque va dentro de la cuota y lo hace Data Goal (D-088).",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "N-11",
@@ -980,19 +1150,25 @@ section[id^="sec-"].active {display: flex;}
    "hor": "sinfecha",
    "bloque": "noesis",
    "dep": "Depende de T-33",
-   "est": "pendiente",
+   "est": "aparcada",
    "crit": 0,
    "origen": "acuerdo",
    "cita": "Javi: «lo cobramos nosotros... con el colaborador hay tanto pago de ellos a nosotros como de nosotros a ellos» — JR: «tienen que pasar un feedback de lo que han acordado»",
    "quien": "Javi y JR",
-   "notas": []
+   "notas": [
+    {
+     "txt": "SUPERADA · el arranque (ordenar Holded) lo hace Data Goal dentro de la cuota de soporte; no hay circuito de colaboradores (D-088 del hub).",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "N-16",
    "t": "Implementar la anonimización por tokens antes de enviar datos al modelo",
    "resp": "Javi",
-   "fecha": "Antes del 14 sep",
-   "hor": "pre14",
+   "fecha": "Pendiente de fecha",
+   "hor": "nov30",
    "bloque": "noesis",
    "dep": "Requisito de la normativa (T-31)",
    "est": "curso",
@@ -1000,29 +1176,41 @@ section[id^="sec-"].active {display: flex;}
    "origen": "acuerdo",
    "cita": "«la primera versión estaba montada para que tú pudieras anonimizar, que a Claude le llegaran los datos anonimizados y así cumplieras con la legislación» · «luego tú haces la transformación de esos token en los nombres reales»",
    "quien": "Javi",
-   "notas": []
+   "notas": [
+    {
+     "txt": "Estado a confirmar con Javi.",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "N-21",
    "t": "Montar la recogida de respuestas de contexto por audio de WhatsApp y su transcripción",
    "resp": "JR",
    "fecha": "Pendiente de fecha",
-   "hor": "despues",
+   "hor": "sinfecha",
    "bloque": "noesis",
    "dep": "Va con T-20",
-   "est": "pendiente",
+   "est": "aparcada",
    "crit": 0,
    "origen": "acuerdo",
    "cita": "«el cliente nos puede contestar con audio por WhatsApp para que nosotros esos audios los descarguemos, los transcribamos y los metamos» · Javi: «bloques de datos por formulario y bloques de relato por audio guiado en WhatsApp»",
    "quien": "JR y Javi",
-   "notas": []
+   "notas": [
+    {
+     "txt": "Post-beta.",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "N-23",
    "t": "Reposicionar el discurso de NOESIS por encima de Holded, no como un extra",
    "resp": "JR",
    "fecha": "Antes del 14 sep",
-   "hor": "pre14",
+   "hor": "sinfecha",
    "bloque": "noesis",
    "dep": "Va dentro de T-19",
    "est": "hecha",
@@ -1037,10 +1225,10 @@ section[id^="sec-"].active {display: flex;}
    "t": "Definir los criterios para saber si la ventana va bien y cuándo se lanza la versión definitiva",
    "resp": "Javi",
    "fecha": "Antes del 14 sep",
-   "hor": "pre14",
+   "hor": "sinfecha",
    "bloque": "noesis",
    "dep": "",
-   "est": "curso",
+   "est": "aparcada",
    "crit": 0,
    "origen": "acuerdo",
    "cita": "«son los criterios que tenemos que tener claros para saber si la beta está saliendo bien, si no está saliendo bien y cuándo llega el momento de lanzar»",
@@ -1060,60 +1248,83 @@ section[id^="sec-"].active {display: flex;}
      "txt": "queda pendiente de revisar por javi la parte de objetivos a alcanzar y criterio de OK KO",
      "quien": "",
      "fecha": "15/09/2026"
+    },
+    {
+     "txt": "SUPERADA · va dentro de T-34.",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
     }
    ]
   },
   {
    "id": "T-34",
-   "t": "Medir durante la ventana: horas de onboarding, complejidad, operativa semanal, coste/hora, coste de inferencia, aperturas de los envíos, tasa de respuesta, objeciones reales y segmento de entrada",
+   "t": "KPI de la beta de S03: horas por cliente y mes, cobertura del dato por escalón, avisos útiles frente a ruido, clientes y facturación por vía, bajas tras el arranque",
    "resp": "JR + Javi",
-   "fecha": "Desde el 1.er cliente",
-   "hor": "ventana",
-   "bloque": "noesis",
+   "fecha": "Desde la primera reunión mensual",
+   "hor": "nov30",
+   "bloque": "s03",
    "dep": "Es el objetivo real de la ventana",
    "est": "pendiente",
    "crit": 1,
    "origen": "acuerdo",
    "cita": "«registrar las horas de onboarding, las horas semanales de acompañamiento y meterle el coste teórico de hora» · «de los mensajes que enviemos, cuántos se abren» · «tendremos que ver las objeciones, que ahora mismo son hipotéticas»",
    "quien": "JR",
-   "notas": []
+   "notas": [
+    {
+     "txt": "Reescrita. Absorbe N-13 y N-22. Es H14 del hub y R42/R55 (tesis económica y horas sin medir).",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "T-35",
-   "t": "Montar la bitácora: una carpeta por cliente más una carpeta general",
-   "resp": "JR + Javi",
-   "fecha": "Al arrancar",
-   "hor": "ventana",
-   "bloque": "noesis",
+   "t": "Bitácora de la beta: una carpeta por cliente con la vía de cada uno y los contadores de la ventaja (R54, R56 del hub)",
+   "resp": "JR",
+   "fecha": "Al arrancar la primera reunión de soporte",
+   "hor": "nov30",
+   "bloque": "s03",
    "dep": "",
    "est": "pendiente",
    "crit": 0,
    "origen": "acuerdo",
    "cita": "Javi: «una carpeta por cliente y dentro del cliente una serie de MDs con las métricas del cliente» — JR: «entonces montamos una carpeta y un proyecto sobre esa carpeta»",
    "quien": "Javi y JR",
-   "notas": []
+   "notas": [
+    {
+     "txt": "Reescrita el 29/10.",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "T-25",
    "t": "Operar la ventana: recepcionar la anomalía, redactar el mensaje y subirlo al pipeline",
    "resp": "Javi",
    "fecha": "Semanal",
-   "hor": "ventana",
+   "hor": "sinfecha",
    "bloque": "noesis",
    "dep": "",
-   "est": "pendiente",
+   "est": "aparcada",
    "crit": 0,
    "origen": "acuerdo",
    "cita": "«te prepara la anomalía en un archivo que en la beta tenemos que recepcionar manualmente y hacer todo el trabajo de crear el mensaje» · «tú creas el mensaje y lo subes otra vez al pipeline»",
    "quien": "Javi",
-   "notas": []
+   "notas": [
+    {
+     "txt": "SUPERADA · la operativa de la ventana se sustituye por la reunión mensual de soporte de S03.",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "N-20",
    "t": "Asistir los dos a las primeras reuniones de onboarding",
    "resp": "JR + Javi",
    "fecha": "Primeros clientes",
-   "hor": "ventana",
+   "hor": "sinfecha",
    "bloque": "noesis",
    "dep": "",
    "est": "hecha",
@@ -1128,7 +1339,7 @@ section[id^="sec-"].active {display: flex;}
    "t": "Validar con clientes reales las características e hipótesis de producto deducidas de Antra",
    "resp": "JR",
    "fecha": "Durante la ventana",
-   "hor": "ventana",
+   "hor": "sinfecha",
    "bloque": "noesis",
    "dep": "",
    "est": "hecha",
@@ -1142,8 +1353,8 @@ section[id^="sec-"].active {display: flex;}
    "id": "T-03",
    "t": "Montar los embudos, el objetivo económico y las piezas comerciales del Rescate",
    "resp": "JR",
-   "fecha": "Septiembre",
-   "hor": "ventana",
+   "fecha": "Pendiente de fecha",
+   "hor": "sinfecha",
    "bloque": "rescate",
    "dep": "Depende de T-01",
    "est": "curso",
@@ -1151,62 +1362,86 @@ section[id^="sec-"].active {display: flex;}
    "origen": "acuerdo",
    "cita": "«me falta con esto que hemos hablado montar los embudos y el objetivo económico y montar las piezas»",
    "quien": "JR",
-   "notas": []
+   "notas": [
+    {
+     "txt": "Sigue como preparación. Piezas del taller DG-2026-07 sin fabricar: E-003 landing, E-004 artículo, E-005 guion, E-012 posts, E-013 briefing. PENDIENTE DE DECISIÓN DE LANZAMIENTO · S01 no se lanza en noviembre: se prepara todo para poder arrancar, y el lanzamiento se decide según cómo vaya S03, que es el foco (JR, 29/10).",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "T-07",
    "t": "Contactar a mano los primeros 10-12 leads y medir la respuesta antes de automatizar",
    "resp": "Javi + JR",
    "fecha": "Primer mes",
-   "hor": "ventana",
+   "hor": "sinfecha",
    "bloque": "rescate",
    "dep": "Plan B de T-04b",
-   "est": "pendiente",
+   "est": "aparcada",
    "crit": 0,
    "origen": "acuerdo",
    "cita": "«al principio, los primeros 10 o 12 tenemos que hacerlo a mano» · «si en el primer mes o mes y medio no funciona un patrón, pues intentar automatizarlo»",
    "quien": "Javi",
-   "notas": []
+   "notas": [
+    {
+     "txt": "PENDIENTE DE DECISIÓN DE LANZAMIENTO · S01 no se lanza en noviembre: se prepara todo para poder arrancar, y el lanzamiento se decide según cómo vaya S03, que es el foco (JR, 29/10).",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "T-08",
    "t": "Escribir al dueño de la agencia Omnibus para proponerle el modelo",
    "resp": "Antonio",
    "fecha": "Septiembre",
-   "hor": "ventana",
+   "hor": "sinfecha",
    "bloque": "rescate",
    "dep": "",
-   "est": "pendiente",
+   "est": "aparcada",
    "crit": 0,
    "origen": "acuerdo",
    "cita": "«una con la que podemos hablar es con estos de Omnibus... o se lo escribo directamente a él, al dueño, a ver qué dice»",
    "quien": "JR",
-   "notas": []
+   "notas": [
+    {
+     "txt": "PENDIENTE DE DECISIÓN DE LANZAMIENTO · S01 no se lanza en noviembre: se prepara todo para poder arrancar, y el lanzamiento se decide según cómo vaya S03, que es el foco (JR, 29/10).",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "T-09",
    "t": "Pilotar con dos o tres agencias como máximo para desarrollar el producto con ellas",
    "resp": "JR",
    "fecha": "Oct-nov",
-   "hor": "ventana",
+   "hor": "sinfecha",
    "bloque": "rescate",
    "dep": "Depende de T-01",
-   "est": "pendiente",
+   "est": "aparcada",
    "crit": 0,
    "origen": "acuerdo",
    "cita": "«tendrían que ser dos o tres, muy para ir desarrollando con ellos el producto. No ponerte a buscar 200 agencias» · «se le tiene que vender a la agencia como que ellos van a ganar más dinero con esto» (Javi)",
    "quien": "JR y Javi",
-   "notas": []
+   "notas": [
+    {
+     "txt": "PENDIENTE DE DECISIÓN DE LANZAMIENTO · S01 no se lanza en noviembre: se prepara todo para poder arrancar, y el lanzamiento se decide según cómo vaya S03, que es el foco (JR, 29/10).",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "N-04",
    "t": "Enseñar el caso de éxito en la Cámara de Comercio y en asociaciones sectoriales",
    "resp": "JR",
    "fecha": "Oct-nov",
-   "hor": "ventana",
+   "hor": "sinfecha",
    "bloque": "rescate",
    "dep": "",
-   "est": "pendiente",
+   "est": "aparcada",
    "crit": 0,
    "origen": "acuerdo",
    "cita": "«sentarnos, enseñar el caso de éxito en sitios como la cámara y demás, y luego ir y enseñar el proceso y el caso de éxito a este tipo de gente»",
@@ -1216,6 +1451,11 @@ section[id^="sec-"].active {display: flex;}
      "txt": "La relación con la Cámara de Comercio se trabaja ahora con un catálogo de jornadas para 2027 (R-06 y R-07). Lo muy técnico puede derivarse a Acelera Pyme, que difunde con su marca.",
      "quien": "Reunión de equipo",
      "fecha": "18/09/2026"
+    },
+    {
+     "txt": "PENDIENTE DE DECISIÓN DE LANZAMIENTO · S01 no se lanza en noviembre: se prepara todo para poder arrancar, y el lanzamiento se decide según cómo vaya S03, que es el foco (JR, 29/10).",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
     }
    ]
   },
@@ -1224,52 +1464,70 @@ section[id^="sec-"].active {display: flex;}
    "t": "Pedir a los de Moleón el contacto de la dueña de la empresa de recambios",
    "resp": "Antonio",
    "fecha": "Septiembre",
-   "hor": "ventana",
+   "hor": "sinfecha",
    "bloque": "rescate",
    "dep": "",
-   "est": "pendiente",
+   "est": "aparcada",
    "crit": 0,
    "origen": "acuerdo",
    "cita": "«los de Moleón, que son amigos... oye, tenemos esto, dime si podemos hablar con la dueña de lo de los recambios»",
    "quien": "JR",
-   "notas": []
+   "notas": [
+    {
+     "txt": "PENDIENTE DE DECISIÓN DE LANZAMIENTO · S01 no se lanza en noviembre: se prepara todo para poder arrancar, y el lanzamiento se decide según cómo vaya S03, que es el foco (JR, 29/10).",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "N-06",
    "t": "Desarrollar la segunda vía: montar el e-commerce desde cero metiendo el servicio de Data Goal dentro del presupuesto de la agencia",
    "resp": "JR + Javi",
    "fecha": "Oct-nov",
-   "hor": "ventana",
+   "hor": "sinfecha",
    "bloque": "rescate",
    "dep": "",
-   "est": "pendiente",
+   "est": "aparcada",
    "crit": 0,
    "origen": "acuerdo",
    "cita": "«yo te monto el e-commerce, pero yo te hago toda esta parte, te lo estructuro, hago ese servicio... esto vale montar el e-commerce 20.000 € y lleva esto, esto y esto»",
    "quien": "JR",
-   "notas": []
+   "notas": [
+    {
+     "txt": "PENDIENTE DE DECISIÓN DE LANZAMIENTO · S01 no se lanza en noviembre: se prepara todo para poder arrancar, y el lanzamiento se decide según cómo vaya S03, que es el foco (JR, 29/10).",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "N-09",
    "t": "Preparar el formato de reunión online estructurada para los clientes de fuera",
    "resp": "JR",
    "fecha": "Septiembre",
-   "hor": "ventana",
+   "hor": "sinfecha",
    "bloque": "rescate",
    "dep": "",
-   "est": "curso",
+   "est": "aparcada",
    "crit": 0,
    "origen": "acuerdo",
    "cita": "«los que nos salen de fuera, pues tener también preparado cómo organizar la reunión online para que vaya estructurada, que vaya bien»",
    "quien": "JR",
-   "notas": []
+   "notas": [
+    {
+     "txt": "PENDIENTE DE DECISIÓN DE LANZAMIENTO · S01 no se lanza en noviembre: se prepara todo para poder arrancar, y el lanzamiento se decide según cómo vaya S03, que es el foco (JR, 29/10).",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "T-11",
    "t": "Asignar horas a cada bloque del briefing de auditoría",
    "resp": "Javi",
    "fecha": "Septiembre",
-   "hor": "ventana",
+   "hor": "sinfecha",
    "bloque": "rescate",
    "dep": "Depende de T-10",
    "est": "hecha",
@@ -1283,8 +1541,8 @@ section[id^="sec-"].active {display: flex;}
    "id": "T-12",
    "t": "Definir el escalón 2 de coordinación: en qué consiste, cómo se gobierna y qué cuota",
    "resp": "JR + Javi",
-   "fecha": "Antes de la 1.ª propuesta",
-   "hor": "ventana",
+   "fecha": "Antes de lanzar S01",
+   "hor": "sinfecha",
    "bloque": "rescate",
    "dep": "DECISIÓN ABIERTA",
    "est": "curso",
@@ -1302,6 +1560,11 @@ section[id^="sec-"].active {display: flex;}
      "txt": "20K por auditoria+3 merses coordinacion y la continuaidad es lo que queda pendiente de definir con el primer clientes que lo solicite.",
      "quien": "",
      "fecha": "15/09/2026"
+    },
+    {
+     "txt": "Decisión de producto que hay que tener antes de un posible lanzamiento. PENDIENTE DE DECISIÓN DE LANZAMIENTO · S01 no se lanza en noviembre: se prepara todo para poder arrancar, y el lanzamiento se decide según cómo vaya S03, que es el foco (JR, 29/10).",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
     }
    ]
   },
@@ -1310,25 +1573,31 @@ section[id^="sec-"].active {display: flex;}
    "t": "Meter asesorías y partners dentro de la ventana como clientes, no como prescriptores",
    "resp": "JR",
    "fecha": "Tras el 14 sep",
-   "hor": "ventana",
-   "bloque": "noesis",
+   "hor": "sinfecha",
+   "bloque": "s03",
    "dep": "",
-   "est": "pendiente",
+   "est": "hecha",
    "crit": 0,
    "origen": "acuerdo",
    "cita": "«dentro de la beta deberían estar, no como prescriptores sino como clientes, los que luego van a ser los prescriptores» · «el filtro tiene que ser que ellos entren»",
    "quien": "JR",
-   "notas": []
+   "notas": [
+    {
+     "txt": "Decidido el 23/10: las asesorías entran como clientes, no como canal. La vía 3 sigue en pausa.",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "T-38",
    "t": "Provocar la reunión con Holded aprovechando el taller de Barcelona",
    "resp": "Antonio",
    "fecha": "20-22 oct",
-   "hor": "ventana",
-   "bloque": "empresa",
+   "hor": "sinfecha",
+   "bloque": "captacion",
    "dep": "Requiere tener clientes dentro",
-   "est": "pendiente",
+   "est": "hecha",
    "crit": 0,
    "origen": "acuerdo",
    "cita": "«tenemos un taller en Barcelona el día 20-22 de octubre... la idea que planteó Antonio fue que para esa fecha poder provocar allí una reunión y sentarnos con esta gente»",
@@ -1338,17 +1607,22 @@ section[id^="sec-"].active {display: flex;}
      "txt": "Guion de apertura acordado: el módulo de calidad del dato como integración gratuita de Holded, con marca NOESIS · Data Goal. Argumento para Holded: cuanto más usa el cliente la herramienta, más le cuesta irse, y con el módulo tiene un itinerario de formación propio en vez de correos genéricos. JR: «si bajamos en octubre y conseguimos quedar con ellos». La reunión sigue sin cerrar. Ver R-04.",
      "quien": "Reunión de equipo",
      "fecha": "18/09/2026"
+    },
+    {
+     "txt": "Celebrada el 21/10 en Barcelona con Nelson y Alex (JR y Antonio). Informe DG-INT-INF-2026-10-21.",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
     }
    ]
   },
   {
    "id": "N-17",
-   "t": "Preparar la demo de la reunión con Holded sobre datos de Nevada & Amurai, con consentimiento",
-   "resp": "JR + Javi + Antonio",
-   "fecha": "Antes del 20 oct",
-   "hor": "ventana",
-   "bloque": "empresa",
-   "dep": "Depende de T-38",
+   "t": "Demo de NOESIS a Holded (Nelson): decidir qué se enseña y qué no, y fecha",
+   "resp": "JR + Javi",
+   "fecha": "Pendiente de fecha",
+   "hor": "nov16",
+   "bloque": "captacion",
+   "dep": "La pidió Holded en Barcelona el 21/10. JR la aplazó «un par de semanas» el 23/10, con algún cliente ya conectado. Qué se enseña es la pregunta 3 de R-14",
    "est": "pendiente",
    "crit": 0,
    "origen": "acuerdo",
@@ -1359,6 +1633,11 @@ section[id^="sec-"].active {display: flex;}
      "txt": "La demo tiene que enseñar el módulo de calidad del dato y la medición del uso de Holded: es con lo que se abre la reunión (T-38, R-03).",
      "quien": "Reunión de equipo",
      "fecha": "18/09/2026"
+    },
+    {
+     "txt": "Reescrita el 29/10.",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
     }
    ]
   },
@@ -1367,37 +1646,49 @@ section[id^="sec-"].active {display: flex;}
    "t": "Definir las 8-10 acciones críticas de uso de Holded",
    "resp": "JR",
    "fecha": "Noviembre",
-   "hor": "ventana",
+   "hor": "sinfecha",
    "bloque": "noesis",
    "dep": "Necesita datos de la ventana",
-   "est": "curso",
+   "est": "aparcada",
    "crit": 0,
    "origen": "acuerdo",
    "cita": "«yo lo que buscaría serían las 8, 9, 10 cosas más críticas que, de no hacerse de manera regular o de no hacerse bien, hacen que Holded no funcione bien»",
    "quien": "JR",
-   "notas": []
+   "notas": [
+    {
+     "txt": "SUPERADA · va dentro de R-03.",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "N-13",
    "t": "Definir cómo se mide que el cliente ejecuta la formación y cambia su uso de Holded",
    "resp": "JR",
    "fecha": "Durante la ventana",
-   "hor": "ventana",
+   "hor": "sinfecha",
    "bloque": "noesis",
    "dep": "Depende de T-27",
-   "est": "pendiente",
+   "est": "aparcada",
    "crit": 0,
    "origen": "acuerdo",
    "cita": "«tenemos que ver de qué manera podemos medir que el cliente está haciendo los ciclos, la píldora formativa, y que lo está llevando a ejecución» · «¿está viendo cambio en el uso de Holded?»",
    "quien": "JR",
-   "notas": []
+   "notas": [
+    {
+     "txt": "SUPERADA · va dentro de T-34.",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "N-15",
    "t": "Valorar contratar a HelCode como proveedor de inferencia en servidores europeos y su tarifa plana de 300 €",
    "resp": "Javi",
    "fecha": "Cuando haya escala",
-   "hor": "ventana",
+   "hor": "sinfecha",
    "bloque": "empresa",
    "dep": "",
    "est": "pendiente",
@@ -1412,37 +1703,49 @@ section[id^="sec-"].active {display: flex;}
    "t": "Convertir en píldora formativa las dudas que se repitan entre clientes",
    "resp": "JR + Javi",
    "fecha": "Durante la ventana",
-   "hor": "ventana",
+   "hor": "sinfecha",
    "bloque": "noesis",
    "dep": "",
-   "est": "curso",
+   "est": "aparcada",
    "crit": 0,
    "origen": "acuerdo",
    "cita": "«si no existe esa formación y eso mismo lo pregunta el mismo cliente varias veces o varios clientes, hacer una de tal cual»",
    "quien": "JR",
-   "notas": []
+   "notas": [
+    {
+     "txt": "Post-beta: las dudas repetidas se recogen en la bitácora de la beta (T-35).",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "N-02",
    "t": "Medir lo que cuesta el diagnóstico en tiempo y recursos, y calcular el coste de adquisición de cliente",
    "resp": "SIN DUEÑO",
    "fecha": "Durante la ventana",
-   "hor": "ventana",
+   "hor": "sinfecha",
    "bloque": "rescate",
    "dep": "Nadie lo asumió",
-   "est": "pendiente",
+   "est": "aparcada",
    "crit": 0,
    "origen": "acuerdo",
    "cita": "«si no hemos medido lo que te cuesta a nivel de tiempo y recursos... ahí tienes el coste de adquisición del cliente»",
    "quien": "JR",
-   "notas": []
+   "notas": [
+    {
+     "txt": "PENDIENTE DE DECISIÓN DE LANZAMIENTO · S01 no se lanza en noviembre: se prepara todo para poder arrancar, y el lanzamiento se decide según cómo vaya S03, que es el foco (JR, 29/10).",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "N-24",
    "t": "Definir la estrategia frente a Numio antes de entrar en el canal de asesorías",
    "resp": "SIN DUEÑO",
    "fecha": "Antes de abrir canal",
-   "hor": "ventana",
+   "hor": "sinfecha",
    "bloque": "empresa",
    "dep": "Nadie lo asumió",
    "est": "hecha",
@@ -1463,70 +1766,94 @@ section[id^="sec-"].active {display: flex;}
    "t": "Encargar las píldoras formativas: 4 de NOESIS y 6 básicas de Holded (~90 €/hora)",
    "resp": "JR",
    "fecha": "A 3 meses",
-   "hor": "despues",
+   "hor": "sinfecha",
    "bloque": "noesis",
    "dep": "Depende de T-27",
-   "est": "pendiente",
+   "est": "aparcada",
    "crit": 0,
    "origen": "acuerdo",
    "cita": "«cada módulo son 2 minutos, son cuatro píldoras» · «de Holded hay otras seis básicas» · «tengo ahí la tarifa, me dijo que eran 90 € creo por hacerlo»",
    "quien": "JR",
-   "notas": []
+   "notas": [
+    {
+     "txt": "Post-beta.",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "T-29",
    "t": "Contratar una plataforma formativa existente en vez de montarla de cero",
    "resp": "Javi",
    "fecha": "Diciembre",
-   "hor": "despues",
+   "hor": "sinfecha",
    "bloque": "noesis",
    "dep": "Depende de T-28",
-   "est": "pendiente",
+   "est": "aparcada",
    "crit": 0,
    "origen": "acuerdo",
    "cita": "«yo eso no lo montaría de cero. La parte formativa se la derivaría a una plataforma con el nombre de NOESIS y ya está, porque para eso ya existen»",
    "quien": "Javi",
-   "notas": []
+   "notas": [
+    {
+     "txt": "Post-beta.",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "N-12",
    "t": "Montar el espacio de vídeos con acceso automático al dar de alta a un cliente",
    "resp": "JR + Javi",
    "fecha": "A 3 meses",
-   "hor": "despues",
+   "hor": "sinfecha",
    "bloque": "noesis",
    "dep": "Depende de T-29",
-   "est": "pendiente",
+   "est": "aparcada",
    "crit": 0,
    "origen": "acuerdo",
    "cita": "«eso tiene que estar en un espacio que cada vez que se da de alta un cliente en NOESIS tenga acceso a esos vídeos» · «esos son los vídeos básicos que tendremos que tener a la vuelta de 3 meses»",
    "quien": "JR",
-   "notas": []
+   "notas": [
+    {
+     "txt": "Post-beta. Se retoma cuando la beta de S03 esté rodando.",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "N-18",
    "t": "Preparar la web propia para producir y subir píldoras formativas en cuestión de minutos",
    "resp": "Javi",
    "fecha": "Diciembre",
-   "hor": "despues",
+   "hor": "sinfecha",
    "bloque": "noesis",
    "dep": "Alternativa a N-12",
-   "est": "pendiente",
+   "est": "aparcada",
    "crit": 0,
    "origen": "acuerdo",
    "cita": "«la web que tenemos nosotros ahora, Javi, habría que prepararla para que esas píldoras las pudiéramos producir y subir de manera directa en cuestión de minutos»",
    "quien": "JR",
-   "notas": []
+   "notas": [
+    {
+     "txt": "Post-beta. Alternativa a N-12.",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "T-30",
    "t": "Incorporar al producto la cuarta vertical: contexto y evolución del uso de la herramienta",
    "resp": "JR + Javi",
    "fecha": "Tras la ventana",
-   "hor": "despues",
+   "hor": "sinfecha",
    "bloque": "noesis",
    "dep": "",
-   "est": "pendiente",
+   "est": "aparcada",
    "crit": 0,
    "origen": "acuerdo",
    "cita": "«sería como una vertical más que habría que meter: anomalías de negocio, captación de contexto y evolución del uso de la herramienta» · «y los objetivos: cuatro verticales»",
@@ -1536,6 +1863,11 @@ section[id^="sec-"].active {display: flex;}
      "txt": "El módulo de calidad del dato (R-03) cubre parte de esta vertical: mide qué uso hace el cliente de Holded y cuál debería hacer según su negocio.",
      "quien": "Reunión de equipo",
      "fecha": "18/09/2026"
+    },
+    {
+     "txt": "Post-beta.",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
     }
    ]
   },
@@ -1544,10 +1876,10 @@ section[id^="sec-"].active {display: flex;}
    "t": "Valorar un agente dentro del sistema que haga el seguimiento del uso de Holded",
    "resp": "Javi",
    "fecha": "Tras la ventana",
-   "hor": "despues",
+   "hor": "sinfecha",
    "bloque": "noesis",
    "dep": "",
-   "est": "curso",
+   "est": "aparcada",
    "crit": 0,
    "origen": "acuerdo",
    "cita": "«quizás el seguimiento se debería hacer con un agente dentro del mismo sistema y le diga: oye, sigues sin conciliar, sigues sin tener al día los proyectos»",
@@ -1562,6 +1894,11 @@ section[id^="sec-"].active {display: flex;}
      "txt": "Deja de ser una valoración. Se acuerda que la auditoría del dato sea módulo core de NOESIS y funcione durante toda la vida del cliente, no solo en la entrada. Se construye en R-03.",
      "quien": "Reunión de equipo",
      "fecha": "18/09/2026"
+    },
+    {
+     "txt": "SUPERADA · va dentro de R-03.",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
     }
    ]
   },
@@ -1570,30 +1907,42 @@ section[id^="sec-"].active {display: flex;}
    "t": "Montar la lista de espera con reserva de plaza (con pago X €) y respeto de precio",
    "resp": "JR + Javi",
    "fecha": "Tras los primeros cierres",
-   "hor": "despues",
+   "hor": "sinfecha",
    "bloque": "noesis",
    "dep": "",
-   "est": "pendiente",
+   "est": "aparcada",
    "crit": 0,
    "origen": "acuerdo",
    "cita": "«hay que montar una lista de espera y tener al cliente subido ahí» · «te cobro 500 € de reserva de plaza, o 1.000 € y ya está» · «yo te meto en la lista de espera y te voy a respetar precio»",
    "quien": "JR",
-   "notas": []
+   "notas": [
+    {
+     "txt": "SUPERADA · sin ventana a tarifa no hay lista de espera.",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "T-43",
    "t": "Paquetizado del canal de asesorías",
    "resp": "JR + Javi",
    "fecha": "Tras la ventana",
-   "hor": "despues",
-   "bloque": "empresa",
+   "hor": "sinfecha",
+   "bloque": "captacion",
    "dep": "Exige jerarquía cliente-de-cliente",
-   "est": "pendiente",
+   "est": "aparcada",
    "crit": 0,
    "origen": "acuerdo",
    "cita": "JR: «poder ir con un paquetizado a las asesorías... marcar las bases de lo que podía ser eso» — Javi: «esto debería ser después... exigiría cambiar toda la infraestructura»",
    "quien": "JR y Javi",
-   "notas": []
+   "notas": [
+    {
+     "txt": "SUPERADA · la vía 3 (asesorías) está en pausa y las asesorías entrarían como clientes (23/10). La entrada a asesorías partners de Holded se trabaja por NodiaFlow y OPERIS (R-76).",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "T-37",
@@ -1608,22 +1957,34 @@ section[id^="sec-"].active {display: flex;}
    "origen": "acuerdo",
    "cita": "«la periodificación de gastos ya está resuelta en su diseño del punto muerto. El punto muerto lo dejamos ahí en standby, no está desarrollado» · «esto es cosa nuestra, lo tenemos que desarrollar nosotros»",
    "quien": "Javi",
-   "notas": []
+   "notas": [
+    {
+     "txt": "Punto muerto: métrica o módulo, sin decidir (05/10).",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "T-39",
-   "t": "Crear el proyecto propio en Holded y registrar las horas para predicar con el ejemplo",
-   "resp": "Javi",
-   "fecha": "Sin fecha",
-   "hor": "sinfecha",
-   "bloque": "empresa",
+   "t": "Registrar las horas por cliente desde la primera reunión de Flamenco y Proeduco",
+   "resp": "Javi + JR",
+   "fecha": "Desde la primera reunión de soporte",
+   "hor": "nov30",
+   "bloque": "s03",
    "dep": "Daría el dato de coste que falta",
    "est": "pendiente",
    "crit": 0,
    "origen": "acuerdo",
    "cita": "«no sé si tendríamos que hacerlo empezando ya a crear nuestro primer proyecto en Holded y predicar con el ejemplo... y registrar las horas de onboarding»",
    "quien": "JR",
-   "notas": []
+   "notas": [
+    {
+     "txt": "Reescrita: el proyecto propio en Holded queda como forma de hacerlo. Es la medida que falta para la tesis económica de S03 (R42, R55 del hub).",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "T-42",
@@ -1638,7 +1999,13 @@ section[id^="sec-"].active {display: flex;}
    "origen": "acuerdo",
    "cita": "«quizás deberíamos sacar un producto a medias con Codimatic, que sería el cerebro de empresa y que sea un producto mixto»",
    "quien": "JR",
-   "notas": []
+   "notas": [
+    {
+     "txt": "OPERIS y The HUB congelados en el hub (D-082). OPERIS se enseñó a Holded el 21/10. Su vía natural es NodiaFlow (R-76).",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
   },
   {
    "id": "T-16",
@@ -1660,7 +2027,7 @@ section[id^="sec-"].active {display: flex;}
    "t": "Pasar a Codimatic los ICP y las señales de compra de las líneas de negocio",
    "resp": "JR",
    "fecha": "Sin fecha",
-   "hor": "semana",
+   "hor": "sinfecha",
    "bloque": "rescate",
    "dep": "Depende de T-04",
    "est": "hecha",
@@ -1690,10 +2057,10 @@ section[id^="sec-"].active {display: flex;}
    "t": "CREAR REPOSITORIA DE NOESIS EN GIT COLABORATIVO",
    "resp": "JR + Javi",
    "fecha": "Propuesta: antes del 1.er cliente",
-   "hor": "ventana",
+   "hor": "sinfecha",
    "bloque": "noesis",
    "dep": "",
-   "est": "curso",
+   "est": "hecha",
    "crit": 0,
    "origen": "propuesta",
    "cita": "En la reunión Javi dijo LO CONTRARIO: «lo ideal es que en principio lo opere yo, porque para que tú lo operes voy a tener que enseñarte cómo tienes que hacer todo». El traspaso se menciona («eso requiere que tengas el repo instalado... que te tengo que enseñar») pero sin fecha y pospuesto.",
@@ -1703,6 +2070,11 @@ section[id^="sec-"].active {display: flex;}
      "txt": "Javi: toda la operativa y el repositorio dependen de ti solo. Si lo veis, le ponemos fecha. Si no, la borramos.",
      "quien": "JR",
      "fecha": "27/08/2026"
+    },
+    {
+     "txt": "Repositorio datagoalBI/noesis; JR con acceso desde el 24/09. El método de escalones vive en docs/ desde el 07/10.",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
     }
    ]
   },
@@ -1711,10 +2083,10 @@ section[id^="sec-"].active {display: flex;}
    "t": "Arrancar la ventana con un primer tramo de10 clientes",
    "resp": "JR + Javi",
    "fecha": "Propuesta",
-   "hor": "semana",
+   "hor": "sinfecha",
    "bloque": "noesis",
    "dep": "Depende de D-01",
-   "est": "pendiente",
+   "est": "aparcada",
    "crit": 0,
    "origen": "propuesta",
    "cita": "Las cifras que SÍ salieron son 20 (yo, recogiendo a Antonio) y 10 (Javi: «con 10 ya tiene una muestra que va a ver cosas»), más entrada escalonada («te entran dos ahora, dentro de 15 días otros dos»). El 6-8 lo pongo yo.",
@@ -1729,6 +2101,11 @@ section[id^="sec-"].active {display: flex;}
      "txt": "La beta arranca solo con clientes B2B. NOESIS se diseñó para B2B y sus métricas no cuadran en un negocio B2C: salió al comprobarlas contra la API de pruebas. La plantilla B2C se desarrolla en paralelo (R-02) y no retrasa el lanzamiento.",
      "quien": "Reunión de equipo",
      "fecha": "18/09/2026"
+    },
+    {
+     "txt": "SUPERADA · la ventana de 10 plazas a tarifa no existe: NOESIS no se vende solo (D-114, 17/10). La beta es S03 con clientes del despacho.",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
     }
    ]
   },
@@ -1737,7 +2114,7 @@ section[id^="sec-"].active {display: flex;}
    "t": "Cerrar la decisión de plazas antes del 5 de septiembre",
    "resp": "JR + Javi",
    "fecha": "Propuesta: 5 sep",
-   "hor": "semana",
+   "hor": "sinfecha",
    "bloque": "noesis",
    "dep": "Va con D-01",
    "est": "hecha",
@@ -1755,12 +2132,12 @@ section[id^="sec-"].active {display: flex;}
   },
   {
    "id": "P-05",
-   "t": "Operativa semanal de 30 minutos con día fijo y tres bloques: embudo · entregas · bloqueos",
-   "resp": "JR + Javi + Antonio",
-   "fecha": "Propuesta: desde el 1 sep",
+   "t": "Rutina del tablero: lunes y jueves operativa JR-Javi; viernes reunión de equipo. Toda reunión interna tiene un tramo para trabajar y decidir sobre el tablero",
+   "resp": "JR + Javi",
+   "fecha": "Semanal",
    "hor": "semana",
    "bloque": "empresa",
-   "dep": "",
+   "dep": "El tablero vive en la unidad compartida; se guarda allí y sube solo a GitHub cada 15 minutos (D-023)",
    "est": "curso",
    "crit": 0,
    "origen": "propuesta",
@@ -1786,15 +2163,851 @@ section[id^="sec-"].active {display: flex;}
      "txt": "El informe DG-INT-INF-2026-09-24 lleva dos puntos a la operativa del viernes: acordar fecha para el mapeo de partidas a escalones de coste (R-09) y decidir quién hace las cuatro preguntas al cliente piloto y por qué canal (R-11).",
      "quien": "Informe de Javi del 24/09",
      "fecha": "24/09/2026"
+    },
+    {
+     "txt": "Reescrita con lo decidido por JR el 29/10.",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
     }
    ]
+  },
+  {
+   "id": "R-14",
+   "t": "Contestar las siete preguntas de la reunión con Holded, de una en una: Holded como segunda capa pagada por el cliente, tamaño mínimo (500.000 o un millón), qué se enseña en la demo, si esto es el plan de R33/R34, OPERIS y The HUB, autorizar la transcripción, cuándo se abre la vía 3",
+   "resp": "JR",
+   "fecha": "Pendiente de fecha",
+   "hor": "nov16",
+   "bloque": "s03",
+   "dep": "",
+   "est": "pendiente",
+   "crit": 1,
+   "origen": "acuerdo",
+   "cita": "Hub S-046, 23/10 · «Siguiente paso: las siete preguntas de la reunión con Holded, de una en una»",
+   "quien": "Hub de Data Goal",
+   "notas": []
+  },
+  {
+   "id": "R-15",
+   "t": "Nombre comercial de S03",
+   "resp": "JR",
+   "fecha": "29 oct",
+   "hor": "sinfecha",
+   "bloque": "s03",
+   "dep": "",
+   "est": "hecha",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Correo a Javi y Antonio, 29/10 · «ya con el nombre que cerramos: Tu propio director financiero y estratégico con Holded»",
+   "quien": "JR",
+   "notas": [
+    {
+     "txt": "Cerrado: «Tu propio director financiero y estratégico con Holded». Holded como apellido; Data Goal sigue siendo la casa; el dominio con el nombre, si llega, solo redirige a datagoal.es. El hub aún lo tiene como Q37 abierta.",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
+  },
+  {
+   "id": "R-17",
+   "t": "Beta de S03: 6-7 clientes a 31/12 y revisión en enero. Hoy dentro: Flamenco Málaga, Flamenco Granada y Proeduco (3 de 6-7)",
+   "resp": "JR + Javi",
+   "fecha": "31 dic",
+   "hor": "dic",
+   "bloque": "s03",
+   "dep": "El hub dice 10 (D-083); JR fija 6-7 el 29/10",
+   "est": "pendiente",
+   "crit": 1,
+   "origen": "acuerdo",
+   "cita": "Acta del 09/10 · «Meta de seis o siete clientes en soporte antes de fin de año, empezando por Flamenco y Proeduco y con dos más de la cartera de Nevada»",
+   "quien": "JR y Javi",
+   "notas": [
+    {
+     "txt": "Precio de entrada en la beta: 500 de soporte + 99 de NOESIS, una factura (dos si el cliente es del despacho).",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
+  },
+  {
+   "id": "R-18",
+   "t": "Diseñar el producto de soporte con los clientes ya dentro de NOESIS: orden del día fijo, calendario de cierre, 3-5 decisiones por reunión, acta y plan",
+   "resp": "JR + Javi",
+   "fecha": "9-24 nov",
+   "hor": "nov30",
+   "bloque": "s03",
+   "dep": "",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Acta del 09/10 · «Fijar con clientes en NOESIS las líneas del servicio y diseñar el producto» (orientativa 09-24/11)",
+   "quien": "JR y Javi",
+   "notas": []
+  },
+  {
+   "id": "R-20",
+   "t": "Fijar la horquilla del cierre mensual (contabilizado el 8-9, informe a la asesoría del 10 al 15, reunión el 15) y comunicarla a Flamenco y Proeduco",
+   "resp": "JR",
+   "fecha": "Antes del 19 nov",
+   "hor": "nov30",
+   "bloque": "s03",
+   "dep": "Proeduco ya aceptó día 5 / día 15 el 27/10. Con Flamenco está sin fijar",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Reunión del 23/10 · «si tú como asesoría me tienes que tener esto listo el día 10 porque el día 15 me reúno con el cliente…»",
+   "quien": "JR",
+   "notas": []
+  },
+  {
+   "id": "R-21",
+   "t": "Coste de empresa por asesor y resultado con 30, 40 y 60 clientes: la tesis económica de S03 no está medida",
+   "resp": "JR",
+   "fecha": "6 nov",
+   "hor": "nov16",
+   "bloque": "s03",
+   "dep": "",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Acta del 09/10 · «Un solo coste de empresa por asesor; resultado con 30, 40 y 60 clientes»",
+   "quien": "Propuesta del consultor en el acta",
+   "notas": []
+  },
+  {
+   "id": "R-22",
+   "t": "Presupuesto y fecha de un desarrollador para NOESIS",
+   "resp": "JR + Javi",
+   "fecha": "13 nov",
+   "hor": "nov16",
+   "bloque": "s03",
+   "dep": "",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Acta del 09/10 · «Javi no es desarrollador: la beta la ha hecho él»",
+   "quien": "Propuesta del consultor en el acta",
+   "notas": []
+  },
+  {
+   "id": "R-27",
+   "t": "Escribir el alcance del módulo de calidad del dato: qué comprueba solo, qué se pregunta, qué va por agente, qué informe sale para vender",
+   "resp": "Javi + JR",
+   "fecha": "Pendiente de fecha",
+   "hor": "nov16",
+   "bloque": "noesis",
+   "dep": "Pendiente desde el 05/10. Es la base del diagnóstico gratuito (captación)",
+   "est": "pendiente",
+   "crit": 1,
+   "origen": "acuerdo",
+   "cita": "Informe del 05/10 · «El módulo de calidad del dato es lo más grande que queda y no tiene alcance escrito»",
+   "quien": "JR y Javi",
+   "notas": []
+  },
+  {
+   "id": "R-28",
+   "t": "Método de escalones: quitar las dos frases contradictorias, construir el aviso de la declaración y la detección de anomalías sin coste desplazado (R32)",
+   "resp": "Javi",
+   "fecha": "Pendiente de fecha",
+   "hor": "nov30",
+   "bloque": "noesis",
+   "dep": "",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Correo del 15/10 · «Quedan dos frases de lo anterior que dicen lo contrario y habría que quitar»",
+   "quien": "JR",
+   "notas": []
+  },
+  {
+   "id": "R-29",
+   "t": "Lo que Proeduco pide a NOESIS: grupo de tres tenants e intercompany, fuente contable del eje de línea de negocio, centro desde el contacto, nóminas por línea y centro, avisos de calidad para el 15/12; panel en enero",
+   "resp": "Javi",
+   "fecha": "Antes del 19 nov",
+   "hor": "nov30",
+   "bloque": "noesis",
+   "dep": "Las cinco preguntas de JR están contestadas (29/10). Javi está añadiendo cuentas al tenant (28/10)",
+   "est": "pendiente",
+   "crit": 1,
+   "origen": "acuerdo",
+   "cita": "Informe de Proeduco, 27/10 · «16/11 lectura en reunión; enero, panel con avisos»",
+   "quien": "JR",
+   "notas": []
+  },
+  {
+   "id": "R-30",
+   "t": "Lo que Flamenco pide a NOESIS cuando se reabra el desarrollo: lectura solo de 2026, cuentas separadas Clorian espectáculo / Clorian restauración / Ágora, OTAs por acreedor, pago aplazado y prepago",
+   "resp": "Javi",
+   "fecha": "Tras la reunión de noviembre",
+   "hor": "dic",
+   "bloque": "noesis",
+   "dep": "",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Acta del 19/10 · «Se para el desarrollo hasta que la base esté ordenada»",
+   "quien": "JR",
+   "notas": []
+  },
+  {
+   "id": "R-31",
+   "t": "Pasar a JR lo que queda por cerrar tras la migración a Orca y confirmar si el asiento de cristalería de Zoraya es anterior a agosto de 2025",
+   "resp": "Javi",
+   "fecha": "Pendiente de fecha",
+   "hor": "sinfecha",
+   "bloque": "noesis",
+   "dep": "",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Acta del 09/10 · «Pasar a JR lo que queda por cerrar tras la migración a Orca»",
+   "quien": "JR",
+   "notas": []
+  },
+  {
+   "id": "R-32",
+   "t": "Mapa de proveedores 2026 de Zoraya y Alegría (sin artistas ni luz y gas) y propuesta de cuentas contables, para validarla nosotros y llevarla al cliente",
+   "resp": "Javi",
+   "fecha": "30 oct",
+   "hor": "semana",
+   "bloque": "flamenco",
+   "dep": "",
+   "est": "pendiente",
+   "crit": 1,
+   "origen": "acuerdo",
+   "cita": "Correo de Javi, 28/10 · «Cuentas contables lo saco como propuesta para verlo el viernes y validado por nosotros, iría para confirmar con cliente»",
+   "quien": "Javi",
+   "notas": []
+  },
+  {
+   "id": "R-33",
+   "t": "Carolina: respuesta al IVA de los dos extras (ya preguntado) y resto de preguntas (IVA a empresas de la UE, proveedores, amortizaciones). Reunión express el viernes o batería de preguntas que JR le levanta en el despacho; elige Javi",
+   "resp": "JR",
+   "fecha": "3 nov",
+   "hor": "nov16",
+   "bloque": "flamenco",
+   "dep": "Sin el IVA no se crean los dos extras (R-34)",
+   "est": "pendiente",
+   "crit": 1,
+   "origen": "acuerdo",
+   "cita": "Correo de JR a Javi, 28/10 · «si quieres que organice reunión express con Carolina el viernes o bien me pasas la batería de cuestiones/preguntas»",
+   "quien": "JR",
+   "notas": []
+  },
+  {
+   "id": "R-34",
+   "t": "Crear en Holded «Extra gastronomía» y «Extra espectáculo» por sociedad y renombrar los servicios al nombre de Clorian; segundo vídeo a las gerentes",
+   "resp": "JR",
+   "fecha": "Tras la respuesta de Carolina",
+   "hor": "nov16",
+   "bloque": "flamenco",
+   "dep": "Depende de R-33",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Correo de JR a Javi, 28/10 · «la creación de los 2 generalistas EXTRAS gastro y espect lo hago yo»",
+   "quien": "JR",
+   "notas": []
+  },
+  {
+   "id": "R-35",
+   "t": "Enviar a Codimatic el encargo del desglose de cada reserva de Clorian (líneas, personas por tipo, precio)",
+   "resp": "JR",
+   "fecha": "27 oct",
+   "hor": "sinfecha",
+   "bloque": "flamenco",
+   "dep": "",
+   "est": "hecha",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Operativa del 26/10 · «Desglosar la factura. Punto»",
+   "quien": "JR",
+   "notas": [
+    {
+     "txt": "Enviado el 27/10 (hilo «Flamenco · desglose de las reservas de Clorian en Holded»). Sigue en R-69.",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
+  },
+  {
+   "id": "R-69",
+   "t": "Codimatic: plazo y entrega del desglose de reservas de Clorian",
+   "resp": "Codimatic",
+   "fecha": "Pendiente de fecha",
+   "hor": "nov16",
+   "bloque": "flamenco",
+   "dep": "Depende de R-35 (enviado)",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Encargo del 27/10 · Codimatic confirmó el 13/10 que es «un cambio pequeño sobre datos que ya llegan»",
+   "quien": "Codimatic",
+   "notas": []
+  },
+  {
+   "id": "R-36",
+   "t": "Cerrar septiembre con Codimatic: par de muestra, abono de BAS y política de los cinco tickets de Zoraya (pedida a Bea el 13/10)",
+   "resp": "JR",
+   "fecha": "Pendiente de fecha",
+   "hor": "semana",
+   "bloque": "flamenco",
+   "dep": "",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Codimatic, 13/10 · «Con el mapa de la sesión y esas tres respuestas, cerramos septiembre completo»",
+   "quien": "Codimatic",
+   "notas": []
+  },
+  {
+   "id": "R-37",
+   "t": "Confirmación escrita del catálogo por las dos gerentes: tarifa del tuk tuk y menús de grupo (Málaga), cinco puntos del Excel (Granada)",
+   "resp": "JR",
+   "fecha": "Pendiente de fecha",
+   "hor": "semana",
+   "bloque": "flamenco",
+   "dep": "",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Correos del 27/10 · «En la última hoja del Excel hay cinco cosas que nos faltan por confirmar»",
+   "quien": "JR",
+   "notas": []
+  },
+  {
+   "id": "R-38",
+   "t": "Cuantificar el gasto duplicado del proveedor web y decidir cómo se cuenta al cliente antes de que lo encuentre él",
+   "resp": "Javi + JR",
+   "fecha": "Antes del 16 nov",
+   "hor": "nov16",
+   "bloque": "flamenco",
+   "dep": "",
+   "est": "pendiente",
+   "crit": 1,
+   "origen": "acuerdo",
+   "cita": "DG-2026-06 R16 · «Si lo encuentra el cliente antes que nosotros, confirma su relato del 19 de octubre»",
+   "quien": "Panel de DG-2026-06",
+   "notas": []
+  },
+  {
+   "id": "R-39",
+   "t": "Recategorización por script con copia de seguridad, Granada primero y después Málaga; reglas automáticas activas",
+   "resp": "Javi + JR",
+   "fecha": "2ª semana de noviembre",
+   "hor": "nov16",
+   "bloque": "flamenco",
+   "dep": "Depende de R-32 validado",
+   "est": "pendiente",
+   "crit": 1,
+   "origen": "acuerdo",
+   "cita": "Operativa del 26/10 · «eso sería el último paso antes de ya tener la reunión de noviembre»",
+   "quien": "JR",
+   "notas": []
+  },
+  {
+   "id": "R-40",
+   "t": "Convocar y celebrar la reunión de seguimiento con Bea y Michel, con el cuadro de cuentas propuesto (no preguntado)",
+   "resp": "JR + Javi",
+   "fecha": "3ª semana de noviembre",
+   "hor": "nov30",
+   "bloque": "flamenco",
+   "dep": "Sin convocar a 29/10. El correo del 19/10 decía 15/11; el panel de DG-2026-06, hacia el 20/11",
+   "est": "pendiente",
+   "crit": 1,
+   "origen": "acuerdo",
+   "cita": "Acta del 19/10 · «Ventana de un mes y reunión en la 3ª semana de noviembre»",
+   "quien": "JR",
+   "notas": []
+  },
+  {
+   "id": "R-41",
+   "t": "Decidir si se nombra NOESIS al cliente y cuándo vuelve la conversación de precio (cuota de desarrollo y cuota de NOESIS, decididas y sin comunicar)",
+   "resp": "JR",
+   "fecha": "Cuando haya algo entregado",
+   "hor": "sinfecha",
+   "bloque": "flamenco",
+   "dep": "",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Informe del 19/10 · «Cuándo vuelve la conversación de dinero: cuando haya algo entregado y comprobable delante»",
+   "quien": "JR",
+   "notas": []
+  },
+  {
+   "id": "R-42",
+   "t": "Primer informe mensual de mantenimiento con cruce de cifras (cierre de octubre): conciliación Clorian y Ágora con Holded",
+   "resp": "Codimatic",
+   "fecha": "Primeros de noviembre",
+   "hor": "nov16",
+   "bloque": "flamenco",
+   "dep": "",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Codimatic, 28/09 · «Podemos montarlo para el cierre de octubre como primer mes completo»",
+   "quien": "Codimatic",
+   "notas": []
+  },
+  {
+   "id": "R-43",
+   "t": "Cerrar formalmente los proyectos viejos de Flamenco (DG-2026-02 y DG-2026-04) y corregir la cuota en los documentos que dicen otra cifra",
+   "resp": "JR",
+   "fecha": "Pendiente de fecha",
+   "hor": "sinfecha",
+   "bloque": "flamenco",
+   "dep": "",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Panel de DG-2026-06, decisión 8 · «Cuatro gobiernos vivos sobre el mismo cliente»",
+   "quien": "Panel de DG-2026-06",
+   "notas": []
+  },
+  {
+   "id": "R-44",
+   "t": "Pendientes menores de la base: 208 abonos de Alegría, serie de bonos, 73 proveedores sin reconocer, pregunta a Bea sobre el pase sin público, factura de Plus Project, menú de Granada en Clorian",
+   "resp": "Javi + JR",
+   "fecha": "Antes del 16 nov",
+   "hor": "nov16",
+   "bloque": "flamenco",
+   "dep": "",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Panel de DG-2026-06 (E8 a E21)",
+   "quien": "Panel de DG-2026-06",
+   "notas": []
+  },
+  {
+   "id": "R-45",
+   "t": "Recibir de Lucía los tres mapas (ingresos y servicios, proveedores, trabajadores), cuadro de bancos y pólizas, y cruzarlos con Holded",
+   "resp": "JR",
+   "fecha": "31 oct",
+   "hor": "semana",
+   "bloque": "proeduco",
+   "dep": "",
+   "est": "pendiente",
+   "crit": 1,
+   "origen": "acuerdo",
+   "cita": "Informe del 27/10 · «31/10 Lucía entrega los tres mapas»",
+   "quien": "Acordado con el cliente",
+   "notas": []
+  },
+  {
+   "id": "R-46",
+   "t": "Cerrar con Javi las cinco preguntas del 27/10 antes de que el despacho diseñe el cuadro de cuentas",
+   "resp": "JR + Javi",
+   "fecha": "29 oct",
+   "hor": "sinfecha",
+   "bloque": "proeduco",
+   "dep": "",
+   "est": "hecha",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Informe del 27/10 · «conviene que las cerremos esta semana»",
+   "quien": "JR",
+   "notas": [
+    {
+     "txt": "Contestadas (JR, 29/10).",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
+  },
+  {
+   "id": "R-47",
+   "t": "Respuesta de Cristina: 56 facturas de compras sin asiento y 2 de Pepemobile, diario 2025 de la Asociación, junio corto; regla de avisar antes de borrar en Holded",
+   "resp": "JR",
+   "fecha": "30 oct",
+   "hor": "semana",
+   "bloque": "proeduco",
+   "dep": "Correo enviado (JR, 29/10). Se espera respuesta",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Panel de NA-2026-01 · «Cristina borra o modifica en Holded sin copia ni log» (R1)",
+   "quien": "Panel de NA-2026-01",
+   "notas": []
+  },
+  {
+   "id": "R-48",
+   "t": "Propuesta de cuadro de cuentas de Granaloha y Valhed: cuenta de ingreso por línea, gasto por proveedor, reparto por línea de los ingresos de enero a junio",
+   "resp": "JR",
+   "fecha": "6 nov",
+   "hor": "nov16",
+   "bloque": "proeduco",
+   "dep": "Depende de R-45. Cuentas creadas por API no se editan: un error es permanente",
+   "est": "pendiente",
+   "crit": 1,
+   "origen": "acuerdo",
+   "cita": "Panel de NA-2026-01, H8",
+   "quien": "Panel de NA-2026-01",
+   "notas": []
+  },
+  {
+   "id": "R-70",
+   "t": "Valhed: plan de pago de Holded y banco conectado antes de los cobros",
+   "resp": "Proeduco",
+   "fecha": "1 nov",
+   "hor": "semana",
+   "bloque": "proeduco",
+   "dep": "",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Informe del 27/10 · «1/11 Valhed empieza a cobrar»",
+   "quien": "Acordado con el cliente",
+   "notas": []
+  },
+  {
+   "id": "R-49",
+   "t": "Reunión intermedia online con Pedro (30 minutos)",
+   "resp": "JR",
+   "fecha": "13 nov",
+   "hor": "nov16",
+   "bloque": "proeduco",
+   "dep": "",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Informe del 27/10 · «semana 9/11 reunión intermedia»",
+   "quien": "Acordado con el cliente",
+   "notas": []
+  },
+  {
+   "id": "R-50",
+   "t": "Primera reunión de soporte presencial: lectura de negocio con Pedro, Lucía y Cristina",
+   "resp": "JR + Javi",
+   "fecha": "19 nov",
+   "hor": "nov30",
+   "bloque": "proeduco",
+   "dep": "",
+   "est": "pendiente",
+   "crit": 1,
+   "origen": "acuerdo",
+   "cita": "Informe del 27/10 · «16 o 19/11 primera reunión de soporte» · JR fija el 19 (29/10)",
+   "quien": "Acordado con el cliente",
+   "notas": [
+    {
+     "txt": "Javi revisó la financiación de Proeduco para verla con JR en las reuniones de soporte, después de la ordenación (28/10).",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
+  },
+  {
+   "id": "R-51",
+   "t": "Reunión de equipo: «la parte de ventas nuestra», el embudo propio (diagnóstico gratuito, landing, LinkedIn, objetivo semanal)",
+   "resp": "JR + Javi",
+   "fecha": "30 oct",
+   "hor": "semana",
+   "bloque": "captacion",
+   "dep": "",
+   "est": "pendiente",
+   "crit": 1,
+   "origen": "acuerdo",
+   "cita": "Correo de JR, 28/10 · «¿Cuándo vemos la parte de ventas nuestra? … Movemos nuestra reunión también al viernes y así vemos TODO»",
+   "quien": "JR",
+   "notas": []
+  },
+  {
+   "id": "R-72",
+   "t": "Objetivo semanal de diagnósticos gratuitos (se dijo de una a tres a la semana)",
+   "resp": "JR",
+   "fecha": "30 oct",
+   "hor": "semana",
+   "bloque": "captacion",
+   "dep": "",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Informe del 15/10 · «Objetivo: una, dos o tres reuniones de estas a la semana»",
+   "quien": "JR",
+   "notas": []
+  },
+  {
+   "id": "R-52",
+   "t": "Guion del diagnóstico gratuito (encargo E-006 del taller) y los primeros informes de auditoría hechos a mano",
+   "resp": "Javi + JR",
+   "fecha": "30 oct",
+   "hor": "semana",
+   "bloque": "captacion",
+   "dep": "",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Reunión del 16/10 · «me parece bien el no hacerlo en directo … y de hacer los primeros informes a nivel manual»",
+   "quien": "JR",
+   "notas": []
+  },
+  {
+   "id": "R-53",
+   "t": "Publicar a diario en LinkedIn sobre NOESIS, Holded y el servicio",
+   "resp": "JR",
+   "fecha": "30 oct",
+   "hor": "semana",
+   "bloque": "captacion",
+   "dep": "",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Informe del 15/10 · «Publicar a diario en LinkedIn … en cuanto esté la landing»",
+   "quien": "JR",
+   "notas": []
+  },
+  {
+   "id": "R-73",
+   "t": "Decidir a dónde llevan los botones de la landing: formulario o calendario para el diagnóstico",
+   "resp": "JR",
+   "fecha": "30 oct",
+   "hor": "semana",
+   "bloque": "captacion",
+   "dep": "",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Correo de JR, 29/10 · «Decidir a dónde llevan los botones: un formulario o un calendario para el diagnóstico»",
+   "quien": "JR",
+   "notas": []
+  },
+  {
+   "id": "R-74",
+   "t": "Pedir a Holded por escrito el permiso para usar su nombre en el servicio y en el dominio",
+   "resp": "JR",
+   "fecha": "Pendiente de fecha",
+   "hor": "nov16",
+   "bloque": "captacion",
+   "dep": "Bloquea publicar la landing (R-58)",
+   "est": "pendiente",
+   "crit": 1,
+   "origen": "acuerdo",
+   "cita": "Correo de JR, 29/10 · «El permiso de Holded por escrito para usar su nombre en el servicio y en el dominio»",
+   "quien": "JR",
+   "notas": []
+  },
+  {
+   "id": "R-75",
+   "t": "Dominio con el nombre del servicio, solo como puerta que redirige a datagoal.es",
+   "resp": "JR",
+   "fecha": "Pendiente de fecha",
+   "hor": "sinfecha",
+   "bloque": "captacion",
+   "dep": "Depende de R-74",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Correo de JR, 29/10 · «El dominio con el nombre, si llega, será solo una puerta que redirige allí»",
+   "quien": "JR",
+   "notas": []
+  },
+  {
+   "id": "R-58",
+   "t": "Publicar la landing de ventas y la página de servicio en datagoal.es",
+   "resp": "JR",
+   "fecha": "1 dic",
+   "hor": "dic",
+   "bloque": "captacion",
+   "dep": "Depende de T-19 (copy), R-73 (botones), R-74 (permiso), R-61 (GEO) y T-32 (anexo de datos)",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Hub, D-095 y H13 · página de S03 en la web antes de diciembre",
+   "quien": "Hub de Data Goal",
+   "notas": []
+  },
+  {
+   "id": "R-55",
+   "t": "Campaña de Holded para partners (26/10 a 31/12): decisión del despacho frente a la comisión del 40 %; compite por el tiempo con los arranques de S03",
+   "resp": "JR",
+   "fecha": "Antes de Black Friday",
+   "hor": "nov30",
+   "bloque": "captacion",
+   "dep": "",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Reunión con Holded, 21/10 · 500 € por cliente nuevo, mínimo 20, permanencia 12 meses",
+   "quien": "Holded (Nelson y Alex)",
+   "notas": []
+  },
+  {
+   "id": "R-56",
+   "t": "Accountex: mesa redonda en el stand de Holded (ponente Antonio)",
+   "resp": "JR",
+   "fecha": "Pendiente de fecha",
+   "hor": "sinfecha",
+   "bloque": "captacion",
+   "dep": "",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Reunión con Holded, 21/10 · Nelson pide confirmar quién va y una foto",
+   "quien": "Holded (Nelson)",
+   "notas": [
+    {
+     "txt": "Hilo con Nelson gestionado desde consultoria@nevadaamurai.com: bios, fotos y preguntas de la mesa redonda enviadas. Ponente: Antonio. Fecha del evento: no consta en el tablero.",
+     "quien": "Repaso del 29/10",
+     "fecha": "29/10/2026"
+    }
+   ]
+  },
+  {
+   "id": "R-57",
+   "t": "Tech Show Madrid (stand de Holded): decidir si va Javi",
+   "resp": "Javi",
+   "fecha": "4-5 nov",
+   "hor": "nov16",
+   "bloque": "captacion",
+   "dep": "",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Correo de JR, 14/10 · «Mira a ver si pudiéramos ir…»",
+   "quien": "JR",
+   "notas": []
+  },
+  {
+   "id": "R-59",
+   "t": "Cavviar: retomar a partir del 20/11, en la fase de valorar estrategias de captación",
+   "resp": "JR",
+   "fecha": "20 nov",
+   "hor": "nov30",
+   "bloque": "captacion",
+   "dep": "",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Correo de JR, 28/10 · «escríbeme a partir del 20 de noviembre»",
+   "quien": "JR",
+   "notas": []
+  },
+  {
+   "id": "R-76",
+   "t": "NodiaFlow en el despacho funcionando con plataformas: caso de éxito para OPERIS (que irá sobre Nodia) y vía de entrada a las asesorías partners de Holded",
+   "resp": "JR",
+   "fecha": "Pendiente de fecha",
+   "hor": "dic",
+   "bloque": "captacion",
+   "dep": "Proyecto NA-2026-05 (aterrizaje en el despacho). Sin sesión desde el 15/10",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "JR, 29/10 · NodiaFlow «nos permitirá … llevar este caso de éxito a OPERIS … y entrar también por aquí a las asesorías partners de Holded»",
+   "quien": "JR",
+   "notas": []
+  },
+  {
+   "id": "R-77",
+   "t": "Verifactu como línea de comunicación y captación: aprovechar la charla del 29/10 y la guía como gancho para llegar a clientes de S03",
+   "resp": "JR",
+   "fecha": "Pendiente de fecha",
+   "hor": "nov30",
+   "bloque": "captacion",
+   "dep": "",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "JR, 29/10 · «Verifactu solo como línea de comunicación / captación de clientes»",
+   "quien": "JR",
+   "notas": []
+  },
+  {
+   "id": "R-61",
+   "t": "GEO en todas las webs de Data Goal y desde el inicio en las landings nuevas de S03: decidir las cinco cuestiones de la nota del 16/10 (ciudad, «transformación digital», precios de NOESIS en el schema, página de 10 plazas, OPERIS indexado)",
+   "resp": "JR + Javi",
+   "fecha": "Antes de publicar la landing",
+   "hor": "nov16",
+   "bloque": "empresa",
+   "dep": "La página de lanzamiento de NOESIS a 10 plazas queda superada por D-114. Incluye los informes GEO de las tres webs pendientes desde el 20/10",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "JR, 29/10 · «revisaremos de DG todas las webs y aplicaremos desde el inicio a las nuevas landings»",
+   "quien": "JR",
+   "notas": []
+  },
+  {
+   "id": "R-63",
+   "t": "Contabilidad propia: validar el cuadre de IVA T1-T3, resolver con la gestoría las tres comprobaciones antes del 303, nombre de la gestoría y fecha del primer cierre mensual",
+   "resp": "JR",
+   "fecha": "31 oct",
+   "hor": "semana",
+   "bloque": "empresa",
+   "dep": "",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Panel de DG-2026-13 · cuadre hecho, tres comprobaciones abiertas",
+   "quien": "Panel de DG-2026-13",
+   "notas": []
+  },
+  {
+   "id": "R-66",
+   "t": "Antra: desbloquear Telematel y Softsumind, actualizar el PrestaShop por la vulnerabilidad de PHP y cerrar la fase 1",
+   "resp": "Javi",
+   "fecha": "Pendiente de fecha",
+   "hor": "semana",
+   "bloque": "empresa",
+   "dep": "",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Correo de JR, 28/10 · «¿Cómo vas con Antra? ¿Necesitas algo?»",
+   "quien": "JR",
+   "notas": []
+  },
+  {
+   "id": "R-78",
+   "t": "Escuela de Precios (Amurai): elegir y desarrollar la plataforma (briefing técnico del 16/10: 40 requisitos, opción mínima o completa)",
+   "resp": "Javi + JR",
+   "fecha": "Pendiente de fecha",
+   "hor": "sinfecha",
+   "bloque": "empresa",
+   "dep": "",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "JR, 29/10 · «Amurai solo como proyecto para su Escuela de Precios: elección y desarrollo de la plataforma»",
+   "quien": "JR",
+   "notas": []
+  },
+  {
+   "id": "R-60",
+   "t": "Web de S01: corregir rango (3 a 40 millones) y fases 3 y 4 fuera del encargo, para que lo publicado no contradiga el canónico",
+   "resp": "JR",
+   "fecha": "2 nov",
+   "hor": "semana",
+   "bloque": "rescate",
+   "dep": "",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "Hub R50 · «La web publicada diverge del canónico de S01»",
+   "quien": "Hub de Data Goal",
+   "notas": []
+  },
+  {
+   "id": "R-79",
+   "t": "Decidir si se lanza S01, según cómo vaya S03",
+   "resp": "JR + Javi",
+   "fecha": "Revisión de la beta, enero",
+   "hor": "y2027",
+   "bloque": "rescate",
+   "dep": "",
+   "est": "pendiente",
+   "crit": 0,
+   "origen": "acuerdo",
+   "cita": "JR, 29/10 · «el lanzamiento quedará pendiente de que decidamos finalmente lanzar o no en base a cómo vayamos con … el servicio S03, que es nuestro principal foco»",
+   "quien": "JR",
+   "notas": []
   }
  ]
 }</script>
 <script>
 const EST=[["validar","Por validar · propuestas mías","val"],["pendiente","Pendiente",""],["curso","En curso",""],["hecha","Hecha",""],["aparcada","Aparcada",""]];
-const HOR={semana:"Esta semana",pre14:"Antes del 14 sep",ventana:"Durante la ventana",despues:"Después · dic-ene",sinfecha:"Sin fecha"};
-const BLO={rescate:"Rescate",noesis:"NOESIS",empresa:"Empresa"};
+const HOR={semana:"Esta semana",nov16:"Antes del 16 nov",nov30:"Hasta el 30 nov",dic:"Hasta el 31 dic",y2027:"2027",sinfecha:"Sin fecha"};
+const BLO={s03:"S03 · Director financiero",flamenco:"Flamenco",proeduco:"Proeduco",noesis:"NOESIS",captacion:"Captación y canal",empresa:"Empresa y otros",rescate:"Rescate (S01)"};
 
 // Un responsable puede ser varios: "JR + Javi", "Los tres". Se normaliza a lista de
 // personas para poder etiquetar y filtrar una a una. Solo se parte por "+":
@@ -2075,7 +3288,10 @@ function serializar(){
     permite al navegador de otro saber que hay una version posterior a su copia (D-017).
     Si no se estampara, el aviso de version nueva no volveria a dispararse jamas. */
  const copia=JSON.parse(JSON.stringify(D)); delete copia.local;
- copia.actualizado=hoy(); copia.pub=hoyISO();
+ /* Con hora y no solo con día (D-023): dos personas pueden guardar el mismo día en la
+    unidad compartida, y el aviso de versión nueva tiene que distinguir los dos guardados. */
+ copia.actualizado=hoy(); copia.pub=new Date().toISOString();
+ window.__ultimoPub=copia.pub;
  document.getElementById('datos').textContent=JSON.stringify(copia,null,1);
  const out='<!DOCTYPE html>\n'+document.documentElement.outerHTML;
  b.innerHTML=bak; pb.innerHTML=pbak;
@@ -2089,11 +3305,16 @@ async function guardar(){
    const h=await window.showSaveFilePicker({suggestedName:'TABLERO_DATA_GOAL.html',
     types:[{description:'Página HTML',accept:{'text/html':['.html']}}]});
    const w=await h.createWritable(); await w.write(html); await w.close();
-   limpio(); toast('Fichero generado. Falta subirlo a GitHub para que lo vean los demás.'); return;
+   /* Lo guardado ya está en el fichero: la copia de este navegador pasa a ser esa misma
+      versión, para que al recargar no salte el aviso de versión nueva contra uno mismo. */
+   D.pub=window.__ultimoPub; D.actualizado=hoy(); BASE.pub=D.pub;
+   BASE.tareas=JSON.parse(JSON.stringify(D.tareas));
+   try{const c=JSON.parse(JSON.stringify(D)); c.local=false; localStorage.setItem(LS,JSON.stringify(c));}catch(e){}
+   limpio(); toast('Guardado. Si era el TABLERO_DATA_GOAL.html de la unidad compartida, ya lo ven los demás; GitHub se pone al día en 15 minutos.'); return;
   }catch(e){ if(e&&e.name==='AbortError') return; }
  }
  descargar(html,'TABLERO_DATA_GOAL.html');
- toast('Descargado. Sustituye con él el index.html del repositorio y haz commit.');
+ toast('Tu navegador no puede guardar directamente: se ha descargado. Usa Chrome o Edge, o envíaselo a JR.');
  limpio();
 }
 function limpio(){dirty=false;document.getElementById('dirty').classList.remove('on');}
@@ -2374,7 +3595,7 @@ function renderCal(){
   let m={1:"ene",2:"feb",3:"mar",4:"abr",5:"may",6:"jun",7:"jul",8:"ago",9:"sep",10:"oct",11:"nov",12:"dic"};
   let w=["dom","lun","mar","mié","jue","vie","sáb"];
   // Se reutilizan las etiquetas de horizonte del tablero para no mantener dos vocabularios
-  let H=(typeof HOR!=='undefined')?HOR:{semana:"Esta semana",pre14:"Antes del 14 sep",ventana:"Durante la ventana",despues:"Después · dic-ene",sinfecha:"Sin fecha"};
+  let H=(typeof HOR!=='undefined')?HOR:{semana:"Esta semana",nov16:"Antes del 16 nov",nov30:"Hasta el 30 nov",dic:"Hasta el 31 dic",y2027:"2027",sinfecha:"Sin fecha"};
 
   function tarjeta(titulo,sub,ts,extra){
     let card=document.createElement('div');
@@ -2441,7 +3662,7 @@ function renderCal(){
 
   // 2) Tareas sin dia concreto ("Septiembre", "Durante la ventana", "Sin fecha"):
   //    se agrupan por horizonte para que ninguna quede fuera del calendario
-  let orden=['semana','pre14','ventana','despues','sinfecha'],g={};
+  let orden=['semana','nov16','nov30','dic','y2027','sinfecha'],g={};
   sin.forEach(t=>{let k=orden.indexOf(t.hor)>=0?t.hor:'sinfecha';(g[k]=g[k]||[]).push(t)});
   orden.forEach(k=>{if(g[k])tarjeta(H[k]||k,'sin dia concreto',g[k],'sin-dia')});
 }
